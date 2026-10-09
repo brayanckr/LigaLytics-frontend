@@ -297,3 +297,34 @@ export interface PlaceBetRequest {
   line: number | null
   stake: number
 }
+
+export interface ParlayLegDto {
+  eventId: number
+  homeTeam: string
+  awayTeam: string
+  kickoff: string
+  market: MarketCode
+  marketLabel: string
+  selection: string
+  line: number | null
+  odds: number
+  oddsSource: string
+  status: 'PENDING' | 'WON' | 'LOST' | 'VOID'
+}
+
+export interface ParlayDto {
+  id: number
+  totalOdds: number
+  stake: number
+  potentialPayout: number
+  status: 'PENDING' | 'WON' | 'LOST' | 'VOID'
+  payout: number
+  placedAt: string
+  settledAt: string | null
+  legs: ParlayLegDto[]
+}
+
+export interface PlaceParlayRequest {
+  stake: number
+  legs: { eventId: number; market: MarketCode; selection: string; line: number | null }[]
+}

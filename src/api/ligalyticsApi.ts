@@ -1,9 +1,11 @@
-import axiosClient from './axiosClient'
+﻿import axiosClient from './axiosClient'
 import type {
   AccountDto,
   AuthResponse,
   BetDto,
   BettingMatchDto,
+  ParlayDto,
+  PlaceParlayRequest,
   PlaceBetRequest,
   RecommendationDto,
   WalletDto,
@@ -25,7 +27,7 @@ import type {
 
 const ADMIN_KEY_STORAGE = 'ligalytics.adminKey'
 
-/** Clave de administración guardada solo en esta pestaña (sessionStorage). */
+/** Clave de administraciÃ³n guardada solo en esta pestaÃ±a (sessionStorage). */
 export const adminKeyStore = {
   get(): string {
     try {
@@ -53,7 +55,7 @@ function adminHeaders(): Record<string, string> {
 }
 
 /**
- * Punto único de acceso a la API REST de LigaLytics. Todas las llamadas pasan
+ * Punto Ãºnico de acceso a la API REST de LigaLytics. Todas las llamadas pasan
  * por el axiosClient compartido (baseURL /api, timeouts e interceptores).
  */
 export const ligalyticsApi = {
@@ -106,6 +108,14 @@ export const ligalyticsApi = {
   getBettingMatches: (days = 7): Promise<BettingMatchDto[]> =>
     axiosClient.get<BettingMatchDto[]>("/betting/matches", { params: { days } }).then((r) => r.data),
 
+  getBettingMatch: (eventId: number): Promise<BettingMatchDto> =>
+    axiosClient.get<BettingMatchDto>(`/betting/matches/${eventId}`).then((r) => r.data),
+
+  placeParlay: (request: PlaceParlayRequest): Promise<ParlayDto> =>
+    axiosClient.post<ParlayDto>('/betting/parlays', request).then((r) => r.data),
+
+  getParlays: (): Promise<ParlayDto[]> => axiosClient.get<ParlayDto[]>('/betting/parlays').then((r) => r.data),
+
   getRecommendations: (): Promise<RecommendationDto[]> =>
     axiosClient.get<RecommendationDto[]>("/betting/recommendations").then((r) => r.data),
 
@@ -121,7 +131,7 @@ export const ligalyticsApi = {
   getPredictionHistory: (): Promise<PredictionRecord[]> =>
     axiosClient.get<PredictionRecord[]>('/predict/history').then((response) => response.data),
 
-  /** Métricas de validación del modelo; devuelve null si todavía no se entrenó. */
+  /** MÃ©tricas de validaciÃ³n del modelo; devuelve null si todavÃ­a no se entrenÃ³. */
   getModelReport: (): Promise<TrainingReport | null> =>
     axiosClient
       .get<TrainingReport>('/model/report')
@@ -133,7 +143,7 @@ export const ligalyticsApi = {
         throw error
       }),
 
-  // ── Administración ─────────────────────────────────────────────
+  // â”€â”€ AdministraciÃ³n â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   getDataStatus: (): Promise<DataStatusDto> =>
     axiosClient.get<DataStatusDto>('/admin/status', { headers: adminHeaders() }).then((response) => response.data),
@@ -197,3 +207,4 @@ export const ligalyticsApi = {
 }
 
 export default ligalyticsApi
+
