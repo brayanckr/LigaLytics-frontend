@@ -8,7 +8,7 @@ import ErrorAlert from '../components/ErrorAlert'
 import ModelReportCard from '../components/ModelReportCard'
 import Spinner from '../components/Spinner'
 
-type TaskId = 'football-data' | 'understat' | 'transfermarkt' | 'train'
+type TaskId = 'football-data' | 'understat' | 'transfermarkt' | 'train' | 'current-season'
 
 interface TaskOutcome {
   results?: EtlSeasonResult[]
@@ -17,6 +17,11 @@ interface TaskOutcome {
 }
 
 const TASKS: { id: TaskId; title: string; description: string }[] = [
+  {
+    id: 'current-season',
+    title: 'Actualizar la temporada actual',
+    description: 'Guarda los partidos ya jugados de esta temporada (football-data.org). Se hace solo cada 6 horas.',
+  },
   {
     id: 'football-data',
     title: 'Cargar partidos (football-data.co.uk)',
@@ -79,6 +84,9 @@ export default function AdminPage() {
         outcome = { results: await ligalyticsApi.loadFootballData() }
       } else if (id === 'understat') {
         outcome = { results: await ligalyticsApi.loadUnderstat() }
+      } else if (id === 'current-season') {
+        const summary = await ligalyticsApi.syncCurrentSeason()
+        outcome = { results: [{ season: 'temporada actual', success: true, summary, error: null }] }
       } else if (id === 'transfermarkt') {
         outcome = { results: [await ligalyticsApi.loadTransfermarkt()] }
       } else {

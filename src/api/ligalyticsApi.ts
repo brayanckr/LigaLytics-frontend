@@ -2,6 +2,7 @@ import axiosClient from './axiosClient'
 import type {
   DataStatusDto,
   EtlSeasonResult,
+  EtlSummary,
   FixtureDto,
   HealthResponse,
   HeadToHeadDto,
@@ -145,6 +146,11 @@ export const ligalyticsApi = {
         params: seasons && seasons.length > 0 ? { seasons: seasons.join(',') } : undefined,
         timeout: 300000,
       })
+      .then((response) => response.data),
+
+  syncCurrentSeason: (): Promise<EtlSummary> =>
+    axiosClient
+      .post<EtlSummary>("/admin/etl/current-season", null, { headers: adminHeaders(), timeout: 120000 })
       .then((response) => response.data),
 
   loadTransfermarkt: (): Promise<EtlSeasonResult> =>
