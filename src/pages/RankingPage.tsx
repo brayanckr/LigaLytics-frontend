@@ -53,7 +53,15 @@ export default function RankingPage() {
     <section className="space-y-6">
       <header>
         <h1 className="text-2xl font-bold text-white">Clasificación de LaLiga</h1>
-        <p className="text-sm text-slate-400">Tabla de posiciones con el rendimiento de cada equipo.</p>
+        <p className="text-sm text-slate-400">
+          Tabla de posiciones
+          {seasons.data && seasons.data.length > 0
+            ? ` de la temporada ${
+                seasons.data.find((item) => item.startYear === (season ?? seasons.data?.[0]?.startYear))?.label ?? ''
+              }`
+            : ''}
+          {entries.length > 0 ? ` · ${Math.max(...entries.map((entry) => entry.matchesPlayed))} jornadas jugadas` : ''}.
+        </p>
         {seasons.data && seasons.data.length > 0 && (
           <label className="mt-3 inline-flex items-center gap-2 text-sm text-slate-300">
             Temporada
