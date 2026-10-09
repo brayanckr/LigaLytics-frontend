@@ -124,6 +124,7 @@ export default function TeamDetailModal({ team, onClose }: TeamDetailModalProps)
                       <thead className="bg-slate-800/60 text-xs uppercase tracking-wide text-slate-400">
                         <tr>
                           <th className="px-4 py-2 text-left">Fecha</th>
+                          <th className="px-4 py-2 text-left">Temporada</th>
                           <th className="px-4 py-2 text-left">Partido</th>
                           <th className="px-4 py-2 text-center">Resultado</th>
                           <th className="px-4 py-2 text-center">xG</th>
@@ -135,6 +136,7 @@ export default function TeamDetailModal({ team, onClose }: TeamDetailModalProps)
                         {data.recentMatches.map((match) => (
                           <tr key={match.matchId} className="hover:bg-slate-800/40" title={match.description}>
                             <td className="whitespace-nowrap px-4 py-2 text-slate-400">{formatDate(match.date)}</td>
+                            <td className="whitespace-nowrap px-4 py-2 text-slate-500">{match.season ?? "—"}</td>
                             <td className="whitespace-nowrap px-4 py-2 text-slate-200">
                               {match.homeTeam} vs {match.awayTeam}
                             </td>

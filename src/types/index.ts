@@ -24,6 +24,7 @@ export interface MatchSummaryDto {
   yellowCards: number | null
   redCards: number | null
   description: string
+  season: string | null
 }
 
 export interface TeamStatsDto {
