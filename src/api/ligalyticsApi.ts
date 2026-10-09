@@ -1,5 +1,12 @@
 import axiosClient from './axiosClient'
 import type {
+  AccountDto,
+  AuthResponse,
+  BetDto,
+  BettingMatchDto,
+  PlaceBetRequest,
+  RecommendationDto,
+  WalletDto,
   DataStatusDto,
   EtlSeasonResult,
   EtlSummary,
@@ -85,6 +92,31 @@ export const ligalyticsApi = {
         params: { from, to, zone: Intl.DateTimeFormat().resolvedOptions().timeZone },
       })
       .then((response) => response.data),
+
+  register: (email: string, displayName: string, password: string): Promise<AuthResponse> =>
+    axiosClient.post<AuthResponse>("/auth/register", { email, displayName, password }).then((r) => r.data),
+
+  login: (email: string, password: string): Promise<AuthResponse> =>
+    axiosClient.post<AuthResponse>("/auth/login", { email, password }).then((r) => r.data),
+
+  logout: (): Promise<void> => axiosClient.post("/auth/logout").then(() => undefined),
+
+  me: (): Promise<AccountDto> => axiosClient.get<AccountDto>("/auth/me").then((r) => r.data),
+
+  getBettingMatches: (days = 7): Promise<BettingMatchDto[]> =>
+    axiosClient.get<BettingMatchDto[]>("/betting/matches", { params: { days } }).then((r) => r.data),
+
+  getRecommendations: (): Promise<RecommendationDto[]> =>
+    axiosClient.get<RecommendationDto[]>("/betting/recommendations").then((r) => r.data),
+
+  placeBet: (request: PlaceBetRequest): Promise<BetDto> =>
+    axiosClient.post<BetDto>("/betting/bets", request).then((r) => r.data),
+
+  getBets: (): Promise<BetDto[]> => axiosClient.get<BetDto[]>("/betting/bets").then((r) => r.data),
+
+  getWallet: (): Promise<WalletDto> => axiosClient.get<WalletDto>("/betting/wallet").then((r) => r.data),
+
+  resetWallet: (): Promise<WalletDto> => axiosClient.post<WalletDto>("/betting/wallet/reset").then((r) => r.data),
 
   getPredictionHistory: (): Promise<PredictionRecord[]> =>
     axiosClient.get<PredictionRecord[]>('/predict/history').then((response) => response.data),

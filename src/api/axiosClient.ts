@@ -11,6 +11,37 @@ const axiosClient = axios.create({
   timeout: 15000,
 })
 
+const TOKEN_KEY = 'ligalytics.token'
+
+/** Token de sesion guardado en este navegador (null si no hay o el almacenamiento no esta disponible). */
+export function getStoredToken(): string | null {
+  try {
+    return localStorage.getItem(TOKEN_KEY)
+  } catch {
+    return null
+  }
+}
+
+export function storeToken(token: string | null): void {
+  try {
+    if (token) {
+      localStorage.setItem(TOKEN_KEY, token)
+    } else {
+      localStorage.removeItem(TOKEN_KEY)
+    }
+  } catch {
+    // sin almacenamiento: la sesion solo dura mientras la pagina siga abierta
+  }
+}
+
+axiosClient.interceptors.request.use((config) => {
+  const token = getStoredToken()
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
+
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {

@@ -215,3 +215,85 @@ export interface HeadToHeadDto {
   }
   matches: HeadToHeadMeeting[]
 }
+
+export interface AccountDto {
+  id: number
+  email: string
+  displayName: string
+  balance: number
+}
+
+export interface AuthResponse {
+  token: string
+  account: AccountDto
+}
+
+export type MarketCode = 'WINNER' | 'GOALS' | 'BTTS' | 'CORNERS' | 'CARDS'
+
+export interface OfferDto {
+  market: MarketCode
+  marketLabel: string
+  selection: string
+  line: number | null
+  odds: number
+  source: 'consenso' | 'demo'
+  modelProbability: number | null
+  marketProbability: number | null
+  adjustedProbability: number | null
+  edge: number | null
+  recommended: boolean
+}
+
+export interface BettingMatchDto {
+  eventId: number
+  kickoff: string
+  homeTeam: string
+  awayTeam: string
+  hasModel: boolean
+  offers: OfferDto[]
+}
+
+export interface RecommendationDto {
+  eventId: number
+  kickoff: string
+  homeTeam: string
+  awayTeam: string
+  offer: OfferDto
+  suggestedStake: number
+}
+
+export interface BetDto {
+  id: number
+  eventId: number
+  homeTeam: string
+  awayTeam: string
+  kickoff: string
+  market: MarketCode
+  marketLabel: string
+  selection: string
+  line: number | null
+  odds: number
+  oddsSource: string
+  stake: number
+  status: 'PENDING' | 'WON' | 'LOST' | 'VOID'
+  payout: number
+  placedAt: string
+  settledAt: string | null
+}
+
+export interface WalletDto {
+  balance: number
+  initialBalance: number
+  inPlay: number
+  profit: number
+  currency: string
+  notice: string
+}
+
+export interface PlaceBetRequest {
+  eventId: number
+  market: MarketCode
+  selection: string
+  line: number | null
+  stake: number
+}
