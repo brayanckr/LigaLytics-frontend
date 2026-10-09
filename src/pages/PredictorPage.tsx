@@ -7,6 +7,7 @@ import { useApi } from '../hooks/useApi'
 import ErrorAlert from '../components/ErrorAlert'
 import PredictionCharts from '../components/PredictionCharts'
 import PredictionDetails from '../components/PredictionDetails'
+import HeadToHeadPanel from '../components/HeadToHeadPanel'
 import Spinner from '../components/Spinner'
 import { describeOutcome, formatPercent } from '../lib/format'
 
@@ -120,6 +121,10 @@ export default function PredictorPage() {
           <p className="mt-3 text-sm text-amber-300">El equipo local y el visitante deben ser distintos.</p>
         )}
       </div>
+
+      {homeId !== '' && awayId !== '' && !sameTeam && (
+        <HeadToHeadPanel homeId={Number(homeId)} awayId={Number(awayId)} />
+      )}
 
       {loading && <Spinner label="Generando predicción…" />}
       {!loading && error && <ErrorAlert message={error} />}
