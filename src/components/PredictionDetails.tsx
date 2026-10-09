@@ -56,7 +56,35 @@ export default function PredictionDetails({ prediction }: { prediction: Predicti
           value={prediction.expectedCards.toFixed(1)}
           hint={describeOutcome(prediction.cardsOutcome)}
         />
-        <Stat label="Goles" value={describeOutcome(prediction.goalsOutcome)} />
+        <Stat
+          label="Goles"
+          value={describeOutcome(prediction.goalsOutcome)}
+          hint={`Más de 2.5: ${Math.round(prediction.goalsOver25Probability * 100)}% · ambos marcan: ${Math.round(prediction.bothTeamsScoreProbability * 100)}%`}
+        />
+      </div>
+
+      <div className="rounded-lg border border-slate-800 bg-slate-900/60 px-4 py-3 text-sm">
+        <p className="mb-2 text-xs uppercase tracking-wide text-slate-400">Marcadores más probables</p>
+        <div className="flex flex-wrap gap-2">
+          {prediction.topScores.map((item) => (
+            <span key={item.score} className="rounded-full bg-sky-500/15 px-3 py-1 text-sky-200">
+              {item.score} · {(item.probability * 100).toFixed(1)}%
+            </span>
+          ))}
+        </div>
+        <p className="mt-2 text-xs text-slate-500">
+          La probabilidad de que gane un equipo es la suma de muchos marcadores; por eso cada marcador por separado
+          tiene un porcentaje bajo aunque el equipo sea favorito.
+        </p>
+      </div>
+
+      <div className="rounded-lg border border-slate-800 bg-slate-900/60 px-4 py-3 text-sm">
+        <p className="mb-2 text-xs uppercase tracking-wide text-slate-400">Cómo se calculan los goles</p>
+        <ul className="list-disc space-y-1 pl-5 text-slate-300">
+          {prediction.goalFactors.map((factor) => (
+            <li key={factor}>{factor}</li>
+          ))}
+        </ul>
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-slate-800">
