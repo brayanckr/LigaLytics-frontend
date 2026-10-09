@@ -24,6 +24,22 @@ export default function PredictionDetails({ prediction }: { prediction: Predicti
     <div className="space-y-4 rounded-xl border border-slate-800 bg-slate-800/40 p-5">
       <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-300">Detalle de la predicción</h2>
 
+      <div className="rounded-lg border border-slate-800 bg-slate-900/60 px-4 py-3 text-sm">
+        <p className="text-slate-300">
+          Ganador según{' '}
+          <strong className="text-sky-300">
+            {prediction.winnerSource === 'football-charts' ? 'Football Charts (modelo Dixon-Coles)' : 'el modelo propio'}
+          </strong>
+        </p>
+        {prediction.winnerSource === 'football-charts' && (
+          <p className="mt-1 text-xs text-slate-400">
+            Modelo propio (comparación): local {Math.round(prediction.ownHomeWinProbability * 100)}% · empate{' '}
+            {Math.round(prediction.ownDrawProbability * 100)}% · visitante{' '}
+            {Math.round(prediction.ownAwayWinProbability * 100)}%
+          </p>
+        )}
+      </div>
+
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Stat
           label="Marcador más probable"
