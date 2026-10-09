@@ -68,6 +68,20 @@ function FixtureRow({ fixture }: { fixture: FixtureDto }) {
         </span>
         <TeamName name={fixture.awayTeam} crest={fixture.awayCrest} align="left" />
       </div>
+      {fixture.winner && (
+        <div className="order-last w-full" title={`Probabilidades de ${fixture.winner.source}`}>
+          <div className="flex h-2 overflow-hidden rounded-full bg-slate-700">
+            <div className="bg-sky-400" style={{ width: `${fixture.winner.home * 100}%` }} />
+            <div className="bg-slate-400" style={{ width: `${fixture.winner.draw * 100}%` }} />
+            <div className="bg-violet-400" style={{ width: `${fixture.winner.away * 100}%` }} />
+          </div>
+          <p className="mt-1 flex justify-between text-xs text-slate-400">
+            <span>Local {Math.round(fixture.winner.home * 100)}%</span>
+            <span>Empate {Math.round(fixture.winner.draw * 100)}%</span>
+            <span>Visitante {Math.round(fixture.winner.away * 100)}%</span>
+          </p>
+        </div>
+      )}
       <div className="w-28 shrink-0 text-right">
         {canPredict && (
           <Link
