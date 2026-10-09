@@ -79,6 +79,10 @@ export interface PredictionResponseDto {
   ownHomeWinProbability: number
   ownDrawProbability: number
   ownAwayWinProbability: number
+  topScores: { score: string; probability: number }[]
+  goalsOver25Probability: number
+  bothTeamsScoreProbability: number
+  goalFactors: string[]
   fromCache: boolean
   generatedAt: string
 }
@@ -183,4 +187,30 @@ export interface FixtureDto {
   homeGoals: number | null
   awayGoals: number | null
   winner: { home: number; draw: number; away: number; source: string } | null
+}
+
+export interface HeadToHeadMeeting {
+  date: string
+  season: string
+  homeTeam: string
+  awayTeam: string
+  homeGoals: number
+  awayGoals: number
+  corners: number | null
+  cards: number | null
+}
+
+export interface HeadToHeadDto {
+  teamA: string
+  teamB: string
+  summary: {
+    played: number
+    winsA: number
+    draws: number
+    winsB: number
+    averageTotalGoals: number
+    averageCorners: number | null
+    averageCards: number | null
+  }
+  matches: HeadToHeadMeeting[]
 }

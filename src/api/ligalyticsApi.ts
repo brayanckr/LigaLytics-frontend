@@ -4,6 +4,7 @@ import type {
   EtlSeasonResult,
   FixtureDto,
   HealthResponse,
+  HeadToHeadDto,
   PredictionRecord,
   PredictionRequest,
   PredictionResponseDto,
@@ -59,6 +60,11 @@ export const ligalyticsApi = {
   getTeamStats: (teamId: number, season?: number): Promise<TeamStatsDto> =>
     axiosClient
       .get<TeamStatsDto>(`/teams/${teamId}/stats`, { params: season ? { season } : undefined })
+      .then((response) => response.data),
+
+  getHeadToHead: (homeId: number, awayId: number, limit = 10): Promise<HeadToHeadDto> =>
+    axiosClient
+      .get<HeadToHeadDto>("/teams/h2h", { params: { homeId, awayId, limit } })
       .then((response) => response.data),
 
   getSeasons: (): Promise<SeasonDto[]> =>
