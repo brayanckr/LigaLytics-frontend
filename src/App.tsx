@@ -9,6 +9,10 @@ import AdminPage from './pages/AdminPage'
 import CalendarPage from './pages/CalendarPage'
 import BettingPage from './pages/BettingPage'
 import LoginPage from './pages/LoginPage'
+import MatchDetail from './betting/MatchDetail'
+import MatchList from './betting/MatchList'
+import MyBets from './betting/MyBets'
+import Recommendations from './betting/Recommendations'
 
 export default function App() {
   return (
@@ -21,7 +25,12 @@ export default function App() {
           <Route path="/predict" element={<PredictorPage />} />
           <Route path="/ranking" element={<RankingPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
-          <Route path="/betting" element={<BettingPage />} />
+          <Route path="/betting" element={<BettingPage />}>
+            <Route index element={<MatchList />} />
+            <Route path="partido/:eventId" element={<MatchDetail />} />
+            <Route path="recomendaciones" element={<Recommendations />} />
+            <Route path="mis-apuestas" element={<MyBets />} />
+          </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<NotFoundPage />} />
