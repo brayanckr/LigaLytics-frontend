@@ -21,6 +21,8 @@ export interface BettingState {
   selectOnly: (item: SlipItem, stake?: number) => void
   remove: (key: string) => void
   clear: () => void
+  /** Aviso cuando una selección sustituye a otra del mismo partido (en una combinada solo cabe una por partido). */
+  notice: string | null
   balance: number
   /** Recarga saldo e historial tras apostar. */
   onPlaced: (message: string) => void

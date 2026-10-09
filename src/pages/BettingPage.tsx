@@ -8,7 +8,7 @@ import Spinner from '../components/Spinner'
 import BetSlip from '../betting/BetSlip'
 import { BettingContext } from '../betting/BettingContext'
 import type { BettingState, SlipItem } from '../betting/BettingContext'
-import { cop } from '../betting/shared'
+import { cop, describeOffer } from '../betting/shared'
 
 const DEFAULT_STAKE = 5000
 
@@ -26,23 +26,34 @@ export default function BettingPage() {
   const [items, setItems] = useState<SlipItem[]>([])
   const [stake, setStake] = useState(DEFAULT_STAKE)
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null)
+  const [notice, setNotice] = useState<string | null>(null)
 
   const wallet = useApi(() => ligalyticsApi.getWallet(), [account?.id])
   const reloadWallet = wallet.reload
 
   const toggle = useCallback((item: SlipItem) => {
     setMessage(null)
+    setNotice(null)
     setItems((current) => {
       if (current.some((i) => i.key === item.key)) {
         return current.filter((i) => i.key !== item.key)
       }
-      // Una selección por partido: la nueva sustituye a la anterior del mismo partido.
+      // Como en las combinadas de las casas de apuestas, solo cabe una selección por partido: las de un mismo
+      // partido se contradicen (ganador y empate, más y menos de 2,5) o están correlacionadas.
+      const previous = current.find((i) => i.eventId === item.eventId)
+      if (previous) {
+        setNotice(
+          `Solo se admite una selección por partido en el cupón: «${describeOffer(item.offer, item.homeTeam, item.awayTeam)}» ` +
+            `sustituye a «${describeOffer(previous.offer, previous.homeTeam, previous.awayTeam)}» (${item.homeTeam} vs ${item.awayTeam}).`,
+        )
+      }
       return [...current.filter((i) => i.eventId !== item.eventId), item]
     })
   }, [])
 
   const selectOnly = useCallback((item: SlipItem, suggested?: number) => {
     setMessage(null)
+    setNotice(null)
     setItems([item])
     if (suggested) {
       setStake(suggested)
@@ -67,12 +78,19 @@ export default function BettingPage() {
       setStake,
       toggle,
       selectOnly,
-      remove: (key) => setItems((current) => current.filter((i) => i.key !== key)),
-      clear: () => setItems([]),
+      remove: (key) => {
+        setNotice(null)
+        setItems((current) => current.filter((i) => i.key !== key))
+      },
+      clear: () => {
+        setNotice(null)
+        setItems([])
+      },
+      notice,
       balance: wallet.data?.balance ?? account?.balance ?? 0,
       onPlaced,
     }),
-    [items, stake, toggle, selectOnly, wallet.data?.balance, account?.balance, onPlaced],
+    [items, stake, toggle, selectOnly, notice, wallet.data?.balance, account?.balance, onPlaced],
   )
 
   if (authLoading) {

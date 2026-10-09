@@ -6,7 +6,7 @@ import { MAX_LEGS, MAX_TOTAL_ODDS, MIN_STAKE, cop, describeOffer, formatKickoff,
 
 /** Cupón: una selección es una apuesta simple; dos o más forman una combinada (parlay) con la cuota multiplicada. */
 export default function BetSlip() {
-  const { items, stake, setStake, remove, clear, balance, onPlaced } = useBetting()
+  const { items, stake, setStake, remove, clear, notice, balance, onPlaced } = useBetting()
   const [placing, setPlacing] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -63,6 +63,12 @@ export default function BetSlip() {
         )}
       </div>
 
+      {notice && (
+        <p role="status" className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-200">
+          {notice}
+        </p>
+      )}
+
       {items.length === 0 ? (
         <p className="text-sm text-slate-400">
           Pulsa una cuota para añadirla. Con una sola es una apuesta simple; con dos o más se combinan en una{' '}
@@ -98,7 +104,9 @@ export default function BetSlip() {
           </ul>
 
           {items.length === 1 && (
-            <p className="text-xs text-slate-500">Añade otra selección de un partido distinto para crear una combinada.</p>
+            <p className="text-xs text-slate-500">
+              Añade otra selección de un partido distinto para crear una combinada (una sola selección por partido).
+            </p>
           )}
 
           <label className="flex flex-col gap-1 text-xs text-slate-400">
