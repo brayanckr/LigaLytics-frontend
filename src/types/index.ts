@@ -236,7 +236,7 @@ export interface OfferDto {
   selection: string
   line: number | null
   odds: number
-  source: 'consenso' | 'demo'
+  source: 'consenso' | 'pinnacle' | 'demo'
   modelProbability: number | null
   marketProbability: number | null
   adjustedProbability: number | null

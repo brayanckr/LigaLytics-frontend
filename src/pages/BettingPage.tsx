@@ -187,7 +187,11 @@ export default function BettingPage() {
           </p>
           <p className="text-xs text-slate-400">
             Cuota {slip.offer.odds.toFixed(2)}{' '}
-            {slip.offer.source === 'demo' ? '(cuota demo calculada por el modelo, no es de ninguna casa real)' : '(consenso de casas)'}
+            {slip.offer.source === 'demo'
+              ? '(cuota demo calculada por el modelo, no es de ninguna casa real)'
+              : slip.offer.source === 'pinnacle'
+                ? '(cuota real de Pinnacle)'
+                : '(consenso de casas)'}
           </p>
           <div className="flex flex-wrap items-end gap-3">
             <label className="flex flex-col gap-1 text-xs text-slate-400">
@@ -370,6 +374,7 @@ function MatchList({ loading, error, reload, items, onChoose }: ListProps<Bettin
                 <p className="mb-1.5 text-xs uppercase tracking-wide text-slate-400">
                   {offers[0].marketLabel}
                   {offers[0].source === 'demo' && <span className="ml-2 text-amber-300">cuotas demo del modelo</span>}
+                  {offers[0].source === 'pinnacle' && <span className="ml-2 text-emerald-300">cuotas reales de Pinnacle</span>}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {offers.map((offer) => (
