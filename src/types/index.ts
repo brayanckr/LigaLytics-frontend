@@ -75,6 +75,10 @@ export interface PredictionResponseDto {
   expectedAwayRedCards: number
   strategies: Record<string, string>
   dataSeason: string | null
+  winnerSource: string
+  ownHomeWinProbability: number
+  ownDrawProbability: number
+  ownAwayWinProbability: number
   fromCache: boolean
   generatedAt: string
 }
@@ -178,4 +182,5 @@ export interface FixtureDto {
   awayCrest: string | null
   homeGoals: number | null
   awayGoals: number | null
+  winner: { home: number; draw: number; away: number; source: string } | null
 }
