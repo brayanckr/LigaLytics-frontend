@@ -12,6 +12,7 @@ const NAV_ITEMS: NavItem[] = [
   { to: '/calendar', label: 'Calendario' },
   { to: '/predict', label: 'Predicciones' },
   { to: '/ranking', label: 'Clasificación' },
+  { to: '/betting', label: 'Apuestas (demo)' },
   { to: '/admin', label: 'Administración' },
 ]
 

@@ -7,6 +7,8 @@ import RankingPage from './pages/RankingPage'
 import TeamsPage from './pages/TeamsPage'
 import AdminPage from './pages/AdminPage'
 import CalendarPage from './pages/CalendarPage'
+import BettingPage from './pages/BettingPage'
+import LoginPage from './pages/LoginPage'
 
 export default function App() {
   return (
@@ -19,6 +21,8 @@ export default function App() {
           <Route path="/predict" element={<PredictorPage />} />
           <Route path="/ranking" element={<RankingPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/betting" element={<BettingPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
