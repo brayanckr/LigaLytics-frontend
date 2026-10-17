@@ -250,6 +250,8 @@ export interface BettingMatchDto {
   homeTeam: string
   awayTeam: string
   hasModel: boolean
+  homeTeamId: number | null
+  awayTeamId: number | null
   offers: OfferDto[]
 }
 

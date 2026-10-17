@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import type { TeamDto } from '../types'
 import { ligalyticsApi } from '../api/ligalyticsApi'
 import { useApi } from '../hooks/useApi'
@@ -10,7 +11,8 @@ import TeamSearch from '../components/TeamSearch'
 
 export default function TeamsPage() {
   const { data, loading, error, reload } = useApi(() => ligalyticsApi.getTeams(), [])
-  const [query, setQuery] = useState('')
+  const [params] = useSearchParams()
+  const [query, setQuery] = useState(params.get('q') ?? '')
   const [selected, setSelected] = useState<TeamDto | null>(null)
 
   const teams = data ?? []
@@ -39,6 +41,7 @@ export default function TeamsPage() {
           <TeamSearch
             teams={teams}
             onSelect={setSelected}
+            initialQuery={query}
             onQueryChange={setQuery}
             placeholder="Buscar equipo (autocompletado)…"
           />

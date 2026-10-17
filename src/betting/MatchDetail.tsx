@@ -3,6 +3,7 @@ import { ligalyticsApi } from '../api/ligalyticsApi'
 import { useApi } from '../hooks/useApi'
 import ErrorAlert from '../components/ErrorAlert'
 import Spinner from '../components/Spinner'
+import MatchPrediction, { canPredict } from './MatchPrediction'
 import OddsButton from './OddsButton'
 import { MARKET_ORDER, describeOffer, formatDay, formatKickoff } from './shared'
 
@@ -43,6 +44,13 @@ export default function MatchDetail() {
           <p className="mt-1 text-xs text-slate-500">Sin predicción propia para este partido (equipo sin historial).</p>
         )}
       </header>
+
+      {canPredict(data) && (
+        <section className="rounded-xl border border-slate-800 bg-slate-800/40 p-4">
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-300">Predicción del modelo</h3>
+          <MatchPrediction match={data} />
+        </section>
+      )}
 
       {MARKET_ORDER.map((market) => {
         const offers = data.offers.filter((o) => o.market === market)

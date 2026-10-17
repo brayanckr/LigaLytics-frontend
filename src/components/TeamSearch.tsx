@@ -7,6 +7,7 @@ interface TeamSearchProps {
   onSelect: (team: TeamDto) => void
   onQueryChange?: (query: string) => void
   placeholder?: string
+  initialQuery?: string
 }
 
 /** Quita tildes y pasa a minúsculas para comparar sin importar acentos. */
@@ -27,8 +28,9 @@ export default function TeamSearch({
   onSelect,
   onQueryChange,
   placeholder = 'Buscar equipo…',
+  initialQuery = '',
 }: TeamSearchProps) {
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState(initialQuery)
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState(0)
   const container = useRef<HTMLDivElement>(null)

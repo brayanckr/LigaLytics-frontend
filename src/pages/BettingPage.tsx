@@ -121,7 +121,7 @@ export default function BettingPage() {
 
   return (
     <BettingContext.Provider value={state}>
-      <section className="space-y-5">
+      <section className="space-y-5 pb-16 lg:pb-0">
         <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 px-5 py-3 text-sm text-amber-200">
           <strong>Simulación educativa con dinero ficticio.</strong> No se apuesta dinero real ni hay pagos. Las
           recomendaciones salen de un modelo cuya ventaja sobre las casas de apuestas <strong>no está demostrada</strong>.
@@ -158,7 +158,7 @@ export default function BettingPage() {
           <Stat
             label="Ganancia / pérdida"
             value={`${profit >= 0 ? '+' : ''}${cop(profit)}`}
-            tone={profit >= 0 ? 'text-emerald-300' : 'text-rose-300'}
+            tone={profit >= 0 ? 'text-lime-400' : 'text-rose-300'}
           />
           <Stat label="Saldo inicial" value={cop(w?.initialBalance ?? 100000)} tone="text-slate-300" />
         </div>
@@ -175,14 +175,14 @@ export default function BettingPage() {
           </p>
         )}
 
-        <nav className="flex gap-2 border-b border-slate-800">
+        <nav className="flex gap-2 overflow-x-auto border-b border-slate-700/60">
           {TABS.map(([to, label, end]) => (
             <NavLink
               key={to}
               to={to}
               end={end}
               className={({ isActive }) =>
-                `-mb-px border-b-2 px-4 py-2 text-sm font-medium transition ${
+                `-mb-px min-h-[44px] whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-bold transition ${
                   isActive || (to === '/betting' && pathname.startsWith('/betting/partido'))
                     ? 'border-sky-400 text-sky-300'
                     : 'border-transparent text-slate-400 hover:text-slate-200'
@@ -194,7 +194,7 @@ export default function BettingPage() {
           ))}
         </nav>
 
-        <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="min-w-0">
             <Outlet />
           </div>
@@ -207,7 +207,7 @@ export default function BettingPage() {
 
 function Stat({ label, value, tone }: { label: string; value: string; tone: string }) {
   return (
-    <div className="rounded-lg border border-slate-800 bg-slate-800/40 px-4 py-3">
+    <div className="card px-4 py-3">
       <p className="text-xs uppercase tracking-wide text-slate-400">{label}</p>
       <p className={`mt-1 text-lg font-semibold ${tone}`}>{value}</p>
     </div>
