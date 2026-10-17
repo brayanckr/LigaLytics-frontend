@@ -96,7 +96,7 @@ function SlipBody() {
             {items.map((item) => (
               <li
                 key={item.key}
-                className="animate-pop-in rounded-lg border border-slate-700 border-l-sky-500 bg-slate-900 p-2.5 text-sm [border-left-width:3px]"
+                className="animate-pop-in rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-sm"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">

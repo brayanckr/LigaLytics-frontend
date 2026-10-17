@@ -6,6 +6,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        display: ['"Plus Jakarta Sans"', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       colors: {
@@ -52,6 +53,14 @@ export default {
         glow: '0 0 0 1px rgba(255,80,0,.5), 0 8px 24px -8px rgba(255,80,0,.45)',
       },
       keyframes: {
+        rise: {
+          '0%': { opacity: '0', transform: 'translateY(14px)', filter: 'blur(4px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)', filter: 'blur(0)' },
+        },
+        'ping-soft': {
+          '0%': { transform: 'scale(1)', opacity: '.6' },
+          '80%,100%': { transform: 'scale(2.4)', opacity: '0' },
+        },
         'pop-in': {
           '0%': { opacity: '0', transform: 'translateY(6px) scale(.97)' },
           '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
@@ -62,6 +71,8 @@ export default {
         },
       },
       animation: {
+        rise: 'rise .6s cubic-bezier(.16,1,.3,1) both',
+        'ping-soft': 'ping-soft 1.8s cubic-bezier(0,0,.2,1) infinite',
         'pop-in': 'pop-in .22s cubic-bezier(.2,.8,.2,1) both',
         'pulse-dot': 'pulse-dot 1.4s ease-in-out infinite',
       },

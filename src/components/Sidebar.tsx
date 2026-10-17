@@ -7,7 +7,7 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
   [
     'flex min-h-[44px] items-center gap-3 rounded-lg px-3 text-sm font-semibold transition',
     isActive
-      ? 'bg-sky-500/15 text-sky-300 shadow-[inset_3px_0_0_#ff5000]'
+      ? 'bg-sky-500/15 text-sky-300'
       : 'text-slate-300 hover:bg-slate-800 hover:text-white',
   ].join(' ')
 
