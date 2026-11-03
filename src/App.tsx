@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
+import ProtectedRoute from './auth/ProtectedRoute'
 import BottomNav from './components/BottomNav'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
@@ -31,15 +32,18 @@ export default function App() {
           <Route path="/predict" element={<PredictorPage />} />
           <Route path="/ranking" element={<RankingPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
-          <Route path="/betting" element={<BettingPage />}>
-            <Route index element={<MatchList />} />
-            <Route path="partido/:eventId" element={<MatchDetail />} />
-            <Route path="recomendaciones" element={<Recommendations />} />
-            <Route path="mis-apuestas" element={<MyBets />} />
-          </Route>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/matches" element={<UpcomingMatchesPage />} />
+          {/* El backend exige sesion en /betting/**, /auth/me y /auth/logout: estas rutas solo se muestran con cuenta. */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/betting" element={<BettingPage />}>
+              <Route index element={<MatchList />} />
+              <Route path="partido/:eventId" element={<MatchDetail />} />
+              <Route path="recomendaciones" element={<Recommendations />} />
+              <Route path="mis-apuestas" element={<MyBets />} />
+            </Route>
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/matches" element={<UpcomingMatchesPage />} />
+          </Route>
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

@@ -1,6 +1,6 @@
 import { useCallback, useId, useState } from 'react'
 import type { FormEvent, InputHTMLAttributes, ReactNode } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import Toast from '../components/Toast'
 
@@ -79,17 +79,22 @@ const EyeIcon = ({ off }: { off: boolean }) => (
 export default function LoginPage() {
   const { account, login, register } = useAuth()
   const navigate = useNavigate()
+  // ProtectedRoute nos manda aqui con el destino original y si la sesion caduco.
+  const redirect = useLocation().state as { from?: string; expired?: boolean } | null
+  const target = redirect?.from ?? '/betting'
   const [mode, setMode] = useState<Mode>('login')
   const [email, setEmail] = useState('')
   const [displayName, setDisplayName] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [toast, setToast] = useState<{ id: number; message: string } | null>(null)
+  const [toast, setToast] = useState<{ id: number; message: string } | null>(
+    redirect?.expired ? { id: 0, message: 'Tu sesión expiró. Inicia sesión de nuevo para continuar.' } : null,
+  )
   const [busy, setBusy] = useState(false)
   const dismissToast = useCallback(() => setToast(null), [])
 
   if (account) {
-    return <Navigate to="/betting" replace />
+    return <Navigate to={target} replace />
   }
 
   const switchMode = (next: Mode) => {
@@ -108,7 +113,7 @@ export default function LoginPage() {
       } else {
         await register(email, displayName, password)
       }
-      navigate('/betting', { replace: true })
+      navigate(target, { replace: true })
     } catch {
       // mensaje generico: no se expone el error crudo ni detalles del backend
       setToast({

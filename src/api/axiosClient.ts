@@ -42,9 +42,31 @@ axiosClient.interceptors.request.use((config) => {
   return config
 })
 
+let unauthorizedHandler: (() => void) | null = null
+
+/** AuthProvider se registra aqui para enterarse de que el servidor rechazo la sesion (401/403). */
+export function setUnauthorizedHandler(handler: (() => void) | null): void {
+  unauthorizedHandler = handler
+}
+
+// Rutas donde 401/403 no significa «sesion caducada»: credenciales erroneas al entrar y la clave de administracion.
+const SESSION_NEUTRAL = ['/auth/login', '/auth/register', '/admin']
+
 axiosClient.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject(error),
+  (error) => {
+    const status = error?.response?.status
+    const url: string = error?.config?.url ?? ''
+    if (
+      (status === 401 || status === 403) &&
+      getStoredToken() &&
+      !SESSION_NEUTRAL.some((path) => url.startsWith(path))
+    ) {
+      storeToken(null)
+      unauthorizedHandler?.()
+    }
+    return Promise.reject(error)
+  },
 )
 
 /**

@@ -2,11 +2,13 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import type { ReactNode } from 'react'
 import type { AccountDto } from '../types'
 import { ligalyticsApi } from '../api/ligalyticsApi'
-import { getStoredToken, storeToken } from '../api/axiosClient'
+import { getStoredToken, setUnauthorizedHandler, storeToken } from '../api/axiosClient'
 
 interface AuthState {
   account: AccountDto | null
   loading: boolean
+  /** true cuando el servidor rechazo una sesion que existia (401/403); se limpia al volver a entrar. */
+  sessionExpired: boolean
   login: (email: string, password: string) => Promise<void>
   register: (email: string, displayName: string, password: string) => Promise<void>
   logout: () => Promise<void>
@@ -20,6 +22,15 @@ const AuthContext = createContext<AuthState | null>(null)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [account, setAccount] = useState<AccountDto | null>(null)
   const [loading, setLoading] = useState(Boolean(getStoredToken()))
+  const [sessionExpired, setSessionExpired] = useState(false)
+
+  useEffect(() => {
+    setUnauthorizedHandler(() => {
+      setAccount(null)
+      setSessionExpired(true)
+    })
+    return () => setUnauthorizedHandler(null)
+  }, [])
 
   const refresh = useCallback(async () => {
     if (!getStoredToken()) {
@@ -42,15 +53,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => ({
       account,
       loading,
+      sessionExpired,
       refresh,
       login: async (email, password) => {
         const result = await ligalyticsApi.login(email, password)
         storeToken(result.token)
+        setSessionExpired(false)
         setAccount(result.account)
       },
       register: async (email, displayName, password) => {
         const result = await ligalyticsApi.register(email, displayName, password)
         storeToken(result.token)
+        setSessionExpired(false)
         setAccount(result.account)
       },
       logout: async () => {
@@ -63,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setAccount(null)
       },
     }),
-    [account, loading, refresh],
+    [account, loading, sessionExpired, refresh],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
