@@ -1,6 +1,7 @@
 import { useCallback, useId, useState } from 'react'
 import type { FormEvent, InputHTMLAttributes, ReactNode } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { API_BASE_URL } from '../api/axiosClient'
 import { SessionNotStoredError, useAuth } from '../auth/AuthContext'
 import Toast from '../components/Toast'
 
@@ -120,7 +121,7 @@ export default function LoginPage() {
         id: Date.now(),
         message:
           cause instanceof SessionNotStoredError
-            ? 'Las credenciales son correctas, pero el navegador no guardó la sesión. Si el backend está en otro dominio, debe tener COOKIE_SAME_SITE=None y tu dirección en CORS_ALLOWED_ORIGINS; revisa también que el navegador acepte cookies.'
+            ? `Las credenciales son correctas, pero el navegador no guardó la sesión (API: ${API_BASE_URL}). Si la API es una URL completa de otro dominio, la cookie no viaja: usa /api con el reenvío de Vercel o define COOKIE_SAME_SITE=None en el backend; revisa también que el navegador acepte cookies.`
             : mode === 'login'
               ? 'Correo o contraseña incorrectos.'
               : 'No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo.',
