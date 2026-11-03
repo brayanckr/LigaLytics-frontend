@@ -223,8 +223,8 @@ export interface AccountDto {
   balance: number
 }
 
+/** El token no viaja en el cuerpo: el servidor lo deja en una cookie HttpOnly. */
 export interface AuthResponse {
-  token: string
   account: AccountDto
 }
 

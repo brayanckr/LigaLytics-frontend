@@ -6,43 +6,17 @@ const baseURL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080/api'
 /** Raíz de la API; el canal en vivo (SockJS) cuelga de ella en `/ws`. */
 export const API_BASE_URL: string = baseURL
 
+// La sesion vive en una cookie HttpOnly que pone el servidor: este codigo nunca ve el token. `withCredentials`
+// hace que el navegador la adjunte tambien entre origenes (el CORS del backend solo admite los orígenes permitidos),
+// y `X-Requested-With` es la marca que el backend exige en las peticiones que modifican datos (anti-CSRF).
 const axiosClient = axios.create({
   baseURL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest',
   },
   timeout: 15000,
-})
-
-const TOKEN_KEY = 'ligalytics.token'
-
-/** Token de sesion guardado en este navegador (null si no hay o el almacenamiento no esta disponible). */
-export function getStoredToken(): string | null {
-  try {
-    return localStorage.getItem(TOKEN_KEY)
-  } catch {
-    return null
-  }
-}
-
-export function storeToken(token: string | null): void {
-  try {
-    if (token) {
-      localStorage.setItem(TOKEN_KEY, token)
-    } else {
-      localStorage.removeItem(TOKEN_KEY)
-    }
-  } catch {
-    // sin almacenamiento: la sesion solo dura mientras la pagina siga abierta
-  }
-}
-
-axiosClient.interceptors.request.use((config) => {
-  const token = getStoredToken()
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
-  return config
 })
 
 let unauthorizedHandler: (() => void) | null = null
@@ -60,12 +34,7 @@ axiosClient.interceptors.response.use(
   (error) => {
     const status = error?.response?.status
     const url: string = error?.config?.url ?? ''
-    if (
-      (status === 401 || status === 403) &&
-      getStoredToken() &&
-      !SESSION_NEUTRAL.some((path) => url.startsWith(path))
-    ) {
-      storeToken(null)
+    if ((status === 401 || status === 403) && !SESSION_NEUTRAL.some((path) => url.startsWith(path))) {
       unauthorizedHandler?.()
     }
     return Promise.reject(error)

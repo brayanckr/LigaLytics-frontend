@@ -1,8 +1,8 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import type { AccountDto } from '../types'
 import { ligalyticsApi } from '../api/ligalyticsApi'
-import { getStoredToken, setUnauthorizedHandler, storeToken } from '../api/axiosClient'
+import { setUnauthorizedHandler } from '../api/axiosClient'
 
 interface AuthState {
   account: AccountDto | null
@@ -18,34 +18,46 @@ interface AuthState {
 
 const AuthContext = createContext<AuthState | null>(null)
 
-/** Sesion de la demostracion: el token se guarda en este navegador y se envia en cada peticion. */
+/**
+ * Sesion de la demostracion. El token vive en una cookie HttpOnly que el navegador envia solo: el JavaScript no
+ * puede leerlo, asi que para saber si hay sesion se le pregunta al servidor (`/auth/me`) al cargar la pagina.
+ */
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [account, setAccount] = useState<AccountDto | null>(null)
-  const [loading, setLoading] = useState(Boolean(getStoredToken()))
+  const [loading, setLoading] = useState(true)
   const [sessionExpired, setSessionExpired] = useState(false)
+  // Para distinguir «la sesion caduco» de «nunca hubo sesion» (el 401 de la comprobacion inicial).
+  const hadAccount = useRef(false)
+
+  useEffect(() => {
+    hadAccount.current = account !== null
+  }, [account])
 
   useEffect(() => {
     setUnauthorizedHandler(() => {
+      if (hadAccount.current) {
+        setSessionExpired(true)
+      }
       setAccount(null)
-      setSessionExpired(true)
     })
     return () => setUnauthorizedHandler(null)
   }, [])
 
   const refresh = useCallback(async () => {
-    if (!getStoredToken()) {
-      setAccount(null)
-      return
-    }
     try {
       setAccount(await ligalyticsApi.me())
     } catch {
-      storeToken(null)
       setAccount(null)
     }
   }, [])
 
   useEffect(() => {
+    // Versiones anteriores guardaban el token en localStorage, al alcance de cualquier script: se borra.
+    try {
+      localStorage.removeItem('ligalytics.token')
+    } catch {
+      // sin almacenamiento disponible: no hay nada que limpiar
+    }
     refresh().finally(() => setLoading(false))
   }, [refresh])
 
@@ -57,13 +69,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       refresh,
       login: async (email, password) => {
         const result = await ligalyticsApi.login(email, password)
-        storeToken(result.token)
         setSessionExpired(false)
         setAccount(result.account)
       },
       register: async (email, displayName, password) => {
         const result = await ligalyticsApi.register(email, displayName, password)
-        storeToken(result.token)
         setSessionExpired(false)
         setAccount(result.account)
       },
@@ -71,9 +81,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try {
           await ligalyticsApi.logout()
         } catch {
-          // si el token ya no es valido, basta con olvidarlo
+          // si la sesion ya no es valida, el servidor ya la habra descartado: basta con olvidar la cuenta
         }
-        storeToken(null)
+        setSessionExpired(false)
         setAccount(null)
       },
     }),
