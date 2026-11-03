@@ -33,7 +33,11 @@ hay que definir `COOKIE_SAME_SITE=None` y poner en `CORS_ALLOWED_ORIGINS` la URL
 del backend); si no, el login parece funcionar pero la app dice «Tu sesión expiró» en la pantalla siguiente. Tras entrar,
 la app comprueba que la sesión se guardó y, si no, lo avisa en el propio formulario de acceso.
 
-*Alternativa sin cookies de terceros:* hacer que el navegador llame a `/api` en el dominio de Vercel y reenviarlo a Railway
-con una regla en `vercel.json` (antes de la regla de `index.html`):
-`{ "source": "/api/:path*", "destination": "https://<tu-backend>.up.railway.app/api/:path*" }`, con `VITE_API_BASE_URL=/api`.
-Así la cookie es del propio dominio y funciona también en Safari y en navegación privada.
+*Alternativa sin cookies de terceros (recomendada):* que el navegador llame a `/api` en el dominio de Vercel y que Vercel
+lo reenvíe a Railway. Así la cookie es del propio dominio, funciona también en Safari y en navegación privada, y en
+Railway basta con `CORS_ALLOWED_ORIGINS` (ya no hace falta `COOKIE_SAME_SITE=None`). Pasos:
+1. En `vercel.json`, **antes** de la regla de `index.html`:
+   `{ "source": "/api/:path*", "destination": "https://<tu-backend>.up.railway.app/api/:path*" }`
+2. En Vercel: `VITE_API_BASE_URL=/api` y `VITE_LIVE_BASE_URL=https://<tu-backend>.up.railway.app/api`
+   (Vercel no reenvía WebSockets: el canal en vivo, que no usa cookies, se conecta directo al backend).
+3. Redespliega el frontend.

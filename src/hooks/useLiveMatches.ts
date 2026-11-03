@@ -5,6 +5,13 @@ import { API_BASE_URL } from '../api/axiosClient'
 
 export const LIVE_TOPIC = '/topic/live-matches'
 
+/**
+ * Raíz del canal en vivo. Por defecto es la de la API; hay que separarla cuando la API se llama por una ruta
+ * relativa reenviada por Vercel (`VITE_API_BASE_URL=/api`), porque Vercel no reenvía WebSockets: entonces el canal
+ * en vivo (que no usa cookies) se conecta directo al backend con `VITE_LIVE_BASE_URL=https://<backend>/api`.
+ */
+const LIVE_BASE_URL: string = import.meta.env.VITE_LIVE_BASE_URL ?? API_BASE_URL
+
 /** Estado en vivo de un partido, acumulado a partir de los eventos recibidos. */
 export interface LiveMatchState {
   eventId: number
@@ -85,7 +92,7 @@ export function useLiveMatches(): { live: Map<number, LiveMatchState>; status: L
 
   useEffect(() => {
     const client = new Client({
-      webSocketFactory: () => new SockJS(`${API_BASE_URL}/ws`) as unknown as WebSocket,
+      webSocketFactory: () => new SockJS(`${LIVE_BASE_URL}/ws`) as unknown as WebSocket,
       reconnectDelay: 5000,
       heartbeatIncoming: 10000,
       heartbeatOutgoing: 10000,
