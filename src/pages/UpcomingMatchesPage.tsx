@@ -66,6 +66,10 @@ export default function UpcomingMatchesPage() {
       </header>
 
       {matches.loading && (
+        <p className="text-sm text-slate-400">Obteniendo cuotas actualizadas; la primera carga puede tardar unos segundos…</p>
+      )}
+
+      {matches.loading && (
         <div
           role="status"
           aria-busy="true"

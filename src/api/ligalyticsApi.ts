@@ -106,7 +106,9 @@ export const ligalyticsApi = {
   me: (): Promise<AccountDto> => axiosClient.get<AccountDto>("/auth/me").then((r) => r.data),
 
   getBettingMatches: (days = 7): Promise<BettingMatchDto[]> =>
-    axiosClient.get<BettingMatchDto[]>("/betting/matches", { params: { days } }).then((r) => r.data),
+    // La primera carga con la caché del backend vacía pide las cuotas partido a partido al proveedor: puede pasar de los
+    // 15 s que valen para el resto de llamadas. El backend ya acota cada llamada externa (503 si el proveedor no responde).
+    axiosClient.get<BettingMatchDto[]>("/betting/matches", { params: { days }, timeout: 60_000 }).then((r) => r.data),
 
   getBettingMatch: (eventId: number): Promise<BettingMatchDto> =>
     axiosClient.get<BettingMatchDto>(`/betting/matches/${eventId}`).then((r) => r.data),
