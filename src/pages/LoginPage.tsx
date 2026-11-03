@@ -120,7 +120,7 @@ export default function LoginPage() {
         id: Date.now(),
         message:
           cause instanceof SessionNotStoredError
-            ? 'Las credenciales son correctas, pero la sesión no se guardó. Reinicia el backend con la última versión y abre la app desde http://localhost:5173 (el navegador debe aceptar cookies).'
+            ? 'Las credenciales son correctas, pero el navegador no guardó la sesión. Si el backend está en otro dominio, debe tener COOKIE_SAME_SITE=None y tu dirección en CORS_ALLOWED_ORIGINS; revisa también que el navegador acepte cookies.'
             : mode === 'login'
               ? 'Correo o contraseña incorrectos.'
               : 'No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo.',

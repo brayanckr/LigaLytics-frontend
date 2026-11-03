@@ -27,3 +27,13 @@ La URL de la API se configura con `VITE_API_BASE_URL` (ver `.env.example`; por d
 `vercel.json` incluye la redirección a `index.html` para el enrutado de la SPA. En Vercel define
 `VITE_API_BASE_URL=https://<tu-backend>.up.railway.app/api`. GitHub Actions (`.github/workflows/ci.yml`) compila en
 cada push y despliega a Vercel si están configurados los secretos `VERCEL_TOKEN`, `VERCEL_ORG_ID` y `VERCEL_PROJECT_ID`.
+
+**Sesión.** El backend guarda la sesión en una cookie `HttpOnly`. Como Vercel y Railway son sitios distintos, en Railway
+hay que definir `COOKIE_SAME_SITE=None` y poner en `CORS_ALLOWED_ORIGINS` la URL exacta de este frontend (ver el README
+del backend); si no, el login parece funcionar pero la app dice «Tu sesión expiró» en la pantalla siguiente. Tras entrar,
+la app comprueba que la sesión se guardó y, si no, lo avisa en el propio formulario de acceso.
+
+*Alternativa sin cookies de terceros:* hacer que el navegador llame a `/api` en el dominio de Vercel y reenviarlo a Railway
+con una regla en `vercel.json` (antes de la regla de `index.html`):
+`{ "source": "/api/:path*", "destination": "https://<tu-backend>.up.railway.app/api/:path*" }`, con `VITE_API_BASE_URL=/api`.
+Así la cookie es del propio dominio y funciona también en Safari y en navegación privada.
