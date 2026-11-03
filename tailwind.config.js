@@ -69,12 +69,22 @@ export default {
           '0%,100%': { opacity: '1' },
           '50%': { opacity: '.35' },
         },
+        'toast-in': {
+          '0%': { opacity: '0', transform: 'translateY(-16px) scale(.96)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+        },
+        'toast-timer': {
+          '0%': { transform: 'scaleX(1)' },
+          '100%': { transform: 'scaleX(0)' },
+        },
       },
       animation: {
         rise: 'rise .6s cubic-bezier(.16,1,.3,1) both',
         'ping-soft': 'ping-soft 1.8s cubic-bezier(0,0,.2,1) infinite',
         'pop-in': 'pop-in .22s cubic-bezier(.2,.8,.2,1) both',
         'pulse-dot': 'pulse-dot 1.4s ease-in-out infinite',
+        'toast-in': 'toast-in .35s cubic-bezier(.16,1,.3,1) both',
+        'toast-timer': 'toast-timer 5s linear forwards',
       },
     },
   },

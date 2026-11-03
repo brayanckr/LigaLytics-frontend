@@ -1,8 +1,8 @@
-import { useId, useState } from 'react'
+import { useCallback, useId, useState } from 'react'
 import type { FormEvent, InputHTMLAttributes, ReactNode } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
-import ErrorAlert from '../components/ErrorAlert'
+import Toast from '../components/Toast'
 
 type Mode = 'login' | 'register'
 
@@ -84,8 +84,9 @@ export default function LoginPage() {
   const [displayName, setDisplayName] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [toast, setToast] = useState<{ id: number; message: string } | null>(null)
   const [busy, setBusy] = useState(false)
+  const dismissToast = useCallback(() => setToast(null), [])
 
   if (account) {
     return <Navigate to="/betting" replace />
@@ -93,13 +94,14 @@ export default function LoginPage() {
 
   const switchMode = (next: Mode) => {
     setMode(next)
-    setError(null)
+    setToast(null)
   }
 
   const submit = async (event: FormEvent) => {
     event.preventDefault()
+    if (busy) return
     setBusy(true)
-    setError(null)
+    setToast(null)
     try {
       if (mode === 'login') {
         await login(email, password)
@@ -109,11 +111,13 @@ export default function LoginPage() {
       navigate('/betting', { replace: true })
     } catch {
       // mensaje generico: no se expone el error crudo ni detalles del backend
-      setError(
-        mode === 'login'
-          ? 'Correo o contraseña incorrectos.'
-          : 'No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo.',
-      )
+      setToast({
+        id: Date.now(),
+        message:
+          mode === 'login'
+            ? 'Correo o contraseña incorrectos.'
+            : 'No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo.',
+      })
     } finally {
       setBusy(false)
     }
@@ -128,6 +132,7 @@ export default function LoginPage() {
 
   return (
     <section className="mx-auto w-full max-w-md px-0 py-2 motion-safe:animate-rise sm:py-8">
+      {toast && <Toast id={toast.id} message={toast.message} onClose={dismissToast} />}
       <div className="relative overflow-hidden rounded-3xl border border-slate-700/70 bg-gradient-to-b from-slate-800 to-slate-900 shadow-[0_30px_80px_-20px_rgba(0,0,0,.85),0_0_0_1px_rgba(255,255,255,.03)_inset]">
         {/* franja de acento y resplandor superior */}
         <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-sky-500 via-sky-300 to-lime-400" />
@@ -207,25 +212,20 @@ export default function LoginPage() {
               }
             />
 
-            {error && (
-              <div role="alert" className="motion-safe:animate-pop-in">
-                <ErrorAlert message={error} />
-              </div>
-            )}
-
             <button
               type="submit"
               disabled={busy}
+              aria-busy={busy}
               className="group relative flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-sky-500 to-sky-400 text-sm font-extrabold uppercase tracking-wider text-white shadow-[0_12px_28px_-10px_rgba(255,80,0,.8)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_-10px_rgba(255,80,0,.95)] active:translate-y-0 active:scale-[.98] disabled:translate-y-0 disabled:cursor-not-allowed disabled:from-slate-700 disabled:to-slate-700 disabled:text-slate-300 disabled:shadow-none"
             >
               {busy ? (
                 <>
                   <span className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white motion-safe:animate-spin" />
-                  Enviando…
+                  {mode === 'login' ? 'Ingresando…' : 'Creando cuenta…'}
                 </>
               ) : (
                 <>
-                  {mode === 'login' ? 'Entrar' : 'Crear cuenta'}
+                  {mode === 'login' ? 'Ingresar' : 'Crear cuenta'}
                   <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">→</span>
                 </>
               )}
