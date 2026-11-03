@@ -1,5 +1,15 @@
 import type { ComponentType, SVGProps } from 'react'
-import { CalendarIcon, CogIcon, HomeIcon, ShieldIcon, SparkIcon, TicketIcon, TrophyIcon } from './icons'
+import {
+  CalendarIcon,
+  CogIcon,
+  HomeIcon,
+  MyBetsIcon,
+  ProfileIcon,
+  ShieldIcon,
+  SparkIcon,
+  StatsIcon,
+  TicketIcon,
+} from './icons'
 
 export interface NavItem {
   to: string
@@ -10,17 +20,19 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { to: '/', label: 'Inicio', icon: HomeIcon, end: true },
-  { to: '/betting', label: 'Apuestas (demo)', icon: TicketIcon },
-  { to: '/predict', label: 'IA Predictor', icon: SparkIcon },
+  { to: '/predict', label: 'Predicciones', icon: SparkIcon },
+  { to: '/betting', label: 'Apuestas (demo)', icon: TicketIcon, end: true },
+  { to: '/betting/mis-apuestas', label: 'Mis Apuestas', icon: MyBetsIcon },
+  { to: '/ranking', label: 'Estadísticas', icon: StatsIcon },
   { to: '/calendar', label: 'Calendario', icon: CalendarIcon },
-  { to: '/ranking', label: 'Clasificación', icon: TrophyIcon },
   { to: '/teams', label: 'Equipos', icon: ShieldIcon },
+  { to: '/profile', label: 'Perfil', icon: ProfileIcon },
   { to: '/admin', label: 'Administración', icon: CogIcon },
 ]
 
 /** Navegación inferior en móvil: máximo 5 destinos de primer nivel. */
 export const BOTTOM_ITEMS: NavItem[] = NAV_ITEMS.filter((item) =>
-  ['/', '/betting', '/predict', '/calendar', '/ranking'].includes(item.to),
+  ['/', '/predict', '/betting/mis-apuestas', '/ranking', '/profile'].includes(item.to),
 )
 
 export interface LeagueItem {

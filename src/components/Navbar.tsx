@@ -3,13 +3,19 @@ import type { FormEvent } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { cop } from '../betting/shared'
-import { CogIcon, SearchIcon, UserIcon, WalletIcon } from './icons'
+import Avatar from './Avatar'
+import { CogIcon, LogOutIcon, SearchIcon, UserIcon, WalletIcon } from './icons'
 
 /** Cabecera superior: logo, buscador rápido de equipos al centro y accesos de cuenta/saldo/ajustes a la derecha. */
 export default function Navbar() {
-  const { account } = useAuth()
+  const { account, logout } = useAuth()
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
+
+  const handleLogout = async () => {
+    await logout()
+    navigate('/login', { replace: true })
+  }
 
   const submit = (event: FormEvent) => {
     event.preventDefault()
@@ -55,14 +61,32 @@ export default function Navbar() {
               <span className="sr-only">Saldo ficticio {cop(account.balance)}</span>
             </Link>
           )}
-          <NavLink
-            to={account ? '/betting' : '/login'}
-            className="btn-primary !rounded-full !px-3 sm:!px-4"
-            aria-label={account ? account.displayName : 'Iniciar sesión'}
-          >
-            <UserIcon />
-            <span className="hidden sm:inline">{account ? account.displayName : 'Entrar'}</span>
-          </NavLink>
+          {account ? (
+            <>
+              <Link
+                to="/profile"
+                aria-label={`Perfil de ${account.displayName}`}
+                className="flex h-11 items-center gap-2 rounded-full border border-slate-700 bg-slate-800 pl-1 pr-1 text-sm font-semibold text-white transition hover:border-sky-500 sm:pr-4"
+              >
+                <Avatar name={account.displayName} />
+                <span className="hidden max-w-[10rem] truncate sm:inline">{account.displayName}</span>
+              </Link>
+              <button
+                type="button"
+                onClick={handleLogout}
+                aria-label="Cerrar sesión"
+                className="flex h-11 items-center gap-2 rounded-full border border-slate-700 px-3 text-sm font-semibold text-slate-300 transition hover:border-rose-500/60 hover:bg-rose-500/10 hover:text-rose-200"
+              >
+                <LogOutIcon />
+                <span className="hidden md:inline">Cerrar sesión</span>
+              </button>
+            </>
+          ) : (
+            <NavLink to="/login" className="btn-primary !rounded-full !px-3 sm:!px-4" aria-label="Iniciar sesión">
+              <UserIcon />
+              <span className="hidden sm:inline">Entrar</span>
+            </NavLink>
+          )}
           <NavLink
             to="/admin"
             className="hidden h-11 w-11 items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-800 hover:text-white md:flex"

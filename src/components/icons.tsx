@@ -17,4 +17,10 @@ export {
   Radio as LiveIcon,
   Cpu as ModelIcon,
   Users as TeamsIcon,
+  LogOut as LogOutIcon,
+  PanelLeftClose as CollapseIcon,
+  PanelLeftOpen as ExpandIcon,
+  ChartColumn as StatsIcon,
+  CircleUser as ProfileIcon,
+  ReceiptText as MyBetsIcon,
 } from 'lucide-react'

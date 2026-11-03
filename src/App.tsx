@@ -11,6 +11,7 @@ import AdminPage from './pages/AdminPage'
 import CalendarPage from './pages/CalendarPage'
 import BettingPage from './pages/BettingPage'
 import LoginPage from './pages/LoginPage'
+import ProfilePage from './pages/ProfilePage'
 import MatchDetail from './betting/MatchDetail'
 import MatchList from './betting/MatchList'
 import MyBets from './betting/MyBets'
@@ -36,6 +37,7 @@ export default function App() {
             <Route path="mis-apuestas" element={<MyBets />} />
           </Route>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
