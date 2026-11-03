@@ -51,9 +51,6 @@ export default function Sidebar() {
           <NavLink key={to} to={to} end={end} className={linkClass} title={collapsed ? label : undefined}>
             {({ isActive }) => (
               <>
-                {isActive && (
-                  <span aria-hidden className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full bg-sky-500 shadow-glow" />
-                )}
                 <Icon className={`shrink-0 transition-transform duration-200 group-hover:scale-110 ${isActive ? 'text-sky-400' : ''}`} />
                 <span className={collapsed ? 'sr-only' : 'truncate'}>{label}</span>
               </>
