@@ -3,6 +3,7 @@ import {
   CalendarIcon,
   CogIcon,
   HomeIcon,
+  LiveIcon,
   MyBetsIcon,
   ProfileIcon,
   ShieldIcon,
@@ -20,6 +21,7 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { to: '/', label: 'Inicio', icon: HomeIcon, end: true },
+  { to: '/matches', label: 'Próximos Partidos', icon: LiveIcon },
   { to: '/predict', label: 'Predicciones', icon: SparkIcon },
   { to: '/betting', label: 'Apuestas (demo)', icon: TicketIcon, end: true },
   { to: '/betting/mis-apuestas', label: 'Mis Apuestas', icon: MyBetsIcon },

@@ -3,7 +3,12 @@ interface SkeletonProps {
 }
 
 export function Skeleton({ className = '' }: SkeletonProps) {
-  return <div className={`animate-pulse rounded-lg bg-slate-700/50 ${className}`} />
+  return (
+    <div
+      aria-hidden
+      className={`animate-shimmer rounded-lg bg-slate-700/40 bg-[linear-gradient(90deg,transparent_25%,rgba(255,255,255,.08)_50%,transparent_75%)] bg-[length:200%_100%] ${className}`}
+    />
+  )
 }
 
 interface SkeletonGridProps {
