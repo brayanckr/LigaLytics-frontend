@@ -27,14 +27,14 @@ export default function App() {
         <Sidebar />
         <main className="min-w-0 flex-1 px-4 pb-24 pt-6 sm:px-6 lg:pb-8">
         <Routes>
-          <Route path="/" element={<DashboardPage />} />
           <Route path="/teams" element={<TeamsPage />} />
-          <Route path="/predict" element={<PredictorPage />} />
           <Route path="/ranking" element={<RankingPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/login" element={<LoginPage />} />
-          {/* El backend exige sesion en /betting/**, /auth/me y /auth/logout: estas rutas solo se muestran con cuenta. */}
+          {/* Rutas con cuenta: /betting/** lo exige el backend; el inicio y las predicciones se protegen por decision de producto. */}
           <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/predict" element={<PredictorPage />} />
             <Route path="/betting" element={<BettingPage />}>
               <Route index element={<MatchList />} />
               <Route path="partido/:eventId" element={<MatchDetail />} />
