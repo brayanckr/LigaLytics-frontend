@@ -3,6 +3,9 @@ import type { ApiError } from '../types'
 
 const baseURL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080/api'
 
+/** Raíz de la API; el canal en vivo (SockJS) cuelga de ella en `/ws`. */
+export const API_BASE_URL: string = baseURL
+
 const axiosClient = axios.create({
   baseURL,
   headers: {

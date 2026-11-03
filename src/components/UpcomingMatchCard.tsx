@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import Crest from '../betting/Crest'
 import { describeOffer, formatDay, formatKickoff } from '../betting/shared'
 import type { BettingMatchDto, MarketCode, OfferDto } from '../types'
+import type { LiveMatchState } from '../hooks/useLiveMatches'
+import Flash from './Flash'
 import { ArrowIcon, SparkIcon } from './icons'
 import { Skeleton } from './Skeleton'
 
@@ -11,12 +13,24 @@ interface UpcomingMatchCardProps {
   /** Escudos oficiales por id de equipo (si la API de calendario los entrega). */
   crests: Map<number, string>
   index: number
+  /** Estado en vivo recibido por WebSocket; sin él la tarjeta muestra solo los datos previos al partido. */
+  live?: LiveMatchState
 }
 
-const STAT_MARKETS: { market: MarketCode; label: string }[] = [
-  { market: 'CORNERS', label: 'Córneres' },
-  { market: 'CARDS', label: 'Tarjetas' },
+const STAT_MARKETS: { market: MarketCode; label: string; field: 'corners' | 'cards' }[] = [
+  { market: 'CORNERS', label: 'Córneres', field: 'corners' },
+  { market: 'CARDS', label: 'Tarjetas', field: 'cards' },
 ]
+
+const EVENT_LABEL: Record<string, string> = {
+  KICK_OFF: 'Comienza el partido',
+  GOAL: '⚽ Gol',
+  YELLOW_CARD: '🟨 Tarjeta amarilla',
+  RED_CARD: '🟥 Tarjeta roja',
+  CORNER: '🚩 Córner',
+  HALF_TIME: 'Descanso',
+  FULL_TIME: 'Final del partido',
+}
 
 /** Oferta representativa de un mercado: la recomendada, si no la que el modelo ve más probable. */
 function pickOffer(match: BettingMatchDto, market: MarketCode): OfferDto | null {
@@ -49,8 +63,9 @@ function systemPrediction(match: BettingMatchDto) {
 }
 
 /** Tarjeta de un próximo partido: escudos, fecha, cuotas de córneres/tarjetas y predicción del sistema. */
-export default function UpcomingMatchCard({ match, crests, index }: UpcomingMatchCardProps) {
+export default function UpcomingMatchCard({ match, crests, index, live }: UpcomingMatchCardProps) {
   const prediction = systemPrediction(match)
+  const hasScore = live !== undefined && live.homeScore !== null && live.awayScore !== null
 
   return (
     <Link
@@ -67,9 +82,21 @@ export default function UpcomingMatchCard({ match, crests, index }: UpcomingMatc
         <span className="font-semibold text-slate-400">
           {formatDay(match.kickoff)} · <span className="tabular-nums text-white">{formatKickoff(match.kickoff)}</span>
         </span>
-        <span className="rounded-full bg-sky-500/15 px-2.5 py-1 font-bold uppercase tracking-wide text-sky-300">
-          {whenLabel(match.kickoff)}
-        </span>
+        {live ? (
+          <span
+            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 font-bold uppercase tracking-wide ${
+              live.finished ? 'bg-slate-600/40 text-slate-300' : 'bg-rose-500/15 text-rose-300'
+            }`}
+          >
+            {!live.finished && <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-rose-400 motion-safe:animate-pulse-dot" />}
+            {live.finished ? 'Final' : 'En vivo'}
+            {live.minute !== null && !live.finished && <Flash value={live.minute}>{live.minute}&apos;</Flash>}
+          </span>
+        ) : (
+          <span className="rounded-full bg-sky-500/15 px-2.5 py-1 font-bold uppercase tracking-wide text-sky-300">
+            {whenLabel(match.kickoff)}
+          </span>
+        )}
       </header>
 
       <div className="relative grid grid-cols-[1fr_auto_1fr] items-center gap-2 text-center">
@@ -79,7 +106,15 @@ export default function UpcomingMatchCard({ match, crests, index }: UpcomingMatc
           </span>
           <span className="w-full truncate text-sm font-extrabold text-white">{match.homeTeam}</span>
         </span>
-        <span className="text-xs font-bold text-slate-500">VS</span>
+        {hasScore ? (
+          <span aria-live="polite" className="flex items-center gap-1 text-2xl font-black text-white">
+            <Flash value={live.homeScore}>{live.homeScore}</Flash>
+            <span className="text-slate-500">-</span>
+            <Flash value={live.awayScore}>{live.awayScore}</Flash>
+          </span>
+        ) : (
+          <span className="text-xs font-bold text-slate-500">VS</span>
+        )}
         <span className="flex min-w-0 flex-col items-center gap-2">
           <span className="transition-transform duration-300 group-hover:scale-110">
             <Crest name={match.awayTeam} size="lg" src={match.awayTeamId ? crests.get(match.awayTeamId) : null} />
@@ -87,6 +122,12 @@ export default function UpcomingMatchCard({ match, crests, index }: UpcomingMatc
           <span className="w-full truncate text-sm font-extrabold text-white">{match.awayTeam}</span>
         </span>
       </div>
+
+      {live && EVENT_LABEL[live.type] && (
+        <p aria-live="polite" className="relative -mt-1 text-center text-xs font-bold text-lime-300">
+          <Flash value={live.updates}>{EVENT_LABEL[live.type]}</Flash>
+        </p>
+      )}
 
       <div className="relative rounded-xl border border-slate-700/60 bg-slate-950/50 p-3">
         <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-400">
@@ -113,11 +154,19 @@ export default function UpcomingMatchCard({ match, crests, index }: UpcomingMatc
       </div>
 
       <ul className="relative grid grid-cols-2 gap-2">
-        {STAT_MARKETS.map(({ market, label }) => {
+        {STAT_MARKETS.map(({ market, label, field }) => {
           const offer = pickOffer(match, market)
+          const total = live?.[field] ?? null
           return (
             <li key={market} className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2">
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{label}</p>
+              <p className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                {label}
+                {total !== null && (
+                  <span className="flex items-center gap-1 normal-case text-lime-300">
+                    en vivo <Flash value={total}>{total}</Flash>
+                  </span>
+                )}
+              </p>
               {offer ? (
                 <p className="mt-0.5 flex items-baseline justify-between gap-2 text-sm font-bold">
                   <span className="truncate text-slate-200">

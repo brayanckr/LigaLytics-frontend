@@ -69,6 +69,11 @@ export default {
           '0%,100%': { opacity: '1' },
           '50%': { opacity: '.35' },
         },
+        flash: {
+          '0%': { backgroundColor: 'rgba(163,230,53,.65)', transform: 'scale(1.3)', boxShadow: '0 0 0 4px rgba(163,230,53,.35)' },
+          '60%': { backgroundColor: 'rgba(163,230,53,.18)', transform: 'scale(1.05)', boxShadow: '0 0 0 2px rgba(163,230,53,.1)' },
+          '100%': { backgroundColor: 'rgba(163,230,53,0)', transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(163,230,53,0)' },
+        },
         shimmer: {
           '0%': { backgroundPosition: '200% 0' },
           '100%': { backgroundPosition: '-200% 0' },
@@ -87,6 +92,7 @@ export default {
         'ping-soft': 'ping-soft 1.8s cubic-bezier(0,0,.2,1) infinite',
         'pop-in': 'pop-in .22s cubic-bezier(.2,.8,.2,1) both',
         'pulse-dot': 'pulse-dot 1.4s ease-in-out infinite',
+        flash: 'flash 1.4s ease-out both',
         shimmer: 'shimmer 1.6s linear infinite',
         'toast-in': 'toast-in .35s cubic-bezier(.16,1,.3,1) both',
         'toast-timer': 'toast-timer 5s linear forwards',

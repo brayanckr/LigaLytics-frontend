@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  // sockjs-client espera la variable global de Node; en el navegador equivale a globalThis.
+  define: { global: 'globalThis' },
   server: {
     port: 5173,
     proxy: {
