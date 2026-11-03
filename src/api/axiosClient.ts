@@ -44,11 +44,7 @@ axiosClient.interceptors.request.use((config) => {
 
 axiosClient.interceptors.response.use(
   (response) => response,
-  (error) => {
-    const message = error?.response?.data?.message ?? error?.message ?? 'Error de red'
-    console.error('[axiosClient]', message)
-    return Promise.reject(error)
-  },
+  (error) => Promise.reject(error),
 )
 
 /**
