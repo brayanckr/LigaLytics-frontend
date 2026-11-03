@@ -36,8 +36,12 @@ la app comprueba que la sesión se guardó y, si no, lo avisa en el propio formu
 *Alternativa sin cookies de terceros (recomendada):* que el navegador llame a `/api` en el dominio de Vercel y que Vercel
 lo reenvíe a Railway. Así la cookie es del propio dominio, funciona también en Safari y en navegación privada, y en
 Railway basta con `CORS_ALLOWED_ORIGINS` (ya no hace falta `COOKIE_SAME_SITE=None`). Pasos:
-1. En `vercel.json`, **antes** de la regla de `index.html`:
-   `{ "source": "/api/:path*", "destination": "https://<tu-backend>.up.railway.app/api/:path*" }`
-2. En Vercel: `VITE_API_BASE_URL=/api` y `VITE_LIVE_BASE_URL=https://<tu-backend>.up.railway.app/api`
-   (Vercel no reenvía WebSockets: el canal en vivo, que no usa cookies, se conecta directo al backend).
-3. Redespliega el frontend.
+1. `vercel.json` ya reenvía `/api/:path*` a `https://ligalytics-api-production.up.railway.app/api/:path*`, antes de la
+   regla de `index.html`.
+2. `.env.production` (versionado, solo URLs públicas) fija `VITE_API_BASE_URL=/api` y `VITE_LIVE_BASE_URL` con la URL
+   directa de Railway (Vercel no reenvía WebSockets: el canal en vivo, que no usa cookies, va directo al backend).
+   **Borra de Vercel (Settings → Environment Variables) cualquier `VITE_API_BASE_URL` antiguo con la URL completa de
+   Railway**: las variables de Vercel tienen prioridad sobre `.env.production` y devolverían la app a las cookies de terceros.
+3. En Railway, `CORS_ALLOWED_ORIGINS` debe incluir la URL exacta del frontend (Vercel reenvía la cabecera `Origin`).
+4. Redespliega el frontend **y el backend**: si Railway ejecuta una versión anterior a las cookies (comprobable porque
+   `POST /api/webhooks/matches` da 404), el login no se mantiene sea cual sea la configuración.
