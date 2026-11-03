@@ -18,6 +18,25 @@ interface AuthState {
 
 const AuthContext = createContext<AuthState | null>(null)
 
+/** El servidor aceptó las credenciales pero el navegador no conservó la cookie de sesión. */
+export class SessionNotStoredError extends Error {
+  constructor() {
+    super('session-not-stored')
+  }
+}
+
+/**
+ * La cookie es HttpOnly, así que el script no puede mirar si se guardó: la única forma de saberlo es usarla.
+ * Se hace justo después de entrar para avisar ahí del problema, en vez de que falle la primera pantalla protegida.
+ */
+async function confirmSession(): Promise<AccountDto> {
+  try {
+    return await ligalyticsApi.me()
+  } catch {
+    throw new SessionNotStoredError()
+  }
+}
+
 /**
  * Sesion de la demostracion. El token vive en una cookie HttpOnly que el navegador envia solo: el JavaScript no
  * puede leerlo, asi que para saber si hay sesion se le pregunta al servidor (`/auth/me`) al cargar la pagina.
@@ -68,14 +87,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       sessionExpired,
       refresh,
       login: async (email, password) => {
-        const result = await ligalyticsApi.login(email, password)
+        await ligalyticsApi.login(email, password)
+        const confirmed = await confirmSession()
         setSessionExpired(false)
-        setAccount(result.account)
+        setAccount(confirmed)
       },
       register: async (email, displayName, password) => {
-        const result = await ligalyticsApi.register(email, displayName, password)
+        await ligalyticsApi.register(email, displayName, password)
+        const confirmed = await confirmSession()
         setSessionExpired(false)
-        setAccount(result.account)
+        setAccount(confirmed)
       },
       logout: async () => {
         try {

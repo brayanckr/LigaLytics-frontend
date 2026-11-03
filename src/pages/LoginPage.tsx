@@ -1,7 +1,7 @@
 import { useCallback, useId, useState } from 'react'
 import type { FormEvent, InputHTMLAttributes, ReactNode } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { useAuth } from '../auth/AuthContext'
+import { SessionNotStoredError, useAuth } from '../auth/AuthContext'
 import Toast from '../components/Toast'
 
 type Mode = 'login' | 'register'
@@ -114,14 +114,16 @@ export default function LoginPage() {
         await register(email, displayName, password)
       }
       navigate(target, { replace: true })
-    } catch {
+    } catch (cause) {
       // mensaje generico: no se expone el error crudo ni detalles del backend
       setToast({
         id: Date.now(),
         message:
-          mode === 'login'
-            ? 'Correo o contraseña incorrectos.'
-            : 'No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo.',
+          cause instanceof SessionNotStoredError
+            ? 'Las credenciales son correctas, pero la sesión no se guardó. Reinicia el backend con la última versión y abre la app desde http://localhost:5173 (el navegador debe aceptar cookies).'
+            : mode === 'login'
+              ? 'Correo o contraseña incorrectos.'
+              : 'No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo.',
       })
     } finally {
       setBusy(false)
