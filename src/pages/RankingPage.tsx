@@ -15,9 +15,12 @@ function positionClass(position: number, total: number): string {
   return 'bg-slate-700/60 text-slate-300'
 }
 
-function RankingRow({ entry, total }: { entry: RankingEntryDto; total: number }) {
+function RankingRow({ entry, total, index }: { entry: RankingEntryDto; total: number; index: number }) {
   return (
-    <tr className="hover:bg-slate-800/40">
+    <tr
+      className="motion-safe:animate-rise hover:bg-slate-800/40"
+      style={{ animationDelay: `${Math.min(index, 12) * 30}ms` }}
+    >
       <td className="px-4 py-3">
         <span
           className={`inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold ${positionClass(
@@ -108,8 +111,8 @@ export default function RankingPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800">
-              {entries.map((entry) => (
-                <RankingRow key={entry.teamId} entry={entry} total={entries.length} />
+              {entries.map((entry, index) => (
+                <RankingRow key={entry.teamId} entry={entry} total={entries.length} index={index} />
               ))}
             </tbody>
           </table>

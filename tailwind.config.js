@@ -57,9 +57,19 @@ export default {
         glow: '0 0 0 1px rgba(255,80,0,.45), 0 10px 28px -10px rgba(255,80,0,.5)',
       },
       keyframes: {
+        // Solo opacity + transform (compositor): sin blur ni layout, seguro con decenas de tarjetas a la vez.
         rise: {
-          '0%': { opacity: '0', transform: 'translateY(14px)', filter: 'blur(4px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)', filter: 'blur(0)' },
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        // Modal / menú: escala desde 0.96 con fade (transitions.dev modal open).
+        'scale-in': {
+          '0%': { opacity: '0', transform: 'scale(.96)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
         },
         'ping-soft': {
           '0%': { transform: 'scale(1)', opacity: '.6' },
@@ -73,10 +83,10 @@ export default {
           '0%,100%': { opacity: '1' },
           '50%': { opacity: '.35' },
         },
+        // Destello de dato en vivo: pulso de luz lima breve, sin escalar (no mueve el layout vecino).
         flash: {
-          '0%': { backgroundColor: 'rgba(163,230,53,.65)', transform: 'scale(1.3)', boxShadow: '0 0 0 4px rgba(163,230,53,.35)' },
-          '60%': { backgroundColor: 'rgba(163,230,53,.18)', transform: 'scale(1.05)', boxShadow: '0 0 0 2px rgba(163,230,53,.1)' },
-          '100%': { backgroundColor: 'rgba(163,230,53,0)', transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(163,230,53,0)' },
+          '0%': { backgroundColor: 'rgba(163,230,53,.45)', boxShadow: '0 0 0 3px rgba(163,230,53,.28)' },
+          '100%': { backgroundColor: 'rgba(163,230,53,0)', boxShadow: '0 0 0 0 rgba(163,230,53,0)' },
         },
         shimmer: {
           '0%': { backgroundPosition: '200% 0' },
@@ -92,11 +102,13 @@ export default {
         },
       },
       animation: {
-        rise: 'rise .6s cubic-bezier(.16,1,.3,1) both',
+        rise: 'rise .26s cubic-bezier(.16,1,.3,1) both',
+        'scale-in': 'scale-in .22s cubic-bezier(.16,1,.3,1) both',
+        'fade-in': 'fade-in .18s ease-out both',
         'ping-soft': 'ping-soft 1.8s cubic-bezier(0,0,.2,1) infinite',
         'pop-in': 'pop-in .22s cubic-bezier(.2,.8,.2,1) both',
         'pulse-dot': 'pulse-dot 1.4s ease-in-out infinite',
-        flash: 'flash 1.4s ease-out both',
+        flash: 'flash .8s cubic-bezier(.16,1,.3,1) both',
         shimmer: 'shimmer 1.6s linear infinite',
         'toast-in': 'toast-in .35s cubic-bezier(.16,1,.3,1) both',
         'toast-timer': 'toast-timer 5s linear forwards',

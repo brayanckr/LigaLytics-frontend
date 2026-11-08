@@ -6,6 +6,7 @@ import { ligalyticsApi } from '../api/ligalyticsApi'
 import { useApi } from '../hooks/useApi'
 import Crest from '../betting/Crest'
 import ErrorAlert from '../components/ErrorAlert'
+import Flash from '../components/Flash'
 import ModelReportCard from '../components/ModelReportCard'
 import { Skeleton } from '../components/Skeleton'
 import {
@@ -82,7 +83,7 @@ function Tile({
 }) {
   return (
     <section
-      style={{ animationDelay: `${index * 70}ms` } as CSSProperties}
+      style={{ animationDelay: `${index * 40}ms` } as CSSProperties}
       className={`group/tile card animate-rise p-4 transition-colors duration-200 hover:border-white/10 sm:p-5 ${className}`}
     >
       <header className="mb-2 flex items-center justify-between gap-2">
@@ -123,11 +124,15 @@ function NextMatches({ fixtures, loading, error, reload }: { fixtures: FixtureDt
   }
   return (
     <ul className="-mx-2 divide-y divide-white/5">
-      {fixtures.map((fixture) => {
+      {fixtures.map((fixture, rowIndex) => {
         const live = fixture.status === 'LIVE'
         const date = new Date(fixture.utcDate)
         return (
-          <li key={fixture.id}>
+          <li
+            key={fixture.id}
+            style={{ animationDelay: `${rowIndex * 40}ms` } as CSSProperties}
+            className="motion-safe:animate-rise"
+          >
             <Link
               to="/predict"
               className="flex min-h-[56px] items-center gap-3 rounded-lg px-2 transition-colors duration-150 hover:bg-white/[.04]"
@@ -262,7 +267,11 @@ export default function DashboardPage() {
                     className="flex flex-col gap-1 border-b border-white/5 py-4 pr-3 sm:border-b-0 sm:px-4 sm:first:pl-0 sm:last:pr-0"
                   >
                     <p className="text-[11px] font-medium text-slate-400">{TARGET_SHORT[result.target] ?? result.target}</p>
-                    <p className="num text-2xl leading-none text-white">{formatMetric(result)}</p>
+                    <p className="num text-2xl leading-none text-white">
+                      <Flash value={formatMetric(result)} className="-mx-1">
+                        {formatMetric(result)}
+                      </Flash>
+                    </p>
                     <p className="flex items-center gap-1.5 text-[10px] uppercase text-slate-500">
                       <span className="font-mono tracking-wide">{result.metricName}</span>
                       {delta && good !== null && (

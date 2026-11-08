@@ -48,12 +48,12 @@ export default function TeamDetailModal({ team, onClose }: TeamDetailModalProps)
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/70 p-0 backdrop-blur-sm sm:items-center sm:p-6"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/70 p-0 backdrop-blur-sm motion-safe:animate-fade-in sm:items-center sm:p-6"
       onClick={onClose}
       role="presentation"
     >
       <div
-        className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-t-2xl border border-slate-800 bg-slate-900 shadow-2xl sm:rounded-2xl"
+        className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-t-2xl motion-safe:animate-scale-in border border-slate-800 bg-slate-900 shadow-2xl sm:rounded-2xl"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4 border-b border-slate-800 p-6">

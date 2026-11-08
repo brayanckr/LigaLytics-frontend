@@ -70,7 +70,7 @@ export default function UpcomingMatchCard({ match, crests, index, live }: Upcomi
   return (
     <Link
       to={`/betting/partido/${match.eventId}`}
-      style={{ animationDelay: `${Math.min(index, 8) * 60}ms` } as CSSProperties}
+      style={{ animationDelay: `${Math.min(index, 10) * 40}ms` } as CSSProperties}
       className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-700/70 bg-slate-800 p-4 shadow-card transition-all duration-300 ease-out motion-safe:animate-rise hover:-translate-y-1 hover:border-sky-500/50 hover:shadow-[0_18px_40px_-16px_rgba(255,80,0,.45)] sm:p-5"
     >
       <span

@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Escala de motion (transitions.dev): snappy, 150–250 ms, curva de salida suave. */
+:root {
+  --dur-stagger: 40ms;
+  --dur-quick: 150ms;
+  --dur-fast: 200ms;
+  --dur-sidebar: 250ms;
+  --ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 @layer base {
   html {
     color-scheme: dark;
@@ -60,15 +69,19 @@
   .btn-primary {
     @apply relative inline-flex min-h-[44px] items-center justify-center gap-2 overflow-hidden rounded-xl bg-sky-500 px-4 text-sm font-bold text-white;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 8px 22px -10px rgba(255, 80, 0, 0.75);
-    transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms, background-color 160ms;
+    transition: transform var(--dur-fast) var(--ease-snap), box-shadow var(--dur-fast) var(--ease-snap),
+      background-color var(--dur-quick) var(--ease-snap);
+    will-change: transform;
   }
+  /* Barrido de luz: una banda diagonal cruza el botón al pasar el cursor (solo transform → compositor). */
   .btn-primary::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.28) 50%, transparent 65%);
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.34) 50%, transparent 65%);
     transform: translateX(-120%);
-    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 450ms var(--ease-snap);
   }
   .btn-primary:hover {
     @apply bg-sky-400;
@@ -78,11 +91,37 @@
   .btn-primary:hover::after {
     transform: translateX(120%);
   }
+  /* Micro-scale táctil al pulsar. */
   .btn-primary:active {
-    transform: translateY(0) scale(0.985);
+    transform: translateY(0) scale(0.95);
+    transition-duration: 80ms;
   }
   .btn-ghost {
     @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[.03] px-4 text-sm font-bold text-slate-100 backdrop-blur-sm transition duration-150 hover:border-white/20 hover:bg-white/[.07] active:scale-[.985];
+  }
+  /* Sidebar: etiqueta en flujo, solo opacity + translateX; el aside recorta el desborde mientras colapsa. */
+  .nav-label {
+    white-space: nowrap;
+    transition: opacity var(--dur-quick) var(--ease-snap), transform var(--dur-sidebar) var(--ease-snap);
+  }
+  [data-collapsed='true'] .nav-label {
+    opacity: 0;
+    transform: translateX(-8px);
+    pointer-events: none;
+  }
+  /* Indicador activo compartido: una sola pastilla que viaja entre ítems (translateY, sin layout). */
+  .nav-pill {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 44px;
+    border-radius: 0.75rem;
+    background: rgba(255, 80, 0, 0.1);
+    box-shadow: inset 2px 0 0 #ff5000;
+    transition: transform var(--dur-sidebar) var(--ease-snap), opacity var(--dur-quick) ease-out;
+    will-change: transform;
+    pointer-events: none;
   }
   .odds-pill {
     @apply rounded-lg border border-white/10 bg-slate-900 font-mono font-bold tabular-nums text-lime-400 transition duration-150 hover:-translate-y-0.5 hover:border-sky-500 hover:shadow-glow active:scale-95;
@@ -98,5 +137,9 @@
   }
   .btn-primary::after {
     display: none;
+  }
+  .nav-pill,
+  .nav-label {
+    transition: none !important;
   }
 }
