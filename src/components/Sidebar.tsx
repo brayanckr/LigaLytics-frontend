@@ -35,14 +35,14 @@ export default function Sidebar() {
       'group relative flex min-h-[44px] items-center gap-3 rounded-xl px-3 text-sm font-semibold transition-all duration-200',
       collapsed ? 'justify-center' : '',
       isActive
-        ? 'bg-gradient-to-r from-sky-500/25 to-sky-500/5 text-sky-300 shadow-[inset_0_0_0_1px_rgba(255,80,0,.25)]'
-        : 'text-slate-300 hover:bg-slate-800 hover:text-white',
+        ? 'bg-sky-500/10 text-sky-300'
+        : 'text-slate-400 hover:bg-white/[.04] hover:text-white',
     ].join(' ')
 
   return (
     <aside
       data-collapsed={collapsed}
-      className={`sticky top-16 hidden h-[calc(100dvh-4rem)] shrink-0 flex-col overflow-y-auto overflow-x-hidden border-r border-slate-700/60 bg-slate-900 p-3 transition-[width] duration-300 ease-out lg:flex ${
+      className={`sticky top-16 hidden h-[calc(100dvh-4rem)] shrink-0 flex-col overflow-y-auto overflow-x-hidden border-r border-white/5 bg-slate-900/60 p-3 transition-[width] duration-300 ease-out lg:flex ${
         collapsed ? 'w-[4.75rem]' : 'w-64'
       }`}
     >
@@ -60,7 +60,7 @@ export default function Sidebar() {
       </nav>
 
       {!collapsed && (
-        <div className="mt-5 border-t border-slate-700/60 pt-4">
+        <div className="mt-5 border-t border-white/5 pt-4">
           <button
             type="button"
             onClick={() => setLeaguesOpen((open) => !open)}
@@ -105,7 +105,7 @@ export default function Sidebar() {
         aria-pressed={collapsed}
         aria-label={collapsed ? 'Expandir menú lateral' : 'Contraer menú lateral'}
         title={collapsed ? 'Expandir menú' : undefined}
-        className={`sticky bottom-0 mt-auto flex min-h-[44px] items-center gap-3 rounded-xl border border-slate-700/70 bg-slate-900 px-3 text-sm font-semibold text-slate-400 transition-all duration-200 hover:border-sky-500/60 hover:text-white ${
+        className={`sticky bottom-0 mt-auto flex min-h-[44px] items-center gap-3 rounded-xl border border-white/10 bg-slate-900 px-3 text-sm font-semibold text-slate-400 transition-all duration-200 hover:border-sky-500/60 hover:text-white ${
           collapsed ? 'justify-center' : ''
         }`}
       >

@@ -6,7 +6,7 @@ export default function BottomNav() {
   return (
     <nav
       aria-label="Navegación móvil"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-700/60 bg-slate-900/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_30px_-12px_rgba(0,0,0,.8)] backdrop-blur lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-white/5 bg-slate-900/85 pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_30px_-12px_rgba(0,0,0,.8)] backdrop-blur-xl lg:hidden"
     >
       <ul className="grid grid-cols-5">
         {BOTTOM_ITEMS.map(({ to, label, icon: Icon, end }) => (

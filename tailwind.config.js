@@ -8,20 +8,23 @@ export default {
       fontFamily: {
         display: ['"Plus Jakarta Sans"', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'sans-serif'],
+        // Cifras, probabilidades y métricas (accuracy / MAE): ancho fijo para que las columnas no bailen.
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
       },
       colors: {
+        // Tinta azulada: 900 = fondo de página (#0b0e14), 800 = superficie (#121721), 700 = línea/relieve.
         slate: {
-          50: '#f5f7f8',
-          100: '#eaeef1',
-          200: '#d7dee4',
-          300: '#b8c2cb',
-          400: '#93a1ad',
-          500: '#6b7b88',
-          600: '#3d4b57',
-          700: '#2a3742',
-          800: '#1a252e',
-          900: '#121b22',
-          950: '#0b1217',
+          50: '#f4f6fa',
+          100: '#e8ecf3',
+          200: '#d3dae6',
+          300: '#aeb8c9',
+          400: '#8793a8',
+          500: '#5f6b80',
+          600: '#3a4457',
+          700: '#232b3a',
+          800: '#121721',
+          900: '#0b0e14',
+          950: '#07090d',
         },
         sky: {
           50: '#fff4ed',
@@ -42,15 +45,16 @@ export default {
           500: '#84cc16',
         },
         ligalytics: {
-          bg: '#121b22',
-          panel: '#1a252e',
+          bg: '#0b0e14',
+          panel: '#121721',
           accent: '#ff5000',
           odds: '#a3e635',
         },
       },
       boxShadow: {
-        card: '0 1px 2px rgba(0,0,0,.35), 0 8px 24px -12px rgba(0,0,0,.5)',
-        glow: '0 0 0 1px rgba(255,80,0,.5), 0 8px 24px -8px rgba(255,80,0,.45)',
+        card: '0 1px 0 rgba(255,255,255,.03) inset, 0 12px 32px -16px rgba(0,0,0,.7)',
+        float: '0 1px 0 rgba(255,255,255,.04) inset, 0 18px 40px -18px rgba(0,0,0,.85)',
+        glow: '0 0 0 1px rgba(255,80,0,.45), 0 10px 28px -10px rgba(255,80,0,.5)',
       },
       keyframes: {
         rise: {

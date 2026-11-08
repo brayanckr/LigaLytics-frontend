@@ -6,10 +6,34 @@
   html {
     color-scheme: dark;
     -webkit-tap-highlight-color: transparent;
+    scrollbar-color: #2b3446 transparent;
+    scrollbar-width: thin;
   }
   body {
     @apply min-h-screen bg-slate-900 font-sans text-slate-200 antialiased;
     font-feature-settings: 'tnum' 1, 'cv11' 1;
+    /* Luz ambiental por capas: un halo naranja arriba a la derecha y uno frío abajo a la izquierda, fijos al viewport. */
+    background-image: radial-gradient(60rem 38rem at 92% -8%, rgba(255, 80, 0, 0.09), transparent 60%),
+      radial-gradient(52rem 40rem at -6% 108%, rgba(56, 96, 200, 0.07), transparent 62%);
+    background-attachment: fixed;
+  }
+  ::selection {
+    background: rgba(255, 80, 0, 0.35);
+    color: #fff;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #232b3a;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3a4457;
+    background-clip: content-box;
   }
   :focus-visible {
     @apply outline-none ring-2 ring-sky-500 ring-offset-2 ring-offset-slate-900;
@@ -25,14 +49,43 @@
 }
 
 @layer components {
+  /* Superficie plana: se separa del fondo por contraste y un filo de 1px, no por marcos pesados. */
   .card {
-    @apply rounded-xl border border-slate-700/60 bg-slate-800 shadow-card;
+    @apply rounded-2xl border border-white/[.06] bg-slate-800 shadow-card;
+  }
+  /* Cifras, probabilidades y métricas. */
+  .num {
+    @apply font-mono font-semibold tabular-nums tracking-tight;
   }
   .btn-primary {
-    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg bg-sky-500 px-4 text-sm font-bold text-white transition hover:bg-sky-400 active:scale-[.98];
+    @apply relative inline-flex min-h-[44px] items-center justify-center gap-2 overflow-hidden rounded-xl bg-sky-500 px-4 text-sm font-bold text-white;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 8px 22px -10px rgba(255, 80, 0, 0.75);
+    transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms, background-color 160ms;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.28) 50%, transparent 65%);
+    transform: translateX(-120%);
+    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-primary:hover {
+    @apply bg-sky-400;
+    transform: translateY(-1px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 14px 28px -10px rgba(255, 80, 0, 0.85);
+  }
+  .btn-primary:hover::after {
+    transform: translateX(120%);
+  }
+  .btn-primary:active {
+    transform: translateY(0) scale(0.985);
+  }
+  .btn-ghost {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[.03] px-4 text-sm font-bold text-slate-100 backdrop-blur-sm transition duration-150 hover:border-white/20 hover:bg-white/[.07] active:scale-[.985];
   }
   .odds-pill {
-    @apply rounded-lg border border-slate-700 bg-slate-900 font-bold tabular-nums text-lime-400 transition duration-150 hover:-translate-y-0.5 hover:border-sky-500 hover:shadow-glow active:scale-95;
+    @apply rounded-lg border border-white/10 bg-slate-900 font-mono font-bold tabular-nums text-lime-400 transition duration-150 hover:-translate-y-0.5 hover:border-sky-500 hover:shadow-glow active:scale-95;
   }
 }
 
@@ -42,5 +95,8 @@
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+  .btn-primary::after {
+    display: none;
   }
 }

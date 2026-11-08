@@ -24,10 +24,10 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-700/60 bg-slate-900/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-white/5 bg-slate-900/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-[1600px] items-center gap-3 px-4 lg:px-6">
         <Link to="/" className="flex shrink-0 items-center gap-2" aria-label="LigaLytics, inicio">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-500 text-base font-black text-white shadow-glow">
+          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-500 text-base font-black text-white shadow-[inset_0_1px_0_rgba(255,255,255,.25),0_8px_20px_-8px_rgba(255,80,0,.8)]">
             L
           </span>
           <span className="hidden text-lg font-extrabold tracking-tight text-white sm:block">
@@ -46,7 +46,7 @@ export default function Navbar() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Buscar equipos o ligas…"
-            className="h-11 w-full rounded-full border border-slate-700 bg-slate-800 pl-10 pr-4 text-sm text-white placeholder-slate-400 transition focus:border-sky-500"
+            className="h-11 w-full rounded-full border border-white/10 bg-white/[.03] pl-10 pr-4 text-sm text-white placeholder-slate-400 transition focus:border-sky-500"
           />
         </form>
 
@@ -54,7 +54,7 @@ export default function Navbar() {
           {account && (
             <Link
               to="/betting/mis-apuestas"
-              className="flex h-11 items-center gap-2 rounded-full border border-slate-700 bg-slate-800 px-3 text-sm font-bold tabular-nums text-lime-400 transition hover:border-sky-500"
+              className="flex h-11 items-center gap-2 rounded-full border border-white/10 bg-white/[.03] px-3 font-mono text-sm font-bold tabular-nums text-lime-400 transition hover:border-sky-500"
             >
               <WalletIcon />
               <span className="hidden sm:inline">{cop(account.balance)}</span>
@@ -66,7 +66,7 @@ export default function Navbar() {
               <Link
                 to="/profile"
                 aria-label={`Perfil de ${account.displayName}`}
-                className="flex h-11 items-center gap-2 rounded-full border border-slate-700 bg-slate-800 pl-1 pr-1 text-sm font-semibold text-white transition hover:border-sky-500 sm:pr-4"
+                className="flex h-11 items-center gap-2 rounded-full border border-white/10 bg-white/[.03] pl-1 pr-1 text-sm font-semibold text-white transition hover:border-sky-500 sm:pr-4"
               >
                 <Avatar name={account.displayName} />
                 <span className="hidden max-w-[10rem] truncate sm:inline">{account.displayName}</span>
