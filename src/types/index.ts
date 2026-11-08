@@ -11,6 +11,31 @@ export interface TeamDto {
   marketValue: number | null
 }
 
+/** Una estadística comparada local vs visitante; `away` es null cuando solo se conoce el total del partido. */
+export interface MatchStatDto {
+  key: string
+  label: string
+  home: number | null
+  away: number | null
+}
+
+/** Detalle de un partido jugado (de la base) o en vivo (del proveedor) con sus estadísticas. */
+export interface MatchDetailDto {
+  matchId: number | null
+  eventId: number | null
+  status: 'SCHEDULED' | 'LIVE' | 'FINISHED' | 'OTHER'
+  minute: number | null
+  date: string | null
+  season: string | null
+  homeTeamId: number | null
+  homeTeam: string
+  awayTeamId: number | null
+  awayTeam: string
+  homeGoals: number | null
+  awayGoals: number | null
+  stats: MatchStatDto[]
+}
+
 export interface MatchSummaryDto {
   matchId: number
   date: string | null

@@ -14,6 +14,7 @@ import BettingPage from './pages/BettingPage'
 import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
 import UpcomingMatchesPage from './pages/UpcomingMatchesPage'
+import MatchStatsPage from './pages/MatchStatsPage'
 import MatchDetail from './betting/MatchDetail'
 import MatchList from './betting/MatchList'
 import MyBets from './betting/MyBets'
@@ -44,6 +45,8 @@ export default function App() {
             </Route>
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/matches" element={<UpcomingMatchesPage />} />
+            <Route path="/matches/event/:eventId" element={<MatchStatsPage kind="event" />} />
+            <Route path="/matches/:matchId" element={<MatchStatsPage kind="played" />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

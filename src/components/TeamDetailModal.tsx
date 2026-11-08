@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import type { TeamDto } from '../types'
 import { ligalyticsApi } from '../api/ligalyticsApi'
 import { useApi } from '../hooks/useApi'
@@ -138,7 +139,9 @@ export default function TeamDetailModal({ team, onClose }: TeamDetailModalProps)
                             <td className="whitespace-nowrap px-4 py-2 text-slate-400">{formatDate(match.date)}</td>
                             <td className="whitespace-nowrap px-4 py-2 text-slate-500">{match.season ?? "—"}</td>
                             <td className="whitespace-nowrap px-4 py-2 text-slate-200">
-                              {match.homeTeam} vs {match.awayTeam}
+                              <Link to={`/matches/${match.matchId}`} className="hover:text-sky-300 hover:underline">
+                                {match.homeTeam} vs {match.awayTeam}
+                              </Link>
                             </td>
                             <td className="px-4 py-2 text-center font-medium text-white">
                               {match.homeGoals ?? '-'} - {match.awayGoals ?? '-'}

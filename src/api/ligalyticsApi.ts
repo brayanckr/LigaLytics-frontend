@@ -15,6 +15,7 @@ import type {
   FixtureDto,
   HealthResponse,
   HeadToHeadDto,
+  MatchDetailDto,
   PredictionRecord,
   PredictionRequest,
   PredictionResponseDto,
@@ -79,6 +80,14 @@ export const ligalyticsApi = {
 
   getSeasons: (): Promise<SeasonDto[]> =>
     axiosClient.get<SeasonDto[]>('/seasons').then((response) => response.data),
+
+  /** Partido ya jugado (id de la base de datos) con sus estadísticas guardadas. */
+  getPlayedMatch: (matchId: number): Promise<MatchDetailDto> =>
+    axiosClient.get<MatchDetailDto>(`/matches/${matchId}`).then((response) => response.data),
+
+  /** Partido en vivo o reciente (id del proveedor); el backend lo cachea 20 s. */
+  getLiveMatch: (eventId: number): Promise<MatchDetailDto> =>
+    axiosClient.get<MatchDetailDto>(`/matches/event/${eventId}`).then((response) => response.data),
 
   getRanking: (season?: number): Promise<RankingEntryDto[]> =>
     axiosClient

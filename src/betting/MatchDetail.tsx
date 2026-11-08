@@ -40,6 +40,9 @@ export default function MatchDetail() {
         <h2 className="mt-1 text-xl font-bold text-white">
           {data.homeTeam} <span className="text-slate-500">vs</span> {data.awayTeam}
         </h2>
+        <Link to={`/matches/event/${data.eventId}`} className="mt-3 inline-flex text-sm font-semibold text-sky-300 hover:underline">
+          Ver estadísticas del partido ›
+        </Link>
         {!data.hasModel && (
           <p className="mt-1 text-xs text-slate-500">Sin predicción propia para este partido (equipo sin historial).</p>
         )}
