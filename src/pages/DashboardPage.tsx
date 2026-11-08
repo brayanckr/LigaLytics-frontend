@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import type { FixtureDto, TargetResult } from '../types'
 import { ligalyticsApi } from '../api/ligalyticsApi'
 import { useApi } from '../hooks/useApi'
+import { useLiveRanking } from '../hooks/useLiveRanking'
 import Crest from '../betting/Crest'
 import ErrorAlert from '../components/ErrorAlert'
 import Flash from '../components/Flash'
@@ -185,7 +186,7 @@ export default function DashboardPage() {
   }, [])
 
   const health = useApi(() => ligalyticsApi.getHealth(), [])
-  const ranking = useApi(() => ligalyticsApi.getRanking(), [])
+  const ranking = useLiveRanking()
   const modelReport = useApi(() => ligalyticsApi.getModelReport(), [])
   const fixtures = useApi(() => ligalyticsApi.getFixtures(range[0], range[1]), [range])
 

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { RankingEntryDto } from '../types'
 import { ligalyticsApi } from '../api/ligalyticsApi'
 import { useApi } from '../hooks/useApi'
+import { useLiveRanking } from '../hooks/useLiveRanking'
 import ErrorAlert from '../components/ErrorAlert'
 import { SkeletonRows } from '../components/Skeleton'
 
@@ -49,7 +50,7 @@ function RankingRow({ entry, total, index }: { entry: RankingEntryDto; total: nu
 export default function RankingPage() {
   const seasons = useApi(() => ligalyticsApi.getSeasons(), [])
   const [season, setSeason] = useState<number | undefined>(undefined)
-  const { data, loading, error, reload } = useApi(() => ligalyticsApi.getRanking(season), [season])
+  const { data, loading, error, reload, updatedAt } = useLiveRanking(season)
   const entries = data ?? []
 
   return (
@@ -65,6 +66,18 @@ export default function RankingPage() {
             : ''}
           {entries.length > 0 ? ` · ${Math.max(...entries.map((entry) => entry.matchesPlayed))} jornadas jugadas` : ''}.
         </p>
+        {updatedAt !== null && (
+          <p className="mt-1 inline-flex items-center gap-2 text-xs text-slate-400" aria-live="polite">
+            <span className="relative flex h-2 w-2" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-60 motion-safe:animate-ping-soft" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-lime-400" />
+            </span>
+            En vivo · actualizada a las{' '}
+            <span className="num text-slate-300">
+              {new Date(updatedAt).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+            </span>
+          </p>
+        )}
         {seasons.data && seasons.data.length > 0 && (
           <label className="mt-3 inline-flex items-center gap-2 text-sm text-slate-300">
             Temporada

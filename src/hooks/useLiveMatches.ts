@@ -10,7 +10,7 @@ export const LIVE_TOPIC = '/topic/live-matches'
  * relativa reenviada por Vercel (`VITE_API_BASE_URL=/api`), porque Vercel no reenvía WebSockets: entonces el canal
  * en vivo (que no usa cookies) se conecta directo al backend con `VITE_LIVE_BASE_URL=https://<backend>/api`.
  */
-const LIVE_BASE_URL: string = import.meta.env.VITE_LIVE_BASE_URL ?? API_BASE_URL
+export const LIVE_BASE_URL: string = import.meta.env.VITE_LIVE_BASE_URL ?? API_BASE_URL
 
 /** Estado en vivo de un partido, acumulado a partir de los eventos recibidos. */
 export interface LiveMatchState {
