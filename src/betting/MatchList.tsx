@@ -62,7 +62,7 @@ function FeaturedMatch({ match, recommended }: { match: BettingMatchDto; recomme
       <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-sky-500/20 blur-3xl" />
       <div className="relative">
         <div className="flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-wider">
-          <span className="rounded-full bg-sky-500 px-2.5 py-1 text-white">
+          <span className="rounded bg-sky-500 px-2.5 py-1 text-slate-950">
             {recommended ? 'Recomendación de la IA' : 'Partido destacado'}
           </span>
           <span className="text-slate-400">
@@ -147,7 +147,7 @@ function MatchRow({ match, open, onToggle }: { match: BettingMatchDto; open: boo
         <div className="flex items-center gap-2 lg:w-52 lg:justify-end">
           <Link
             to={`/betting/partido/${match.eventId}`}
-            className="inline-flex min-h-[44px] items-center rounded-full bg-slate-700 px-3 text-xs font-bold text-slate-200 transition hover:bg-sky-500 hover:text-white"
+            className="inline-flex min-h-[44px] items-center rounded bg-slate-700 px-3 text-xs font-bold text-slate-200 transition hover:bg-sky-500 hover:text-slate-950"
           >
             +{extra} mercados
           </Link>
@@ -157,7 +157,7 @@ function MatchRow({ match, open, onToggle }: { match: BettingMatchDto; open: boo
               onClick={onToggle}
               aria-expanded={open}
               aria-controls={`pred-${match.eventId}`}
-              className={`min-h-[44px] rounded-full border px-3 text-xs font-bold transition ${
+              className={`min-h-[44px] rounded border px-3 text-xs font-bold transition ${
                 open
                   ? 'border-sky-500 bg-sky-500/20 text-white'
                   : 'border-slate-600 text-sky-300 hover:border-sky-500'

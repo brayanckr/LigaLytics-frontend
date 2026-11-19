@@ -51,10 +51,10 @@ export default function UpcomingMatchesPage() {
     <section className="space-y-5">
       <header>
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h1 className="font-display text-2xl font-extrabold text-white sm:text-3xl">Próximos partidos</h1>
+          <h1 className="text-3xl text-white sm:text-4xl">Próximos partidos</h1>
           <span
             role="status"
-            className="flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300"
+            className="flex items-center gap-2 rounded border border-slate-700 bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300"
           >
             <span aria-hidden className={`h-2 w-2 rounded-full ${STATUS_TEXT[status].dot}`} />
             {STATUS_TEXT[status].text}

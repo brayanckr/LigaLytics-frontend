@@ -9,6 +9,8 @@ import Crest from '../betting/Crest'
 import ErrorAlert from '../components/ErrorAlert'
 import Flash from '../components/Flash'
 import ModelReportCard from '../components/ModelReportCard'
+import HeroBackdrop, { SHOW_FRAME } from '../components/HeroBackdrop'
+import { LogoMark } from '../components/Logo'
 import { Skeleton } from '../components/Skeleton'
 import {
   ArrowIcon,
@@ -88,14 +90,14 @@ function Tile({
       className={`group/tile card animate-rise p-4 transition-colors duration-200 hover:border-white/10 sm:p-5 ${className}`}
     >
       <header className="mb-2 flex items-center justify-between gap-2">
-        <h2 className="flex items-center gap-2 font-display text-[13px] font-bold text-white">
+        <h2 className="flex items-center gap-2 font-display text-lg font-bold text-white">
           <span className="text-sky-400">{icon}</span>
           {title}
         </h2>
         {to && action && (
           <Link
             to={to}
-            className="flex min-h-[44px] items-center gap-1 text-xs font-semibold text-slate-400 transition hover:text-white"
+            className="flex min-h-[44px] items-center gap-1 text-xs font-bold uppercase tracking-[.06em] text-slate-400 transition hover:text-white"
           >
             {action}
             <ArrowIcon size={14} className="transition-transform duration-200 group-hover/tile:translate-x-0.5" />
@@ -202,54 +204,55 @@ export default function DashboardPage() {
   return (
     <div className="grid gap-4 lg:grid-cols-12">
       {/* Hero: una superficie, luz contextual por capas y las métricas del modelo como tira con separadores */}
-      <section className="card relative animate-rise overflow-hidden p-6 shadow-float sm:p-8 lg:col-span-8">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage:
-              'radial-gradient(46rem 24rem at 100% -10%, rgba(255,80,0,.20), transparent 62%), radial-gradient(30rem 20rem at 0% 120%, rgba(163,230,53,.07), transparent 65%)',
-          }}
-        />
-        <div className="relative">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-2 rounded-full border border-lime-400/25 bg-lime-400/[.07] px-3 py-1 text-xs font-bold text-lime-300 backdrop-blur-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping-soft rounded-full bg-lime-400" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-lime-400" />
-              </span>
-              Poisson &amp; Weka ML Trained
-            </span>
-            <span
-              className={`inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[.03] px-3 py-1 text-xs font-semibold backdrop-blur-sm ${
-                apiOk ? 'text-slate-200' : 'text-slate-400'
-              }`}
-            >
-              <LiveIcon size={12} aria-hidden="true" />
-              {health.loading ? 'Comprobando API…' : apiOk ? 'API operativa' : 'API sin respuesta'}
-            </span>
-          </div>
+      <section
+        className={`relative flex min-h-[420px] animate-rise flex-col overflow-hidden rounded-md bg-slate-900 lg:col-span-12 lg:min-h-[60vh] ${
+          SHOW_FRAME ? 'border-2 border-sky-500' : 'border border-white/[.07]'
+        }`}
+      >
+        <HeroBackdrop />
+        <div className="relative flex flex-1 flex-col">
+          <div className="flex flex-1 items-center px-4 py-10 sm:px-8 lg:px-14">
+            <div className="w-full max-w-[34rem]">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                <span className="eyebrow inline-flex items-center gap-2 text-sky-400">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping-soft rounded-full bg-sky-400" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-sky-400" />
+                  </span>
+                  Poisson &amp; Weka ML Trained
+                </span>
+                <span
+                  className={`inline-flex items-center gap-1.5 text-xs font-semibold ${apiOk ? 'text-slate-200' : 'text-slate-400'}`}
+                >
+                  <LiveIcon size={12} aria-hidden="true" />
+                  {health.loading ? 'Comprobando API…' : apiOk ? 'API operativa' : 'API sin respuesta'}
+                </span>
+              </div>
 
-          <h1 className="mt-5 max-w-xl text-balance font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl">
-            Predicción inteligente de LaLiga
-          </h1>
-          <p className="mt-3 max-w-md text-base text-slate-300">
-            1X2, goles, córneres y tarjetas con la probabilidad a la vista y el modelo auditado.
-          </p>
+              <h1 className="mt-5 text-balance text-[clamp(2.5rem,11vw,3rem)] text-white md:text-[3.5rem] lg:text-[clamp(3rem,5.6vw,5rem)]">
+                Predicción inteligente
+                <span className="text-brand-gradient block pr-[.1em]">de LaLiga</span>
+              </h1>
+              <p className="mt-5 max-w-md text-[1.0625rem] leading-[1.55] text-slate-300 md:text-lg">
+                1X2, goles, córneres y tarjetas con la probabilidad a la vista y el modelo auditado.
+              </p>
 
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/predict" className="btn-primary !px-5">
-              <SparkIcon size={18} />
-              Predecir un partido
-            </Link>
-            <Link to="/betting" className="btn-ghost !px-5">
-              Apuestas demo
-              <ArrowIcon size={16} />
-            </Link>
+              <div className="mt-8 flex flex-col gap-3 min-[400px]:flex-row min-[400px]:flex-wrap min-[400px]:items-center min-[400px]:gap-x-6">
+                <Link to="/predict" className="btn-primary w-full !px-6 min-[400px]:w-auto sm:!min-h-[58px]">
+                  <SparkIcon size={18} />
+                  Predecir un partido
+                </Link>
+                <Link to="/matches" className="link-chevron">
+                  Ver próximos partidos
+                  <ArrowIcon size={16} className="chev" />
+                </Link>
+              </div>
+            </div>
+            <LogoMark className="pointer-events-none ml-auto hidden h-64 shrink-0 opacity-90 drop-shadow-[0_0_40px_rgba(18,192,238,.3)] lg:block xl:h-80" />
           </div>
 
           <ul
-            className="mt-8 grid grid-cols-2 divide-white/5 border-t border-white/5 sm:grid-cols-4 sm:divide-x"
+            className="grid grid-cols-2 divide-white/5 border-t border-white/[.07] bg-slate-900/70 px-4 backdrop-blur-sm sm:grid-cols-4 sm:divide-x sm:px-8 lg:px-14"
             aria-label="Precisión del modelo"
           >
             {modelReport.loading &&
@@ -267,13 +270,13 @@ export default function DashboardPage() {
                     key={result.target}
                     className="flex flex-col gap-1 border-b border-white/5 py-4 pr-3 sm:border-b-0 sm:px-4 sm:first:pl-0 sm:last:pr-0"
                   >
-                    <p className="text-[11px] font-medium text-slate-400">{TARGET_SHORT[result.target] ?? result.target}</p>
+                    <p className="eyebrow !text-[11px] !tracking-[.1em] text-slate-300">{TARGET_SHORT[result.target] ?? result.target}</p>
                     <p className="num text-2xl leading-none text-white">
                       <Flash value={formatMetric(result)} className="-mx-1">
                         {formatMetric(result)}
                       </Flash>
                     </p>
-                    <p className="flex items-center gap-1.5 text-[10px] uppercase text-slate-500">
+                    <p className="flex items-center gap-1.5 text-[10px] uppercase text-slate-400">
                       <span className="font-mono tracking-wide">{result.metricName}</span>
                       {delta && good !== null && (
                         <span
@@ -292,7 +295,7 @@ export default function DashboardPage() {
                 )
               })}
             {!modelReport.loading && results.length === 0 && (
-              <li className="col-span-full pt-4 text-sm text-slate-400">
+              <li className="col-span-full py-4 text-sm text-slate-300">
                 Modelo sin entrenar: cárgalo desde Administración.
               </li>
             )}
@@ -306,7 +309,7 @@ export default function DashboardPage() {
       </Tile>
 
       {/* Clasificación */}
-      <Tile index={2} className="lg:col-span-5" title="Clasificación" icon={<TrophyIcon size={16} />} to="/ranking" action="Tabla completa">
+      <Tile index={2} className="lg:col-span-4" title="Clasificación" icon={<TrophyIcon size={16} />} to="/ranking" action="Tabla completa">
         {ranking.loading && (
           <div className="space-y-2">
             {[0, 1, 2, 3, 4].map((i) => (
@@ -390,7 +393,7 @@ export default function DashboardPage() {
       </Tile>
 
       {/* Calidad del modelo */}
-      <Tile index={4} className="lg:col-span-3" title="Modelo de IA" icon={<ModelIcon size={16} />}>
+      <Tile index={4} className="lg:col-span-12" title="Modelo de IA" icon={<ModelIcon size={16} />}>
         {modelReport.loading && <Skeleton className="h-32" />}
         {!modelReport.loading && modelReport.error && (
           <ErrorAlert message={modelReport.error} onRetry={modelReport.reload} />
@@ -399,7 +402,7 @@ export default function DashboardPage() {
           <p className="text-sm text-slate-400">Sin entrenar todavía. Carga los datos desde Administración.</p>
         )}
         {results.length > 0 && (
-          <ul className="divide-y divide-white/5">
+          <ul className="grid divide-y divide-white/5 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-4 lg:divide-y-0">
             {results.map((result) => {
               const good = beatsBaseline(result)
               return (

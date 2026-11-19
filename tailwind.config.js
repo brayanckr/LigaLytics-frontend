@@ -1,60 +1,94 @@
 /** @type {import('tailwindcss').Config} */
-// Paleta inspirada en portales deportivos: carbón profundo + naranja de acción + lima para cuotas/valor.
-// `slate` y `sky` se redefinen para que todas las pantallas existentes adopten el nuevo tema sin reescribirlas.
+// Paleta extraída del logo de LaLiga Lytics: tinta navy + cian/azul de acción + verde menta para cuotas/valor + rojo del emblema.
+// `slate`, `sky`, `lime`, `rose`, `emerald` y `violet` se redefinen para que todas las pantallas adopten el tema sin reescribirlas.
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       fontFamily: {
-        display: ['"Plus Jakarta Sans"', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        // Titulares de página: Barlow Condensed (cursiva 800 en MAYÚSCULAS se aplica en index.css).
+        display: ['"Barlow Condensed"', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'sans-serif'],
         // Cifras, probabilidades y métricas (accuracy / MAE): ancho fijo para que las columnas no bailen.
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
       },
+      // Esquinas casi rectas: controles 4px, tarjetas y paneles 6px. Los nombres de clase existentes se conservan.
+      borderRadius: {
+        sm: '2px',
+        DEFAULT: '4px',
+        md: '4px',
+        lg: '4px',
+        xl: '4px',
+        '2xl': '6px',
+        '3xl': '6px',
+      },
       colors: {
-        // Tinta azulada: 900 = fondo de página (#0b0e14), 800 = superficie (#121721), 700 = línea/relieve.
+        // Tinta navy: 900 = fondo de página (#06121c), 800 = superficie (#0b1c2c), 700 = línea/relieve.
         slate: {
-          50: '#f4f6fa',
-          100: '#e8ecf3',
-          200: '#d3dae6',
-          300: '#aeb8c9',
-          400: '#8793a8',
-          500: '#5f6b80',
-          600: '#3a4457',
-          700: '#232b3a',
-          800: '#121721',
-          900: '#0b0e14',
-          950: '#07090d',
+          50: '#f1f6fb',
+          100: '#e3edf6',
+          200: '#c9d8e7',
+          300: '#9fb4c9',
+          400: '#7690a9',
+          500: '#54708a',
+          600: '#34506a',
+          700: '#1a3046',
+          800: '#0b1c2c',
+          900: '#06121c',
+          950: '#030b12',
         },
+        // Azul/cian primario del emblema (#0868d8 → #12c0ee → #1fe6fe).
         sky: {
-          50: '#fff4ed',
-          100: '#ffe4d1',
-          200: '#ffc7a3',
-          300: '#ff9f66',
-          400: '#ff7a33',
-          500: '#ff5000',
-          600: '#e04600',
-          700: '#b83a00',
-          800: '#8f3000',
-          900: '#6b2500',
-          950: '#3d1500',
+          50: '#e8fbff',
+          100: '#c9f5fd',
+          200: '#94ebfb',
+          300: '#5fdffa',
+          400: '#2fd2f6',
+          500: '#12c0ee',
+          600: '#0a9bd6',
+          700: '#0868d8',
+          800: '#0a4fa8',
+          900: '#0a3a7a',
+          950: '#07224a',
         },
+        // Verde menta de las barras de datos: cuotas, valor y estados positivos.
         lime: {
-          300: '#bef264',
-          400: '#a3e635',
-          500: '#84cc16',
+          300: '#86f8c5',
+          400: '#2bf29a',
+          500: '#16c77a',
+        },
+        emerald: {
+          200: '#c3fbe0',
+          300: '#86f8c5',
+          400: '#2bf29a',
+          500: '#16c77a',
+        },
+        // Rojo del arco del emblema (#e90218): errores, derrotas, estados negativos.
+        rose: {
+          100: '#ffe3e6',
+          200: '#ffc2c8',
+          300: '#ff8f9a',
+          400: '#ff5565',
+          500: '#ea1a2f',
+        },
+        // Púrpura del emblema: tercer color de gráficos (empate) y badges especiales.
+        violet: {
+          200: '#ebc0dc',
+          300: '#d58bba',
+          400: '#b5528f',
+          500: '#8b2a6b',
         },
         ligalytics: {
-          bg: '#0b0e14',
-          panel: '#121721',
-          accent: '#ff5000',
-          odds: '#a3e635',
+          bg: '#06121c',
+          panel: '#0b1c2c',
+          accent: '#12c0ee',
+          odds: '#2bf29a',
         },
       },
       boxShadow: {
         card: '0 1px 0 rgba(255,255,255,.03) inset, 0 12px 32px -16px rgba(0,0,0,.7)',
         float: '0 1px 0 rgba(255,255,255,.04) inset, 0 18px 40px -18px rgba(0,0,0,.85)',
-        glow: '0 0 0 1px rgba(255,80,0,.45), 0 10px 28px -10px rgba(255,80,0,.5)',
+        glow: '0 0 0 1px rgba(18,192,238,.4), 0 10px 28px -12px rgba(18,192,238,.45)',
       },
       keyframes: {
         // Solo opacity + transform (compositor): sin blur ni layout, seguro con decenas de tarjetas a la vez.
@@ -83,10 +117,10 @@ export default {
           '0%,100%': { opacity: '1' },
           '50%': { opacity: '.35' },
         },
-        // Destello de dato en vivo: pulso de luz lima breve, sin escalar (no mueve el layout vecino).
+        // Destello de dato en vivo: pulso de luz verde menta breve, sin escalar (no mueve el layout vecino).
         flash: {
-          '0%': { backgroundColor: 'rgba(163,230,53,.45)', boxShadow: '0 0 0 3px rgba(163,230,53,.28)' },
-          '100%': { backgroundColor: 'rgba(163,230,53,0)', boxShadow: '0 0 0 0 rgba(163,230,53,0)' },
+          '0%': { backgroundColor: 'rgba(43,242,154,.40)', boxShadow: '0 0 0 3px rgba(43,242,154,.25)' },
+          '100%': { backgroundColor: 'rgba(43,242,154,0)', boxShadow: '0 0 0 0 rgba(43,242,154,0)' },
         },
         shimmer: {
           '0%': { backgroundPosition: '200% 0' },

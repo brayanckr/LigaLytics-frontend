@@ -71,7 +71,7 @@ export default function UpcomingMatchCard({ match, crests, index, live }: Upcomi
     <Link
       to={`/betting/partido/${match.eventId}`}
       style={{ animationDelay: `${Math.min(index, 10) * 40}ms` } as CSSProperties}
-      className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-700/70 bg-slate-800 p-4 shadow-card transition-all duration-300 ease-out motion-safe:animate-rise hover:-translate-y-1 hover:border-sky-500/50 hover:shadow-[0_18px_40px_-16px_rgba(255,80,0,.45)] sm:p-5"
+      className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-700/70 bg-slate-800 p-4 shadow-card transition-all duration-300 ease-out motion-safe:animate-rise hover:-translate-y-1 hover:border-sky-500/50 hover:shadow-[0_18px_40px_-16px_rgba(18,192,238,.3)] sm:p-5"
     >
       <span
         aria-hidden
@@ -84,7 +84,7 @@ export default function UpcomingMatchCard({ match, crests, index, live }: Upcomi
         </span>
         {live ? (
           <span
-            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 font-bold uppercase tracking-wide ${
+            className={`flex items-center gap-1.5 rounded px-2.5 py-1 font-bold uppercase tracking-wide ${
               live.finished ? 'bg-slate-600/40 text-slate-300' : 'bg-rose-500/15 text-rose-300'
             }`}
           >
@@ -93,7 +93,7 @@ export default function UpcomingMatchCard({ match, crests, index, live }: Upcomi
             {live.minute !== null && !live.finished && <Flash value={live.minute}>{live.minute}&apos;</Flash>}
           </span>
         ) : (
-          <span className="rounded-full bg-sky-500/15 px-2.5 py-1 font-bold uppercase tracking-wide text-sky-300">
+          <span className="rounded bg-sky-500/15 px-2.5 py-1 font-bold uppercase tracking-wide text-sky-300">
             {whenLabel(match.kickoff)}
           </span>
         )}

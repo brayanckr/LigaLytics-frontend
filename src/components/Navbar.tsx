@@ -4,6 +4,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { cop } from '../betting/shared'
 import Avatar from './Avatar'
+import { LogoMark, Wordmark } from './Logo'
 import { CogIcon, LogOutIcon, SearchIcon, UserIcon, WalletIcon } from './icons'
 
 /** Cabecera superior: logo, buscador rápido de equipos al centro y accesos de cuenta/saldo/ajustes a la derecha. */
@@ -24,18 +25,14 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/5 bg-slate-900/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-[1600px] items-center gap-3 px-4 lg:px-6">
-        <Link to="/" className="flex shrink-0 items-center gap-2" aria-label="LigaLytics, inicio">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-500 text-base font-black text-white shadow-[inset_0_1px_0_rgba(255,255,255,.25),0_8px_20px_-8px_rgba(255,80,0,.8)]">
-            L
-          </span>
-          <span className="hidden text-lg font-extrabold tracking-tight text-white sm:block">
-            Liga<span className="text-sky-500">Lytics</span>
-          </span>
+    <header className="sticky top-0 z-40 border-b border-white/[.06] bg-slate-900/[.88] backdrop-blur-md">
+      <div className="mx-auto flex h-[60px] md:h-[68px] max-w-[1600px] items-center gap-3 px-4 lg:px-6">
+        <Link to="/" className="flex shrink-0 items-center gap-2" aria-label="LaLiga Lytics, inicio">
+          <LogoMark />
+          <Wordmark className="text-[13px] sm:text-lg md:text-xl" />
         </Link>
 
-        <form onSubmit={submit} role="search" className="relative mx-auto min-w-0 max-w-xl flex-1">
+        <form onSubmit={submit} role="search" className="relative mx-auto min-w-[44px] max-w-xl flex-1">
           <label htmlFor="global-search" className="sr-only">
             Buscar equipos o ligas
           </label>
@@ -46,7 +43,7 @@ export default function Navbar() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Buscar equipos o ligas…"
-            className="h-11 w-full rounded-full border border-white/10 bg-white/[.03] pl-10 pr-4 text-sm text-white placeholder-slate-400 transition focus:border-sky-500"
+            className="h-11 w-full rounded border border-white/10 bg-slate-950/70 pl-10 pr-4 text-sm text-white placeholder-slate-400 transition focus:border-sky-500"
           />
         </form>
 
@@ -54,7 +51,7 @@ export default function Navbar() {
           {account && (
             <Link
               to="/betting/mis-apuestas"
-              className="flex h-11 items-center gap-2 rounded-full border border-white/10 bg-white/[.03] px-3 font-mono text-sm font-bold tabular-nums text-lime-400 transition hover:border-sky-500"
+              className="flex h-11 w-11 items-center justify-center gap-2 rounded border border-white/10 bg-white/[.03] font-mono sm:w-auto sm:px-3 text-sm font-bold tabular-nums text-lime-400 transition hover:border-sky-500"
             >
               <WalletIcon />
               <span className="hidden sm:inline">{cop(account.balance)}</span>
@@ -66,7 +63,7 @@ export default function Navbar() {
               <Link
                 to="/profile"
                 aria-label={`Perfil de ${account.displayName}`}
-                className="flex h-11 items-center gap-2 rounded-full border border-white/10 bg-white/[.03] pl-1 pr-1 text-sm font-semibold text-white transition hover:border-sky-500 sm:pr-4"
+                className="flex h-11 items-center gap-2 rounded border border-white/10 bg-white/[.03] pl-1 pr-1 text-sm font-semibold text-white transition hover:border-sky-500 sm:pr-4"
               >
                 <Avatar name={account.displayName} />
                 <span className="hidden max-w-[10rem] truncate sm:inline">{account.displayName}</span>
@@ -75,21 +72,21 @@ export default function Navbar() {
                 type="button"
                 onClick={handleLogout}
                 aria-label="Cerrar sesión"
-                className="flex h-11 items-center gap-2 rounded-full border border-slate-700 px-3 text-sm font-semibold text-slate-300 transition hover:border-rose-500/60 hover:bg-rose-500/10 hover:text-rose-200"
+                className="flex h-11 w-11 items-center justify-center gap-2 rounded border border-slate-700 text-sm sm:w-auto sm:px-3 font-semibold text-slate-300 transition hover:border-rose-500/60 hover:bg-rose-500/10 hover:text-rose-200"
               >
                 <LogOutIcon />
                 <span className="hidden md:inline">Cerrar sesión</span>
               </button>
             </>
           ) : (
-            <NavLink to="/login" className="btn-primary !rounded-full !px-3 sm:!px-4" aria-label="Iniciar sesión">
+            <NavLink to="/login" className="btn-primary !px-3 sm:!min-h-[56px] sm:!min-w-[113px] sm:!px-6" aria-label="Iniciar sesión">
               <UserIcon />
               <span className="hidden sm:inline">Entrar</span>
             </NavLink>
           )}
           <NavLink
             to="/admin"
-            className="hidden h-11 w-11 items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-800 hover:text-white md:flex"
+            className="hidden h-11 w-11 items-center justify-center rounded text-slate-300 transition hover:bg-slate-800 hover:text-white md:flex"
             aria-label="Administración"
           >
             <CogIcon />

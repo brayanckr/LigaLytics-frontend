@@ -13,7 +13,7 @@ function Result({ status, stake, payout }: { status: BetDto['status']; stake: nu
   const net = status === 'PENDING' ? null : payout - stake
   return (
     <div className="text-right">
-      <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${label.tone}`}>{label.text}</span>
+      <span className={`rounded px-2.5 py-0.5 text-xs font-medium ${label.tone}`}>{label.text}</span>
       <p className={`mt-1 text-sm font-medium ${net === null ? 'text-slate-500' : net >= 0 ? 'text-emerald-300' : 'text-rose-300'}`}>
         {net === null ? '—' : `${net >= 0 ? '+' : ''}${cop(net)}`}
       </p>
@@ -97,7 +97,7 @@ export default function MyBets() {
                   </div>
                   <div className="flex shrink-0 items-center gap-2">
                     <span className="text-emerald-300">{leg.odds.toFixed(2)}</span>
-                    <span className={`rounded-full px-2 py-0.5 text-xs ${STATUS_LABEL[leg.status].tone}`}>
+                    <span className={`rounded px-2 py-0.5 text-xs ${STATUS_LABEL[leg.status].tone}`}>
                       {STATUS_LABEL[leg.status].text}
                     </span>
                   </div>

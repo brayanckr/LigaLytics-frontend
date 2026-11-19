@@ -108,7 +108,7 @@ function StatRow({ stat }: { stat: MatchStatDto }) {
 function StatusBadge({ match }: { match: MatchDetailDto }) {
   if (match.status === 'LIVE') {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/15 px-3 py-1 text-xs font-bold uppercase tracking-wide text-rose-300">
+      <span className="inline-flex items-center gap-1.5 rounded bg-rose-500/15 px-3 py-1 text-xs font-bold uppercase tracking-wide text-rose-300">
         <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-rose-400 motion-safe:animate-pulse-dot" />
         En vivo{match.minute !== null && <span className="num">{match.minute}&apos;</span>}
       </span>
@@ -116,7 +116,7 @@ function StatusBadge({ match }: { match: MatchDetailDto }) {
   }
   const text = match.status === 'FINISHED' ? 'Final' : match.status === 'SCHEDULED' ? 'Por jugar' : 'Sin datos'
   return (
-    <span className="rounded-full bg-white/5 px-3 py-1 text-xs font-bold uppercase tracking-wide text-slate-300">{text}</span>
+    <span className="rounded bg-white/5 px-3 py-1 text-xs font-bold uppercase tracking-wide text-slate-300">{text}</span>
   )
 }
 
