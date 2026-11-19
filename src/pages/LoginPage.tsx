@@ -3,6 +3,8 @@ import type { FormEvent, InputHTMLAttributes, ReactNode } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { API_BASE_URL } from '../api/axiosClient'
 import { SessionNotStoredError, useAuth } from '../auth/AuthContext'
+import HeroBackdrop, { SHOW_FRAME } from '../components/HeroBackdrop'
+import { LogoFull } from '../components/Logo'
 import Toast from '../components/Toast'
 
 type Mode = 'login' | 'register'
@@ -19,7 +21,7 @@ function Field({ label, hint, icon, trailing, className = '', ...props }: FieldP
   const id = useId()
   return (
     <div className="space-y-1.5">
-      <label htmlFor={id} className="flex items-baseline justify-between text-xs font-semibold uppercase tracking-wider text-slate-300">
+      <label htmlFor={id} className="flex items-baseline justify-between text-[11px] font-bold uppercase tracking-[.1em] text-slate-300">
         {label}
         {hint && <span className="text-[11px] font-medium normal-case tracking-normal text-slate-500">{hint}</span>}
       </label>
@@ -30,7 +32,7 @@ function Field({ label, hint, icon, trailing, className = '', ...props }: FieldP
         <input
           id={id}
           {...props}
-          className={`h-12 w-full rounded-xl border border-slate-700 bg-slate-950/70 pl-11 ${trailing ? 'pr-12' : 'pr-4'} text-base text-white placeholder:text-slate-600 outline-none transition-all duration-200 ease-out hover:border-slate-500 focus:border-sky-500 focus:bg-slate-950 focus:shadow-[0_0_0_4px_rgba(255,80,0,.18)] focus-visible:ring-0 focus-visible:ring-offset-0 sm:text-sm ${className}`}
+          className={`h-12 w-full rounded border border-slate-700 bg-slate-950/70 pl-11 ${trailing ? 'pr-12' : 'pr-4'} text-base text-white placeholder:text-slate-600 outline-none transition-all duration-200 ease-out hover:border-slate-500 focus:border-sky-500 focus:bg-slate-950 focus:shadow-[0_0_0_4px_rgba(18,192,238,.18)] focus-visible:ring-0 focus-visible:ring-offset-0 sm:text-sm ${className}`}
         />
         {trailing && <span className="absolute inset-y-0 right-1.5 flex items-center">{trailing}</span>}
       </div>
@@ -132,29 +134,39 @@ export default function LoginPage() {
   }
 
   const tab = (value: Mode) =>
-    `flex-1 rounded-lg px-3 py-2.5 text-sm font-bold transition-all duration-200 ${
+    `flex-1 rounded px-3 py-2.5 text-sm font-bold uppercase tracking-[.06em] transition-all duration-200 ${
       mode === value
-        ? 'bg-sky-500 text-white shadow-[0_6px_16px_-6px_rgba(255,80,0,.7)]'
+        ? 'bg-sky-500 text-slate-950 shadow-[0_6px_16px_-8px_rgba(18,192,238,.6)]'
         : 'text-slate-400 hover:bg-slate-700/50 hover:text-white'
     }`
 
   return (
-    <section className="mx-auto w-full max-w-md px-0 py-2 motion-safe:animate-rise sm:py-8">
+    // Pantalla completa sobre el layout (Navbar, Sidebar y BottomNav quedan debajo): campo + overlay + halo + marco.
+    <section className="fixed inset-0 z-50 bg-slate-900">
+      <HeroBackdrop />
+      {SHOW_FRAME && <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 border-2 border-sky-500" />}
       {toast && <Toast id={toast.id} message={toast.message} onClose={dismissToast} />}
-      <div className="relative overflow-hidden rounded-3xl border border-slate-700/70 bg-gradient-to-b from-slate-800 to-slate-900 shadow-[0_30px_80px_-20px_rgba(0,0,0,.85),0_0_0_1px_rgba(255,255,255,.03)_inset]">
-        {/* franja de acento y resplandor superior */}
-        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-sky-500 via-sky-300 to-lime-400" />
-        <div className="pointer-events-none absolute -right-16 -top-24 h-56 w-56 rounded-full bg-sky-500/20 blur-3xl" />
+      <div className="absolute inset-0 overflow-y-auto">
+        <div className="mx-auto grid min-h-full w-full max-w-[1200px] items-center gap-8 px-4 py-8 sm:px-8 lg:grid-cols-[1fr_28rem] lg:gap-16 lg:py-12">
+          <div className="max-w-[34rem] motion-safe:animate-rise">
+            <LogoFull className="w-[200px] sm:w-[280px] lg:w-[340px]" />
+            <p className="eyebrow mt-6 text-sky-400">Poisson &amp; Weka ML Trained</p>
+            <h1 className="mt-3 text-[clamp(2.5rem,11vw,3rem)] text-white md:text-[3.5rem] lg:text-[clamp(3rem,5.6vw,5rem)]">
+              Lee el juego
+              <span className="text-brand-gradient block pr-[.1em]">Decide con datos</span>
+            </h1>
+          </div>
 
+      <div className="relative overflow-hidden rounded-md border border-white/[.07] bg-slate-800 shadow-float motion-safe:animate-rise">
         <div className="relative space-y-6 p-5 sm:p-8">
           <header className="space-y-2">
-            <span className="inline-flex items-center gap-2 rounded-full border border-lime-400/30 bg-lime-400/10 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-lime-300">
+            <span className="eyebrow inline-flex items-center gap-2 rounded border border-lime-400/30 bg-lime-400/10 px-3 py-1 !text-[11px] text-lime-300">
               <span className="h-1.5 w-1.5 rounded-full bg-lime-400 motion-safe:animate-pulse-dot" />
               Demo en vivo
             </span>
-            <h1 className="font-display text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">
+            <h2 className="font-display text-3xl font-bold uppercase leading-none tracking-[.02em] text-white sm:text-4xl">
               {mode === 'login' ? 'Entra al juego' : 'Crea tu cuenta'}
-            </h1>
+            </h2>
             <p className="text-sm text-slate-400">
               Cada cuenta nueva recibe <strong className="font-bold text-lime-400">100.000 COP ficticios</strong> para apostar.
             </p>
@@ -224,11 +236,11 @@ export default function LoginPage() {
               type="submit"
               disabled={busy}
               aria-busy={busy}
-              className="group relative flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-sky-500 to-sky-400 text-sm font-extrabold uppercase tracking-wider text-white shadow-[0_12px_28px_-10px_rgba(255,80,0,.8)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_-10px_rgba(255,80,0,.95)] active:translate-y-0 active:scale-[.98] disabled:translate-y-0 disabled:cursor-not-allowed disabled:from-slate-700 disabled:to-slate-700 disabled:text-slate-300 disabled:shadow-none"
+              className="btn-primary group w-full !min-h-[52px] disabled:cursor-not-allowed"
             >
               {busy ? (
                 <>
-                  <span className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white motion-safe:animate-spin" />
+                  <span className="h-4 w-4 rounded-full border-2 border-slate-950/30 border-t-slate-950 motion-safe:animate-spin" />
                   {mode === 'login' ? 'Ingresando…' : 'Creando cuenta…'}
                 </>
               ) : (
@@ -244,6 +256,8 @@ export default function LoginPage() {
             Demostración educativa: no uses una contraseña que ya utilices en otros sitios, no hay recuperación de contraseña ni
             verificación de correo, y no se maneja dinero real.
           </p>
+        </div>
+      </div>
         </div>
       </div>
     </section>
