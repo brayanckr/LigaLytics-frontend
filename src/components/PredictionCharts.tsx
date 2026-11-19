@@ -16,6 +16,16 @@ import { describeOutcome } from '../lib/format'
 
 ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Legend, Title, Tooltip)
 
+/** Colores de series: siempre con leyenda o etiquetas, nunca solo por color. */
+const C = {
+  primary: '#12c0ee',
+  home: '#0868d8',
+  away: '#ea1a2f',
+  draw: '#b5528f',
+  warn: '#fbbf24',
+  line: 'rgba(118, 144, 169, 0.4)',
+}
+
 const doughnutOptions: ChartOptions<'doughnut'> = {
   responsive: true,
   maintainAspectRatio: false,
@@ -23,7 +33,7 @@ const doughnutOptions: ChartOptions<'doughnut'> = {
   plugins: {
     legend: {
       position: 'bottom',
-      labels: { color: '#cbd5e1', boxWidth: 12, padding: 16 },
+      labels: { color: '#c9d8e7', boxWidth: 12, padding: 16 },
     },
   },
 }
@@ -36,13 +46,13 @@ const barOptions: ChartOptions<'bar'> = {
   },
   scales: {
     x: {
-      ticks: { color: '#94a3b8' },
-      grid: { color: 'rgba(148, 163, 184, 0.08)' },
+      ticks: { color: '#9fb4c9' },
+      grid: { color: 'rgba(118, 144, 169, 0.1)' },
     },
     y: {
       beginAtZero: true,
-      ticks: { color: '#94a3b8' },
-      grid: { color: 'rgba(148, 163, 184, 0.08)' },
+      ticks: { color: '#9fb4c9' },
+      grid: { color: 'rgba(118, 144, 169, 0.1)' },
     },
   },
 }
@@ -55,11 +65,11 @@ interface ChartCardProps {
 
 function ChartCard({ title, badge, children }: ChartCardProps) {
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-800/40 p-5">
+    <div className="rounded-2xl border border-white/[.07] bg-slate-800 p-5">
       <div className="mb-4 flex items-center justify-between gap-3">
         <h3 className="text-sm font-semibold tracking-wide text-slate-300">{title}</h3>
         {badge && (
-          <span className="rounded-full bg-sky-500/15 px-3 py-1 text-xs font-medium text-sky-300">{badge}</span>
+          <span className="rounded bg-sky-500/15 px-3 py-1 text-xs font-medium text-sky-300">{badge}</span>
         )}
       </div>
       <div className="h-56">{children}</div>
@@ -81,8 +91,9 @@ export default function PredictionCharts({ prediction }: PredictionChartsProps) 
           prediction.drawProbability,
           prediction.awayWinProbability,
         ],
-        backgroundColor: ['rgba(56, 189, 248, 0.85)', 'rgba(148, 163, 184, 0.85)', 'rgba(167, 139, 250, 0.85)'],
-        borderColor: '#0f172a',
+        // Local azul, empate púrpura (aclarado para llegar a 3:1 sobre el panel) y visitante rojo: los tres del emblema.
+        backgroundColor: [C.home, C.draw, C.away],
+        borderColor: '#0b1c2c',
         borderWidth: 2,
       },
     ],
@@ -94,7 +105,7 @@ export default function PredictionCharts({ prediction }: PredictionChartsProps) 
       {
         label: 'Goles esperados',
         data: [prediction.expectedHomeGoals, prediction.expectedAwayGoals],
-        backgroundColor: ['rgba(56, 189, 248, 0.85)', 'rgba(167, 139, 250, 0.85)'],
+        backgroundColor: [C.home, C.away],
         borderRadius: 6,
       },
     ],
@@ -106,7 +117,7 @@ export default function PredictionCharts({ prediction }: PredictionChartsProps) 
       {
         label: 'Córneres',
         data: [prediction.expectedCorners, 9.5],
-        backgroundColor: ['rgba(56, 189, 248, 0.85)', 'rgba(148, 163, 184, 0.35)'],
+        backgroundColor: [C.primary, C.line],
         borderRadius: 6,
       },
     ],
@@ -118,7 +129,7 @@ export default function PredictionCharts({ prediction }: PredictionChartsProps) 
       {
         label: 'Tarjetas',
         data: [prediction.expectedCards, 4.5],
-        backgroundColor: ['rgba(251, 191, 36, 0.85)', 'rgba(148, 163, 184, 0.35)'],
+        backgroundColor: [C.warn, C.line],
         borderRadius: 6,
       },
     ],

@@ -26,7 +26,7 @@ export default function Toast({ id, message, onClose, duration = 5000 }: ToastPr
         key={id}
         role="alert"
         aria-live="assertive"
-        className="pointer-events-auto relative w-full max-w-sm overflow-hidden rounded-2xl border border-rose-500/40 bg-slate-900/95 shadow-[0_24px_60px_-12px_rgba(0,0,0,.9),0_0_0_1px_rgba(244,63,94,.15)] backdrop-blur motion-safe:animate-toast-in"
+        className="pointer-events-auto relative w-full max-w-sm overflow-hidden rounded-2xl border border-rose-500/40 bg-slate-900/95 shadow-[0_24px_60px_-12px_rgba(0,0,0,.9),0_0_0_1px_rgba(234,26,47,.2)] backdrop-blur motion-safe:animate-toast-in"
       >
         <div className="flex items-start gap-3 p-4 pr-3">
           <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-rose-500/15 text-rose-300">

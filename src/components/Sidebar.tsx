@@ -60,20 +60,20 @@ export default function Sidebar() {
   // Ítems principales: el fondo activo lo pinta la pastilla compartida, no cada enlace.
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     [
-      'group relative flex min-h-[44px] items-center gap-3 rounded-xl px-3 text-sm font-semibold transition-colors duration-150',
+      'group relative flex min-h-[44px] items-center gap-3 rounded px-3 text-[13px] font-semibold uppercase tracking-[.06em] transition-colors duration-150',
       isActive ? 'text-sky-300' : 'text-slate-400 hover:bg-white/[.04] hover:text-white',
     ].join(' ')
 
   const leagueClass = ({ isActive }: { isActive: boolean }) =>
     [
-      'group relative flex min-h-[44px] items-center gap-3 rounded-xl px-3 text-sm font-semibold transition-colors duration-150',
+      'group relative flex min-h-[44px] items-center gap-3 rounded px-3 text-[13px] font-semibold uppercase tracking-[.06em] transition-colors duration-150',
       isActive ? 'bg-sky-500/10 text-sky-300' : 'text-slate-400 hover:bg-white/[.04] hover:text-white',
     ].join(' ')
 
   return (
     <aside
       data-collapsed={collapsed}
-      className={`sticky top-16 hidden h-[calc(100dvh-4rem)] shrink-0 flex-col overflow-y-auto overflow-x-hidden border-r border-white/5 bg-slate-900/60 p-3 transition-[width] duration-300 ease-out lg:flex ${
+      className={`sticky top-[68px] hidden h-[calc(100dvh-68px)] shrink-0 flex-col overflow-y-auto overflow-x-hidden border-r border-white/5 bg-slate-900/60 p-3 transition-[width] duration-300 ease-out lg:flex ${
         collapsed ? 'w-[4.75rem]' : 'w-64'
       }`}
       style={{ transitionDuration: 'var(--dur-sidebar)', transitionTimingFunction: 'var(--ease-snap)' }}
@@ -99,7 +99,7 @@ export default function Sidebar() {
             onClick={() => setLeaguesOpen((open) => !open)}
             aria-expanded={leaguesOpen}
             aria-controls="sidebar-leagues"
-            className="flex min-h-[44px] w-full items-center justify-between rounded-lg px-3 text-xs font-bold uppercase tracking-wider text-slate-400 transition hover:text-white"
+            className="flex min-h-[44px] w-full items-center justify-between rounded-lg px-3 eyebrow text-slate-400 transition hover:text-white"
           >
             Ligas
             <ChevronIcon className={`transition-transform duration-200 ${leaguesOpen ? 'rotate-180' : ''}`} />
@@ -116,11 +116,11 @@ export default function Sidebar() {
                   ) : (
                     <span
                       aria-disabled="true"
-                      className="flex min-h-[44px] items-center gap-3 rounded-lg px-3 text-sm font-medium text-slate-500"
+                      className="flex min-h-[44px] items-center gap-3 rounded px-3 text-[13px] font-medium uppercase tracking-[.06em] text-slate-500"
                     >
                       <ShieldIcon />
                       {league.name}
-                      <span className="ml-auto rounded-full bg-slate-800 px-2 py-0.5 text-[10px] font-bold uppercase text-slate-400">
+                      <span className="ml-auto rounded bg-slate-800 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                         Pronto
                       </span>
                     </span>
@@ -138,7 +138,7 @@ export default function Sidebar() {
         aria-pressed={collapsed}
         aria-label={collapsed ? 'Expandir menú lateral' : 'Contraer menú lateral'}
         title={collapsed ? 'Expandir menú' : undefined}
-        className={`sticky bottom-0 mt-auto flex min-h-[44px] items-center gap-3 rounded-xl border border-white/10 bg-slate-900 px-3 text-sm font-semibold text-slate-400 transition-colors duration-150 hover:border-sky-500/60 hover:text-white active:scale-95`}
+        className={`sticky bottom-0 mt-auto flex min-h-[44px] items-center gap-3 rounded border border-white/10 bg-slate-900 px-3 text-[13px] font-semibold uppercase tracking-[.06em] text-slate-400 transition-colors duration-150 hover:border-sky-500/60 hover:text-white active:scale-95`}
       >
         {collapsed ? <ExpandIcon className="shrink-0" /> : <CollapseIcon className="shrink-0" />}
         <span className="nav-label">Contraer</span>

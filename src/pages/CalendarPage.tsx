@@ -25,20 +25,20 @@ function addDays(date: Date, days: number): Date {
 function StatusBadge({ fixture }: { fixture: FixtureDto }) {
   if (fixture.status === 'LIVE') {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/20 px-2.5 py-0.5 text-xs font-bold text-rose-300">
+      <span className="inline-flex items-center gap-1.5 rounded bg-rose-500/20 px-2.5 py-0.5 text-xs font-bold text-rose-300">
         <span className="h-2 w-2 animate-pulse rounded-full bg-rose-400" />
         EN VIVO
       </span>
     )
   }
   if (fixture.status === 'FINISHED') {
-    return <span className="rounded-full bg-slate-700/60 px-2.5 py-0.5 text-xs font-medium text-slate-300">Finalizado</span>
+    return <span className="rounded bg-slate-700/60 px-2.5 py-0.5 text-xs font-medium text-slate-300">Finalizado</span>
   }
   if (fixture.status === 'OTHER') {
-    return <span className="rounded-full bg-amber-500/20 px-2.5 py-0.5 text-xs font-medium text-amber-300">Aplazado</span>
+    return <span className="rounded bg-amber-500/20 px-2.5 py-0.5 text-xs font-medium text-amber-300">Aplazado</span>
   }
   return (
-    <span className="rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-300">
+    <span className="rounded bg-sky-500/15 px-2.5 py-0.5 text-xs font-medium text-sky-300">
       {new Date(fixture.utcDate).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
     </span>
   )
@@ -129,7 +129,7 @@ export default function CalendarPage() {
     <section className="space-y-6">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Calendario de LaLiga</h1>
+          <h1 className="text-3xl text-white sm:text-4xl">Calendario de LaLiga</h1>
           <p className="text-sm text-slate-400">Próximos partidos, resultados y marcadores en vivo.</p>
         </div>
         <div className="flex items-center gap-2 text-sm">

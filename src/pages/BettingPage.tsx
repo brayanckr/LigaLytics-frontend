@@ -129,7 +129,7 @@ export default function BettingPage() {
 
         <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">Apuestas (demo)</h1>
+            <h1 className="text-3xl text-white sm:text-4xl">Apuestas (demo)</h1>
             <p className="text-sm text-slate-400">
               Hola, {account.displayName}. Cuotas reales de casas de apuestas y probabilidades de nuestro modelo.
             </p>

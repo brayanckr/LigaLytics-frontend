@@ -56,7 +56,7 @@ export default function RankingPage() {
   return (
     <section className="space-y-6">
       <header>
-        <h1 className="text-2xl font-bold text-white">Clasificación de LaLiga</h1>
+        <h1 className="text-3xl text-white sm:text-4xl">Clasificación de LaLiga</h1>
         <p className="text-sm text-slate-400">
           Tabla de posiciones
           {seasons.data && seasons.data.length > 0

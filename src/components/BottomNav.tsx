@@ -6,7 +6,7 @@ export default function BottomNav() {
   return (
     <nav
       aria-label="Navegación móvil"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-white/5 bg-slate-900/85 pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_30px_-12px_rgba(0,0,0,.8)] backdrop-blur-xl lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-white/5 bg-slate-900/[.92] pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_30px_-12px_rgba(0,0,0,.8)] backdrop-blur-xl lg:hidden"
     >
       <ul className="grid grid-cols-5">
         {BOTTOM_ITEMS.map(({ to, label, icon: Icon, end }) => (
@@ -15,7 +15,7 @@ export default function BottomNav() {
               to={to}
               end={end}
               className={({ isActive }) =>
-                `relative flex min-h-[58px] flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition-colors duration-200 ${
+                `relative flex min-h-[58px] flex-col items-center justify-center gap-0.5 text-[10px] font-bold uppercase tracking-[.04em] transition-colors duration-200 ${
                   isActive ? 'text-sky-400' : 'text-slate-400 hover:text-white'
                 }`
               }

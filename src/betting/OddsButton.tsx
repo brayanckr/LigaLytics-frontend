@@ -35,23 +35,23 @@ export default function OddsButton({ match, offer, label, detailed = false, show
       aria-pressed={selected}
       className={`group flex min-h-[44px] w-full items-center justify-between gap-3 rounded-lg border px-3 py-2 text-sm font-bold tabular-nums transition duration-150 active:scale-95 ${
         selected
-          ? 'border-sky-500 bg-sky-500 text-white shadow-glow'
+          ? 'border-sky-500 bg-sky-500 text-slate-950 shadow-glow'
           : 'border-slate-700 bg-slate-900 text-slate-200 hover:-translate-y-0.5 hover:border-sky-500 hover:shadow-glow'
       }`}
     >
       <span className="text-left">
-        <span className={`block text-xs font-semibold ${selected ? 'text-white/90' : 'text-slate-400'}`}>{label}</span>
+        <span className={`block text-xs font-semibold ${selected ? 'text-slate-950/80' : 'text-slate-400'}`}>{label}</span>
         {detailed && model !== null && (
-          <span className={`text-xs font-medium ${selected ? 'text-white/90' : 'text-slate-400'}`}>
+          <span className={`text-xs font-medium ${selected ? 'text-slate-950/80' : 'text-slate-400'}`}>
             IA {model}%
-            {offer.recommended && <span className={selected ? ' text-white' : ' text-lime-400'}> ▲ recomendada</span>}
+            {offer.recommended && <span className={selected ? ' text-slate-950' : ' text-lime-400'}> ▲ recomendada</span>}
           </span>
         )}
       </span>
       <span className="text-right">
-        <span className={`block text-base ${selected ? 'text-white' : 'text-lime-400'}`}>{offer.odds.toFixed(2)}</span>
+        <span className={`block text-base ${selected ? 'text-slate-950' : 'text-lime-400'}`}>{offer.odds.toFixed(2)}</span>
         {showModel && model !== null && (
-          <span className={`block text-[10px] font-medium ${selected ? 'text-white/90' : 'text-slate-400'}`}>
+          <span className={`block text-[10px] font-medium ${selected ? 'text-slate-950/80' : 'text-slate-400'}`}>
             IA {model}%
           </span>
         )}

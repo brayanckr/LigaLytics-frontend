@@ -105,7 +105,7 @@ export default function AdminPage() {
   return (
     <section className="space-y-6">
       <header>
-        <h1 className="text-2xl font-bold text-white">Panel de administración</h1>
+        <h1 className="text-3xl text-white sm:text-4xl">Panel de administración</h1>
         <p className="text-sm text-slate-400">
           Fuerza la actualización de datos desde las fuentes externas y reentrena el modelo de IA.
         </p>

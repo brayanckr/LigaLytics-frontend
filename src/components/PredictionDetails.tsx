@@ -67,7 +67,7 @@ export default function PredictionDetails({ prediction }: { prediction: Predicti
         <p className="mb-2 text-xs uppercase tracking-wide text-slate-400">Marcadores más probables</p>
         <div className="flex flex-wrap gap-2">
           {prediction.topScores.map((item) => (
-            <span key={item.score} className="rounded-full bg-sky-500/15 px-3 py-1 text-sky-200">
+            <span key={item.score} className="rounded bg-sky-500/15 px-3 py-1 text-sky-200">
               {item.score} · {(item.probability * 100).toFixed(1)}%
             </span>
           ))}
@@ -114,7 +114,7 @@ export default function PredictionDetails({ prediction }: { prediction: Predicti
       <div className="flex flex-wrap gap-2 text-xs text-slate-400">
         <span>Algoritmos:</span>
         {Object.entries(prediction.strategies).map(([target, name]) => (
-          <span key={target} className="rounded-full bg-slate-700/60 px-2.5 py-0.5 text-slate-300">
+          <span key={target} className="rounded bg-slate-700/60 px-2.5 py-0.5 text-slate-300">
             {STRATEGY_LABELS[target] ?? target}: {name}
           </span>
         ))}

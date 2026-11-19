@@ -20,11 +20,11 @@ export default function ProfilePage() {
   return (
     <section className="mx-auto max-w-2xl space-y-5 motion-safe:animate-rise">
       <div className="relative overflow-hidden rounded-2xl border border-slate-700/70 bg-gradient-to-b from-slate-800 to-slate-900 p-5 shadow-card sm:p-8">
-        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-sky-500 via-sky-300 to-lime-400" />
+        <div className="absolute inset-x-0 top-0 h-0.5 bg-sky-500" />
         <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
           <Avatar name={account.displayName} size="lg" />
           <div className="min-w-0">
-            <h1 className="truncate font-display text-2xl font-extrabold text-white sm:text-3xl">{account.displayName}</h1>
+            <h1 className="truncate text-3xl text-white sm:text-4xl">{account.displayName}</h1>
             <p className="truncate text-sm text-slate-400">{account.email}</p>
           </div>
         </div>

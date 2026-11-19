@@ -63,7 +63,7 @@ function SlipBody() {
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <h2 className="flex items-center gap-2 text-sm font-extrabold text-white">
-          <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-sky-500 px-1.5 text-xs text-white">
+          <span className="flex h-6 min-w-6 items-center justify-center rounded bg-sky-500 px-1.5 text-xs text-slate-950">
             {items.length}
           </span>
           {items.length === 0 ? 'Boleto' : isParlay ? 'Combinada' : 'Apuesta simple'}
@@ -249,10 +249,10 @@ export default function BetSlip() {
         <button
           type="button"
           onClick={() => setSheetOpen(true)}
-          className="fixed inset-x-3 bottom-[calc(56px+env(safe-area-inset-bottom)+8px)] z-30 flex min-h-[48px] animate-pop-in items-center justify-between rounded-xl bg-sky-500 px-4 text-sm font-extrabold text-white shadow-glow lg:hidden"
+          className="fixed inset-x-3 bottom-[calc(56px+env(safe-area-inset-bottom)+8px)] z-30 flex min-h-[48px] animate-pop-in items-center justify-between rounded-xl bg-sky-500 px-4 text-sm font-extrabold uppercase tracking-[.06em] text-slate-950 shadow-glow lg:hidden"
         >
           <span className="flex items-center gap-2">
-            <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-white px-1.5 text-xs text-sky-600">
+            <span className="flex h-6 min-w-6 items-center justify-center rounded bg-white px-1.5 text-xs text-sky-600">
               {items.length}
             </span>
             Ver boleto
@@ -274,7 +274,7 @@ export default function BetSlip() {
               <button
                 type="button"
                 onClick={() => setSheetOpen(false)}
-                className="min-h-[44px] rounded-full px-3 text-xs font-bold text-slate-300 hover:text-white"
+                className="min-h-[44px] rounded px-3 text-xs font-bold text-slate-300 hover:text-white"
               >
                 Cerrar
               </button>

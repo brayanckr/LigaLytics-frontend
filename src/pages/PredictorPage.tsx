@@ -60,7 +60,7 @@ export default function PredictorPage() {
   return (
     <section className="space-y-6">
       <header>
-        <h1 className="text-2xl font-bold text-white">Panel de predicciones</h1>
+        <h1 className="text-3xl text-white sm:text-4xl">Panel de predicciones</h1>
         <p className="text-sm text-slate-400">
           Selecciona dos equipos para estimar resultado, goles, córneres y tarjetas.
         </p>
@@ -156,7 +156,7 @@ export default function PredictorPage() {
                 Visitante <strong className="text-violet-300">{formatPercent(prediction.awayWinProbability)}</strong>
               </span>
               {prediction.fromCache && (
-                <span className="rounded-full bg-emerald-500/15 px-3 py-0.5 text-xs font-medium text-emerald-300">
+                <span className="rounded bg-emerald-500/15 px-3 py-0.5 text-xs font-medium text-emerald-300">
                   caché
                 </span>
               )}

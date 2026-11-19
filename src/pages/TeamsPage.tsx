@@ -32,7 +32,7 @@ export default function TeamsPage() {
     <section className="space-y-6">
       <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Equipos de LaLiga</h1>
+          <h1 className="text-3xl text-white sm:text-4xl">Equipos de LaLiga</h1>
           <p className="text-sm text-slate-400">
             {teams.length} {teams.length === 1 ? 'equipo' : 'equipos'} disponibles
           </p>
