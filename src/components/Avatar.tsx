@@ -3,7 +3,7 @@ interface AvatarProps {
   size?: 'sm' | 'lg'
 }
 
-/** Avatar con las iniciales del usuario sobre un degradado de acento. */
+/** Avatar con las iniciales del usuario sobre el color de acento. */
 export default function Avatar({ name, size = 'sm' }: AvatarProps) {
   const initials =
     name
@@ -16,7 +16,7 @@ export default function Avatar({ name, size = 'sm' }: AvatarProps) {
   return (
     <span
       aria-hidden
-      className={`flex ${dimensions} shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-lime-400 font-extrabold text-slate-900 ring-2 ring-slate-700`}
+      className={`flex ${dimensions} shrink-0 items-center justify-center rounded-full bg-sky-500 font-extrabold text-slate-950 ring-2 ring-slate-700`}
     >
       {initials}
     </span>
