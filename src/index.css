@@ -9,25 +9,39 @@
   --dur-fast: 200ms;
   --dur-sidebar: 250ms;
   --ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Identidad del logo de LaLiga Lytics */
+  --bg: #06121c;
+  --surface: #0b1c2c;
+  --surface-2: #10263b;
+  --line: rgba(255, 255, 255, 0.07);
+  --primary: #12c0ee;
+  --primary-hover: #2fd2f6;
+  --on-primary: #031018;
+  --accent-green: #2bf29a;
+  --danger: #ea1a2f;
+  --gradient-brand: linear-gradient(90deg, #1fe6fe 0%, #2bf29a 100%);
+  --radius-control: 4px;
+  --radius-card: 6px;
 }
 
 @layer base {
   html {
     color-scheme: dark;
     -webkit-tap-highlight-color: transparent;
-    scrollbar-color: #2b3446 transparent;
+    scrollbar-color: #1a3046 transparent;
     scrollbar-width: thin;
   }
   body {
     @apply min-h-screen bg-slate-900 font-sans text-slate-200 antialiased;
     font-feature-settings: 'tnum' 1, 'cv11' 1;
-    /* Luz ambiental por capas: un halo naranja arriba a la derecha y uno frío abajo a la izquierda, fijos al viewport. */
-    background-image: radial-gradient(60rem 38rem at 92% -8%, rgba(255, 80, 0, 0.09), transparent 60%),
-      radial-gradient(52rem 40rem at -6% 108%, rgba(56, 96, 200, 0.07), transparent 62%);
+    /* Luz ambiental como el brillo del logo: halo cian arriba a la derecha y azul abajo a la izquierda, fijos al viewport. */
+    background-image: radial-gradient(60rem 38rem at 92% -8%, rgba(18, 192, 238, 0.09), transparent 60%),
+      radial-gradient(52rem 40rem at -6% 108%, rgba(8, 104, 216, 0.09), transparent 62%);
     background-attachment: fixed;
   }
   ::selection {
-    background: rgba(255, 80, 0, 0.35);
+    background: rgba(18, 192, 238, 0.35);
     color: #fff;
   }
   ::-webkit-scrollbar {
@@ -35,13 +49,13 @@
     height: 10px;
   }
   ::-webkit-scrollbar-thumb {
-    background: #232b3a;
+    background: #1a3046;
     border: 2px solid transparent;
     background-clip: content-box;
     border-radius: 999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #3a4457;
+    background: #34506a;
     background-clip: content-box;
   }
   :focus-visible {
@@ -55,20 +69,46 @@
   button {
     @apply cursor-pointer;
   }
+  /* H1 de página: Barlow Condensed cursiva 800 en mayúsculas (composición editorial deportiva). */
+  h1 {
+    @apply font-display font-extrabold uppercase italic;
+    letter-spacing: -0.01em;
+    line-height: 0.98;
+  }
+  h2.font-display,
+  h3.font-display {
+    @apply uppercase;
+    letter-spacing: 0.04em;
+  }
 }
 
 @layer components {
   /* Superficie plana: se separa del fondo por contraste y un filo de 1px, no por marcos pesados. */
   .card {
-    @apply rounded-2xl border border-white/[.06] bg-slate-800 shadow-card;
+    @apply rounded-2xl border border-white/[.07] bg-slate-800 shadow-card;
   }
   /* Cifras, probabilidades y métricas. */
   .num {
     @apply font-mono font-semibold tabular-nums tracking-tight;
   }
+  /* Etiquetas, cabeceras de tabla y badges: Inter 700 en mayúsculas con tracking. */
+  .eyebrow {
+    @apply font-sans text-xs font-bold uppercase;
+    letter-spacing: 0.14em;
+  }
+  /* Palabra con el degradado de marca (cian → menta). Solo texto: nunca fondos ni botones. */
+  .text-brand-gradient {
+    background-image: var(--gradient-brand);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
   .btn-primary {
-    @apply relative inline-flex min-h-[44px] items-center justify-center gap-2 overflow-hidden rounded-xl bg-sky-500 px-4 text-sm font-bold text-white;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 8px 22px -10px rgba(255, 80, 0, 0.75);
+    @apply relative inline-flex min-h-[44px] items-center justify-center gap-2 overflow-hidden rounded bg-sky-500 px-4 text-sm font-bold uppercase;
+    color: var(--on-primary);
+    letter-spacing: 0.06em;
+    box-shadow: 0 8px 22px -12px rgba(18, 192, 238, 0.55);
     transition: transform var(--dur-fast) var(--ease-snap), box-shadow var(--dur-fast) var(--ease-snap),
       background-color var(--dur-quick) var(--ease-snap);
     will-change: transform;
@@ -79,25 +119,44 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.34) 50%, transparent 65%);
+    background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.38) 50%, transparent 65%);
     transform: translateX(-120%);
     transition: transform 450ms var(--ease-snap);
   }
   .btn-primary:hover {
     @apply bg-sky-400;
     transform: translateY(-1px);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 14px 28px -10px rgba(255, 80, 0, 0.85);
+    box-shadow: 0 14px 28px -12px rgba(18, 192, 238, 0.6);
   }
   .btn-primary:hover::after {
     transform: translateX(120%);
   }
-  /* Micro-scale táctil al pulsar. */
   .btn-primary:active {
-    transform: translateY(0) scale(0.95);
+    transform: translateY(0);
     transition-duration: 80ms;
   }
+  .btn-primary:disabled {
+    @apply opacity-50;
+    transform: none;
+    box-shadow: none;
+  }
+  .btn-primary:disabled::after {
+    display: none;
+  }
   .btn-ghost {
-    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[.03] px-4 text-sm font-bold text-slate-100 backdrop-blur-sm transition duration-150 hover:border-white/20 hover:bg-white/[.07] active:scale-[.985];
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded border border-white/10 bg-transparent px-4 text-sm font-bold uppercase text-slate-100 transition duration-150 hover:border-sky-500/60 active:scale-[.985];
+    letter-spacing: 0.06em;
+  }
+  /* Enlace con chevron: el chevron avanza 3px al pasar el cursor. */
+  .link-chevron {
+    @apply inline-flex min-h-[44px] items-center gap-1.5 text-sm font-bold uppercase text-sky-400 transition-colors duration-150 hover:text-sky-300;
+    letter-spacing: 0.06em;
+  }
+  .link-chevron > .chev {
+    transition: transform var(--dur-quick) var(--ease-snap);
+  }
+  .link-chevron:hover > .chev {
+    transform: translateX(3px);
   }
   /* Sidebar: etiqueta en flujo, solo opacity + translateX; el aside recorta el desborde mientras colapsa. */
   .nav-label {
@@ -116,15 +175,15 @@
     right: 0;
     top: 0;
     height: 44px;
-    border-radius: 0.75rem;
-    background: rgba(255, 80, 0, 0.1);
-    box-shadow: inset 2px 0 0 #ff5000;
+    border-radius: var(--radius-control);
+    background: rgba(18, 192, 238, 0.1);
+    box-shadow: inset 2px 0 0 #12c0ee;
     transition: transform var(--dur-sidebar) var(--ease-snap), opacity var(--dur-quick) ease-out;
     will-change: transform;
     pointer-events: none;
   }
   .odds-pill {
-    @apply rounded-lg border border-white/10 bg-slate-900 font-mono font-bold tabular-nums text-lime-400 transition duration-150 hover:-translate-y-0.5 hover:border-sky-500 hover:shadow-glow active:scale-95;
+    @apply rounded border border-white/10 bg-slate-900 font-mono font-bold tabular-nums text-lime-400 transition duration-150 hover:-translate-y-0.5 hover:border-sky-500 hover:shadow-glow active:scale-95;
   }
 }
 
