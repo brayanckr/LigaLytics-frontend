@@ -38,16 +38,23 @@ export default function BettingPage() {
       if (current.some((i) => i.key === item.key)) {
         return current.filter((i) => i.key !== item.key)
       }
-      // Como en las combinadas de las casas de apuestas, solo cabe una selección por partido: las de un mismo
-      // partido se contradicen (ganador y empate, más y menos de 2,5) o están correlacionadas.
-      const previous = current.find((i) => i.eventId === item.eventId)
-      if (previous) {
+      // Un mismo partido admite varias selecciones salvo las incompatibles (misma regla que el servidor): las del
+      // mismo mercado (Sí/No, más/menos, 1X2) y ambos marcan con goles, que se contradicen o se implican.
+      const clashing = current.filter(
+        (i) =>
+          i.eventId === item.eventId &&
+          (i.offer.market === item.offer.market ||
+            (i.offer.market === 'BTTS' && item.offer.market === 'GOALS') ||
+            (i.offer.market === 'GOALS' && item.offer.market === 'BTTS')),
+      )
+      if (clashing.length > 0) {
         setNotice(
-          `Solo se admite una selección por partido en el cupón: «${describeOffer(item.offer, item.homeTeam, item.awayTeam)}» ` +
-            `sustituye a «${describeOffer(previous.offer, previous.homeTeam, previous.awayTeam)}» (${item.homeTeam} vs ${item.awayTeam}).`,
+          `«${describeOffer(item.offer, item.homeTeam, item.awayTeam)}» sustituye a ` +
+            `«${clashing.map((c) => describeOffer(c.offer, c.homeTeam, c.awayTeam)).join('», «')}» ` +
+            `porque son incompatibles en el mismo partido (${item.homeTeam} vs ${item.awayTeam}).`,
         )
       }
-      return [...current.filter((i) => i.eventId !== item.eventId), item]
+      return [...current.filter((i) => !clashing.includes(i)), item]
     })
   }, [])
 
