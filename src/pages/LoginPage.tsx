@@ -251,11 +251,6 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-
-          <p className="rounded-xl border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-xs leading-relaxed text-amber-200">
-            Demostración educativa: no uses una contraseña que ya utilices en otros sitios, no hay recuperación de contraseña ni
-            verificación de correo, y no se maneja dinero real.
-          </p>
         </div>
       </div>
         </div>
