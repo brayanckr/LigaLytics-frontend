@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import type { BettingMatchDto, OfferDto } from '../types'
 import { ligalyticsApi } from '../api/ligalyticsApi'
 import { useApi } from '../hooks/useApi'
+import { useTeamCrests } from '../hooks/useTeamCrests'
 import ErrorAlert from '../components/ErrorAlert'
 import Spinner from '../components/Spinner'
 import Crest from './Crest'
@@ -53,7 +54,20 @@ function pickFeatured(matches: BettingMatchDto[]): { match: BettingMatchDto; rec
   return fallback ? { match: fallback, recommended: null } : null
 }
 
-function FeaturedMatch({ match, recommended }: { match: BettingMatchDto; recommended: OfferDto | null }) {
+/** Escudo oficial de un equipo del partido según su id, o nulo si no se conoce (se muestran las iniciales). */
+function crestOf(crests: Map<number, string>, teamId: number | null): string | null {
+  return teamId === null ? null : (crests.get(teamId) ?? null)
+}
+
+function FeaturedMatch({
+  match,
+  recommended,
+  crests,
+}: {
+  match: BettingMatchDto
+  recommended: OfferDto | null
+  crests: Map<number, string>
+}) {
   return (
     <section
       aria-label="Partido del día"
@@ -75,12 +89,12 @@ function FeaturedMatch({ match, recommended }: { match: BettingMatchDto; recomme
           className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-center"
         >
           <span className="flex flex-col items-center gap-2">
-            <Crest name={match.homeTeam} size="lg" />
+            <Crest name={match.homeTeam} size="lg" src={crestOf(crests, match.homeTeamId)} />
             <span className="text-base font-extrabold text-white sm:text-xl">{match.homeTeam}</span>
           </span>
           <span className="text-sm font-bold text-slate-400">VS</span>
           <span className="flex flex-col items-center gap-2">
-            <Crest name={match.awayTeam} size="lg" />
+            <Crest name={match.awayTeam} size="lg" src={crestOf(crests, match.awayTeamId)} />
             <span className="text-base font-extrabold text-white sm:text-xl">{match.awayTeam}</span>
           </span>
         </Link>
@@ -103,7 +117,17 @@ function FeaturedMatch({ match, recommended }: { match: BettingMatchDto; recomme
   )
 }
 
-function MatchRow({ match, open, onToggle }: { match: BettingMatchDto; open: boolean; onToggle: () => void }) {
+function MatchRow({
+  match,
+  open,
+  onToggle,
+  crests,
+}: {
+  match: BettingMatchDto
+  open: boolean
+  onToggle: () => void
+  crests: Map<number, string>
+}) {
   const extra = match.offers.filter((o) => o.market !== 'WINNER').length
   const odds = winnerOffers(match)
   return (
@@ -119,11 +143,11 @@ function MatchRow({ match, open, onToggle }: { match: BettingMatchDto; open: boo
           </span>
           <span className="min-w-0 space-y-1.5">
             <span className="flex items-center gap-2">
-              <Crest name={match.homeTeam} />
+              <Crest name={match.homeTeam} src={crestOf(crests, match.homeTeamId)} />
               <span className="truncate text-sm font-bold text-white">{match.homeTeam}</span>
             </span>
             <span className="flex items-center gap-2">
-              <Crest name={match.awayTeam} />
+              <Crest name={match.awayTeam} src={crestOf(crests, match.awayTeamId)} />
               <span className="truncate text-sm font-bold text-white">{match.awayTeam}</span>
             </span>
           </span>
@@ -185,6 +209,8 @@ function MatchRow({ match, open, onToggle }: { match: BettingMatchDto; open: boo
 export default function MatchList() {
   const matches = useApi(() => ligalyticsApi.getBettingMatches(7), [])
   const [openId, setOpenId] = useState<number | null>(null)
+  // Escudos oficiales por id de equipo; si no cargan, cada Crest muestra las iniciales.
+  const crests = useTeamCrests()
 
   if (matches.loading) {
     return <Spinner label="Cargando partidos y cuotas…" />
@@ -200,7 +226,7 @@ export default function MatchList() {
 
   return (
     <div className="space-y-6">
-      {featured && <FeaturedMatch match={featured.match} recommended={featured.recommended} />}
+      {featured && <FeaturedMatch match={featured.match} recommended={featured.recommended} crests={crests} />}
 
       {groupByDay(items).map(([day, dayMatches]) => (
         <section key={day} className="space-y-2">
@@ -213,6 +239,7 @@ export default function MatchList() {
             <MatchRow
               key={match.eventId}
               match={match}
+              crests={crests}
               open={openId === match.eventId}
               onToggle={() => setOpenId(openId === match.eventId ? null : match.eventId)}
             />
