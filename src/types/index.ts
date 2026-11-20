@@ -11,6 +11,11 @@ export interface TeamDto {
   marketValue: number | null
   /** URL del escudo oficial que entrega el backend (puede faltar). */
   crest?: string | null
+  /** Córneres y tarjetas totales por partido en los partidos del equipo (nulos si no hay datos). */
+  averageCorners?: number | null
+  averageCards?: number | null
+  /** Temporada de la que salen esos promedios, p. ej. «2026/2027». */
+  statsSeason?: string | null
 }
 
 /** Una estadística comparada local vs visitante; `away` es null cuando solo se conoce el total del partido. */
@@ -68,8 +73,10 @@ export interface TeamStatsDto {
   points: number
   averageGoalsFor: number
   averageGoalsAgainst: number
-  averageCorners: number
-  averageYellowCards: number
+  /** Córneres por partido; nulo si ningún partido de la temporada trae el dato. */
+  averageCorners: number | null
+  /** Tarjetas (amarillas + rojas) por partido; nulo si no hay dato. */
+  averageYellowCards: number | null
   recentMatches: MatchSummaryDto[]
   season: string | null
   recentForm: string

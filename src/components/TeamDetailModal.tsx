@@ -109,8 +109,14 @@ export default function TeamDetailModal({ team, onClose, crest = null }: TeamDet
                 <StatItem label="GF / GC" value={`${data.goalsFor} / ${data.goalsAgainst}`} />
                 <StatItem label="Media goles" value={formatDecimal(data.averageGoalsFor)} />
                 <StatItem label="Valor plantilla" value={formatMarketValue(data.marketValue)} />
-                <StatItem label="Media córneres" value={formatDecimal(data.averageCorners)} />
-                <StatItem label="Media tarjetas" value={formatDecimal(data.averageYellowCards)} />
+                <StatItem
+                  label="Media córneres"
+                  value={data.averageCorners === null ? '—' : formatDecimal(data.averageCorners)}
+                />
+                <StatItem
+                  label="Media tarjetas"
+                  value={data.averageYellowCards === null ? '—' : formatDecimal(data.averageYellowCards)}
+                />
               </div>
 
               <div>

@@ -1,5 +1,5 @@
 import type { TeamDto } from '../types'
-import { formatMarketValue } from '../lib/format'
+import { formatDecimal, formatMarketValue } from '../lib/format'
 import Crest from '../betting/Crest'
 
 interface TeamCardProps {
@@ -7,6 +7,10 @@ interface TeamCardProps {
   onSelect: (team: TeamDto) => void
   /** Escudo oficial del equipo; si falta se muestran las iniciales. */
   crest?: string | null
+}
+
+function formatAverage(value: number | null | undefined): string {
+  return value === null || value === undefined ? '—' : formatDecimal(value, 1)
 }
 
 export default function TeamCard({ team, onSelect, crest = null }: TeamCardProps) {
@@ -23,9 +27,20 @@ export default function TeamCard({ team, onSelect, crest = null }: TeamCardProps
           <p className="truncate text-xs text-slate-400">{team.stadium ?? 'Estadio desconocido'}</p>
         </div>
       </div>
-      <div className="text-xs text-slate-400">
-        Valor de plantilla:{' '}
-        <span className="font-medium text-slate-200">{formatMarketValue(team.marketValue)}</span>
+      <div className="w-full space-y-1 text-xs text-slate-400">
+        <p>
+          Valor de plantilla:{' '}
+          <span className="font-medium text-slate-200">{formatMarketValue(team.marketValue)}</span>
+        </p>
+        <p title={team.statsSeason ? `Promedio por partido de la temporada ${team.statsSeason}` : undefined}>
+          Córneres:{' '}
+          <span className="num font-medium text-slate-200">{formatAverage(team.averageCorners)}</span>
+          <span className="mx-1.5 text-slate-600" aria-hidden="true">
+            ·
+          </span>
+          Tarjetas: <span className="num font-medium text-slate-200">{formatAverage(team.averageCards)}</span>
+          <span className="text-slate-500"> /partido</span>
+        </p>
       </div>
     </button>
   )
