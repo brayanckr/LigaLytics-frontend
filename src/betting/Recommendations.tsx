@@ -31,8 +31,7 @@ export default function Recommendations() {
     <div className="space-y-3">
       <p className="text-xs text-slate-500">
         Se recomienda una selección cuando la probabilidad del modelo, anclada a la del mercado, × la cuota supera el
-        valor justo. El importe sugerido es ¼ de Kelly, con tope del 5 % del saldo. No es asesoría: el modelo no ha
-        demostrado ganar a las casas de apuestas.
+        valor justo. El importe sugerido es ¼ de Kelly, con tope del 5 % del saldo. No es asesoría.
       </p>
       {items.map((item) => (
         <div

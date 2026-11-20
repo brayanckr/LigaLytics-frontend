@@ -5,7 +5,7 @@ export const MIN_STAKE = 1000
 export const MAX_LEGS = 8
 export const MAX_TOTAL_ODDS = 1000
 
-/** Dinero ficticio en pesos colombianos. */
+/** Importe en pesos colombianos. */
 export function cop(value: number): string {
   return `${new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 }).format(value)} COP`
 }
@@ -32,7 +32,7 @@ export function offerKey(eventId: number, offer: Pick<OfferDto, 'market' | 'sele
 
 export function sourceLabel(source: string): string {
   return source === 'demo'
-    ? 'cuota demo calculada por el modelo, no es de ninguna casa real'
+    ? 'cuota calculada por el modelo'
     : source === 'pinnacle'
       ? 'cuota real de Pinnacle'
       : 'consenso de casas'

@@ -66,7 +66,6 @@ export default function MatchDetail() {
           <section key={market} className="space-y-2 rounded-xl border border-slate-800 bg-slate-800/40 p-4">
             <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-300">
               {offers[0].marketLabel}
-              {source === 'demo' && <span className="ml-2 text-xs normal-case text-amber-300">cuotas demo del modelo</span>}
               {source === 'pinnacle' && (
                 <span className="ml-2 text-xs normal-case text-emerald-300">cuotas reales de Pinnacle</span>
               )}

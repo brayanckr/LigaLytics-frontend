@@ -55,7 +55,7 @@ export default function Navbar() {
             >
               <WalletIcon />
               <span className="hidden sm:inline">{cop(account.balance)}</span>
-              <span className="sr-only">Saldo ficticio {cop(account.balance)}</span>
+              <span className="sr-only">Saldo {cop(account.balance)}</span>
             </Link>
           )}
           {account ? (

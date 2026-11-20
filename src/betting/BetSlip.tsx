@@ -132,7 +132,7 @@ function SlipBody() {
           )}
 
           <label className="flex flex-col gap-1 text-xs font-semibold text-slate-300">
-            Importe (COP ficticios)
+            Importe (COP)
             <input
               type="number"
               inputMode="numeric"
@@ -186,10 +186,7 @@ function SlipBody() {
             </div>
           </dl>
 
-          {items.some((i) => i.offer.source === 'demo') && (
-            <p className="text-xs text-amber-300">Incluye cuotas demo calculadas por el modelo (no son de una casa real).</p>
-          )}
-          {stake > balance && <p className="text-xs text-rose-300">El importe supera tu saldo ficticio.</p>}
+          {stake > balance && <p className="text-xs text-rose-300">El importe supera tu saldo.</p>}
           {tooManyLegs && <p className="text-xs text-rose-300">Máximo {MAX_LEGS} selecciones por combinada.</p>}
           {tooHighOdds && <p className="text-xs text-rose-300">La cuota total máxima es {MAX_TOTAL_ODDS}.</p>}
           {error && (

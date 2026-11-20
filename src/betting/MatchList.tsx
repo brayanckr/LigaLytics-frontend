@@ -103,7 +103,7 @@ function FeaturedMatch({
           <p className="mt-4 text-center text-sm text-slate-300">
             {recommended.marketLabel}: el modelo da{' '}
             <strong className="text-lime-400">{Math.round((recommended.modelProbability ?? 0) * 100)}%</strong> frente al{' '}
-            {Math.round((recommended.marketProbability ?? 0) * 100)}% del mercado. Ventaja estimada, no demostrada.
+            {Math.round((recommended.marketProbability ?? 0) * 100)}% del mercado.
           </p>
         )}
 

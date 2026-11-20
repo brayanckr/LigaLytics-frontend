@@ -108,7 +108,7 @@ export default function BettingPage() {
   }
 
   const reset = async () => {
-    if (!window.confirm('¿Reiniciar el saldo a 100.000 COP ficticios y borrar tus apuestas?')) {
+    if (!window.confirm('¿Reiniciar el saldo a 100.000 COP y borrar tus apuestas?')) {
       return
     }
     try {
@@ -155,7 +155,7 @@ export default function BettingPage() {
         </header>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Stat label="Saldo ficticio" value={cop(balance)} tone="text-amber-300" />
+          <Stat label="Saldo" value={cop(balance)} tone="text-amber-300" />
           <Stat label="En juego" value={cop(w?.inPlay ?? 0)} tone="text-sky-300" />
           <Stat
             label="Ganancia / pérdida"

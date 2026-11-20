@@ -164,7 +164,7 @@ export default function LoginPage() {
               {mode === 'login' ? 'Entra al juego' : 'Crea tu cuenta'}
             </h2>
             <p className="text-sm text-slate-400">
-              Cada cuenta nueva recibe <strong className="font-bold text-lime-400">100.000 COP ficticios</strong> para apostar.
+              Cada cuenta nueva recibe <strong className="font-bold text-lime-400">100.000 COP</strong> para apostar.
             </p>
           </header>
 

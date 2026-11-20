@@ -31,7 +31,7 @@ export default function ProfilePage() {
 
         <dl className="mt-6 grid gap-3 sm:grid-cols-2">
           <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
-            <dt className="text-xs font-semibold uppercase tracking-wider text-slate-400">Saldo ficticio</dt>
+            <dt className="text-xs font-semibold uppercase tracking-wider text-slate-400">Saldo</dt>
             <dd className="mt-1 text-2xl font-extrabold tabular-nums text-lime-400">{cop(account.balance)}</dd>
           </div>
         </dl>

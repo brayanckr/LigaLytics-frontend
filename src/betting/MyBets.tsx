@@ -66,7 +66,7 @@ export default function MyBets() {
               </p>
               <p className="mt-1 text-xs text-slate-500">
                 Cuota <span className="text-emerald-300">{entry.bet.odds.toFixed(2)}</span>
-                {entry.bet.oddsSource === 'demo' && <span className="ml-1 text-amber-300">demo</span>} · importe{' '}
+ · importe{' '}
                 {cop(entry.bet.stake)}
               </p>
             </div>
