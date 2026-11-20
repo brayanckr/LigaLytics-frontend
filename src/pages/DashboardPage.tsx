@@ -5,6 +5,7 @@ import type { FixtureDto, TargetResult } from '../types'
 import { ligalyticsApi } from '../api/ligalyticsApi'
 import { useApi } from '../hooks/useApi'
 import { useLiveRanking } from '../hooks/useLiveRanking'
+import { useTeamCrests } from '../hooks/useTeamCrests'
 import Crest from '../betting/Crest'
 import ErrorAlert from '../components/ErrorAlert'
 import Flash from '../components/Flash'
@@ -192,6 +193,8 @@ export default function DashboardPage() {
   const modelReport = useApi(() => ligalyticsApi.getModelReport(), [])
   const fixtures = useApi(() => ligalyticsApi.getFixtures(range[0], range[1]), [range])
 
+  // Escudos oficiales por id de equipo para la clasificación y la cuadrícula de equipos; sin ellos, iniciales.
+  const crests = useTeamCrests()
   const topTeams = (ranking.data ?? []).slice(0, 5)
   const teamGrid = (ranking.data ?? []).slice(0, 8)
   const upcoming = (fixtures.data ?? [])
@@ -345,7 +348,7 @@ export default function DashboardPage() {
                       >
                         {entry.position}
                       </span>
-                      <Crest name={entry.teamName} size="sm" />
+                      <Crest name={entry.teamName} size="sm" src={crests.get(entry.teamId) ?? null} />
                       <span className="truncate">{entry.teamName}</span>
                     </Link>
                   </td>
@@ -381,7 +384,7 @@ export default function DashboardPage() {
                   to={`/teams?q=${encodeURIComponent(entry.teamName)}`}
                   className="flex min-h-[80px] flex-col items-center justify-center gap-1.5 rounded-xl p-2 transition duration-150 hover:bg-white/[.05]"
                 >
-                  <Crest name={entry.teamName} />
+                  <Crest name={entry.teamName} src={crests.get(entry.teamId) ?? null} />
                   <span className="line-clamp-2 text-center text-[11px] font-medium leading-tight text-slate-300">
                     {entry.teamName}
                   </span>
