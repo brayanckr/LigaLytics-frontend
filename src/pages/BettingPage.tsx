@@ -8,7 +8,7 @@ import Spinner from '../components/Spinner'
 import BetSlip from '../betting/BetSlip'
 import { BettingContext } from '../betting/BettingContext'
 import type { BettingState, SlipItem } from '../betting/BettingContext'
-import { cop, describeOffer } from '../betting/shared'
+import { cop, describeOffer, offersConflict } from '../betting/shared'
 
 const DEFAULT_STAKE = 5000
 
@@ -39,14 +39,9 @@ export default function BettingPage() {
         return current.filter((i) => i.key !== item.key)
       }
       // Un mismo partido admite varias selecciones salvo las incompatibles (misma regla que el servidor): las del
-      // mismo mercado (Sí/No, más/menos, 1X2) y ambos marcan con goles, que se contradicen o se implican.
-      const clashing = current.filter(
-        (i) =>
-          i.eventId === item.eventId &&
-          (i.offer.market === item.offer.market ||
-            (i.offer.market === 'BTTS' && item.offer.market === 'GOALS') ||
-            (i.offer.market === 'GOALS' && item.offer.market === 'BTTS')),
-      )
+      // mismo mercado (Sí/No, más/menos, 1X2) y las que se contradicen o se implican (ambos marcan «sí» con menos o
+      // más de 1,5 goles). Las demás se combinan y su cuota la ajusta el servidor por correlación.
+      const clashing = current.filter((i) => i.eventId === item.eventId && offersConflict(i.offer, item.offer))
       if (clashing.length > 0) {
         setNotice(
           `«${describeOffer(item.offer, item.homeTeam, item.awayTeam)}» sustituye a ` +

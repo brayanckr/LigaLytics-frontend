@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ligalyticsApi } from '../api/ligalyticsApi'
 import { extractApiError } from '../api/axiosClient'
 import { useBetting } from './BettingContext'
+import { useParlayPrice } from './useParlayPrice'
 import { MAX_LEGS, MAX_TOTAL_ODDS, MIN_STAKE, cop, describeOffer, formatKickoff, sourceLabel } from './shared'
 
 /** Probabilidad acumulada del modelo (producto de las patas, suponiendo independencia); null si falta alguna. */
@@ -18,12 +19,17 @@ function SlipBody() {
   const [error, setError] = useState<string | null>(null)
 
   const isParlay = items.length >= 2
-  const totalOdds = Math.round(items.reduce((acc, item) => acc * item.offer.odds, 1) * 100) / 100
+  const { totalOdds, quote, pending, error: quoteError } = useParlayPrice(items)
   const potential = Math.round(stake * totalOdds)
   const tooManyLegs = items.length > MAX_LEGS
   const tooHighOdds = totalOdds > MAX_TOTAL_ODDS
-  const invalid = stake < MIN_STAKE || stake > balance || tooManyLegs || tooHighOdds
-  const modelProb = combinedProbability(items.map((i) => i.offer.modelProbability))
+  const invalid =
+    stake < MIN_STAKE || stake > balance || tooManyLegs || tooHighOdds || pending || quoteError !== null
+  // Con varias selecciones del mismo partido la probabilidad conjunta la da el servidor (no son independientes).
+  const sameMatch = new Set(items.map((i) => i.eventId)).size < items.length
+  const modelProb = sameMatch
+    ? (quote?.modelProbability ?? null)
+    : combinedProbability(items.map((i) => i.offer.modelProbability))
   const impliedProb = items.length > 0 ? 1 / totalOdds : null
 
   const place = async () => {
@@ -186,6 +192,17 @@ function SlipBody() {
             </div>
           </dl>
 
+          {quote && quote.correlationAdjustment > 1.005 && (
+            <p className="text-xs text-slate-400">
+              Las selecciones del mismo partido están relacionadas, por eso la cuota total es menor que multiplicarlas.
+            </p>
+          )}
+          {quote && quote.correlationAdjustment < 0.995 && (
+            <p className="text-xs text-slate-400">
+              Las selecciones del mismo partido se oponen entre sí, por eso la cuota total es mayor que multiplicarlas.
+            </p>
+          )}
+          {quoteError && <p className="text-xs text-rose-300">{quoteError}</p>}
           {stake > balance && <p className="text-xs text-rose-300">El importe supera tu saldo.</p>}
           {tooManyLegs && <p className="text-xs text-rose-300">Máximo {MAX_LEGS} selecciones por combinada.</p>}
           {tooHighOdds && <p className="text-xs text-rose-300">La cuota total máxima es {MAX_TOTAL_ODDS}.</p>}
@@ -216,7 +233,7 @@ function SlipBody() {
 export default function BetSlip() {
   const { items } = useBetting()
   const [sheetOpen, setSheetOpen] = useState(false)
-  const totalOdds = items.reduce((acc, item) => acc * item.offer.odds, 1)
+  const { totalOdds } = useParlayPrice(items)
 
   useEffect(() => {
     if (!sheetOpen) {

@@ -5,6 +5,7 @@ import type {
   BetDto,
   BettingMatchDto,
   ParlayDto,
+  ParlayQuoteDto,
   PlaceParlayRequest,
   PlaceBetRequest,
   RecommendationDto,
@@ -124,6 +125,9 @@ export const ligalyticsApi = {
 
   placeParlay: (request: PlaceParlayRequest): Promise<ParlayDto> =>
     axiosClient.post<ParlayDto>('/betting/parlays', request).then((r) => r.data),
+
+  quoteParlay: (request: Pick<PlaceParlayRequest, 'legs'>): Promise<ParlayQuoteDto> =>
+    axiosClient.post<ParlayQuoteDto>('/betting/parlays/quote', request).then((r) => r.data),
 
   getParlays: (): Promise<ParlayDto[]> => axiosClient.get<ParlayDto[]>('/betting/parlays').then((r) => r.data),
 

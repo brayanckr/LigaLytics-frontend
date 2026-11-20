@@ -364,3 +364,14 @@ export interface PlaceParlayRequest {
   stake: number
   legs: { eventId: number; market: MarketCode; selection: string; line: number | null }[]
 }
+
+/** Cuota que pagaría una combinada, fijada por el servidor (ajustada por correlación si hay varias del mismo partido). */
+export interface ParlayQuoteDto {
+  totalOdds: number
+  /** Cuota de cada selección ya ajustada, en el orden pedido. */
+  legOdds: number[]
+  /** Producto de las cuotas sueltas dividido por la cuota total: mayor que 1 si la cuota baja por correlación. */
+  correlationAdjustment: number
+  /** Probabilidad conjunta del modelo, o nula si falta la predicción de algún partido. */
+  modelProbability: number | null
+}
