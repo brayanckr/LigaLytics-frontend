@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { RankingEntryDto } from '../types'
+import Crest from '../betting/Crest'
 import { ligalyticsApi } from '../api/ligalyticsApi'
 import { useApi } from '../hooks/useApi'
 import { useLiveRanking } from '../hooks/useLiveRanking'
@@ -16,7 +17,25 @@ function positionClass(position: number, total: number): string {
   return 'bg-slate-700/60 text-slate-300'
 }
 
-function RankingRow({ entry, total, index }: { entry: RankingEntryDto; total: number; index: number }) {
+const CREST_WINDOW_DAYS = 45
+
+function isoDay(date: Date): string {
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${date.getFullYear()}-${month}-${day}`
+}
+
+function RankingRow({
+  entry,
+  total,
+  index,
+  crest,
+}: {
+  entry: RankingEntryDto
+  total: number
+  index: number
+  crest: string | null
+}) {
   return (
     <tr
       className="motion-safe:animate-rise hover:bg-slate-800/40"
@@ -32,7 +51,12 @@ function RankingRow({ entry, total, index }: { entry: RankingEntryDto; total: nu
           {entry.position}
         </span>
       </td>
-      <td className="whitespace-nowrap px-4 py-3 font-medium text-white">{entry.teamName}</td>
+      <td className="whitespace-nowrap px-4 py-3 font-medium text-white">
+        <span className="flex items-center gap-3">
+          <Crest name={entry.teamName} size="sm" src={crest} />
+          {entry.teamName}
+        </span>
+      </td>
       <td className="px-4 py-3 text-center text-slate-300">{entry.matchesPlayed}</td>
       <td className="px-4 py-3 text-center text-slate-300">{entry.wins}</td>
       <td className="px-4 py-3 text-center text-slate-300">{entry.draws}</td>
@@ -52,6 +76,22 @@ export default function RankingPage() {
   const [season, setSeason] = useState<number | undefined>(undefined)
   const { data, loading, error, reload, updatedAt } = useLiveRanking(season)
   const entries = data ?? []
+  // Los escudos vienen del calendario (por id de equipo); si falla, la tabla muestra las iniciales.
+  const fixtures = useApi(() => {
+    const from = new Date()
+    const to = new Date()
+    from.setDate(from.getDate() - CREST_WINDOW_DAYS)
+    to.setDate(to.getDate() + CREST_WINDOW_DAYS)
+    return ligalyticsApi.getFixtures(isoDay(from), isoDay(to))
+  }, [])
+  const crests = useMemo(() => {
+    const map = new Map<number, string>()
+    for (const fixture of fixtures.data ?? []) {
+      if (fixture.homeTeamId && fixture.homeCrest) map.set(fixture.homeTeamId, fixture.homeCrest)
+      if (fixture.awayTeamId && fixture.awayCrest) map.set(fixture.awayTeamId, fixture.awayCrest)
+    }
+    return map
+  }, [fixtures.data])
 
   return (
     <section className="space-y-6">
@@ -125,7 +165,13 @@ export default function RankingPage() {
             </thead>
             <tbody className="divide-y divide-slate-800">
               {entries.map((entry, index) => (
-                <RankingRow key={entry.teamId} entry={entry} total={entries.length} index={index} />
+                <RankingRow
+                  key={entry.teamId}
+                  entry={entry}
+                  total={entries.length}
+                  index={index}
+                  crest={crests.get(entry.teamId) ?? null}
+                />
               ))}
             </tbody>
           </table>
