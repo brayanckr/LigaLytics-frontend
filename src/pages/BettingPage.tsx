@@ -129,11 +129,6 @@ export default function BettingPage() {
   return (
     <BettingContext.Provider value={state}>
       <section className="space-y-5 pb-16 lg:pb-0">
-        <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 px-5 py-3 text-sm text-amber-200">
-          <strong>Simulación educativa con dinero ficticio.</strong> No se apuesta dinero real ni hay pagos. Las
-          recomendaciones salen de un modelo cuya ventaja sobre las casas de apuestas <strong>no está demostrada</strong>.
-        </div>
-
         <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-3xl text-white sm:text-4xl">Apuestas</h1>

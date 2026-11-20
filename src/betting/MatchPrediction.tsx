@@ -99,7 +99,7 @@ export default function MatchPrediction({ match }: { match: PredictableMatch }) 
       </ul>
 
       <p className="text-xs text-slate-500">
-        Es una estimación del modelo, no una garantía. Las apuestas de esta sección usan saldo ficticio.
+        Es una estimación del modelo, no una garantía.
       </p>
       <Link
         to={`/predict?home=${prediction.homeTeamId}&away=${prediction.awayTeamId}`}

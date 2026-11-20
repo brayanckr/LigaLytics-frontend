@@ -34,10 +34,6 @@ export default function ProfilePage() {
             <dt className="text-xs font-semibold uppercase tracking-wider text-slate-400">Saldo ficticio</dt>
             <dd className="mt-1 text-2xl font-extrabold tabular-nums text-lime-400">{cop(account.balance)}</dd>
           </div>
-          <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
-            <dt className="text-xs font-semibold uppercase tracking-wider text-slate-400">Tipo de cuenta</dt>
-            <dd className="mt-1 text-lg font-bold text-white">Demostración educativa</dd>
-          </div>
         </dl>
       </div>
 

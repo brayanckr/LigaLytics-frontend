@@ -160,10 +160,6 @@ export default function LoginPage() {
       <div className="relative overflow-hidden rounded-md border border-white/[.07] bg-slate-800 shadow-float motion-safe:animate-rise">
         <div className="relative space-y-6 p-5 sm:p-8">
           <header className="space-y-2">
-            <span className="eyebrow inline-flex items-center gap-2 rounded border border-lime-400/30 bg-lime-400/10 px-3 py-1 !text-[11px] text-lime-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-lime-400 motion-safe:animate-pulse-dot" />
-              Demo en vivo
-            </span>
             <h2 className="font-display text-3xl font-bold uppercase leading-none tracking-[.02em] text-white sm:text-4xl">
               {mode === 'login' ? 'Entra al juego' : 'Crea tu cuenta'}
             </h2>
