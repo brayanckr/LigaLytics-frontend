@@ -296,7 +296,7 @@ export default function DashboardPage() {
               })}
             {!modelReport.loading && results.length === 0 && (
               <li className="col-span-full py-4 text-sm text-slate-300">
-                Modelo sin entrenar: cárgalo desde Administración.
+                Modelo sin entrenar todavía.
               </li>
             )}
           </ul>
@@ -399,7 +399,7 @@ export default function DashboardPage() {
           <ErrorAlert message={modelReport.error} onRetry={modelReport.reload} />
         )}
         {!modelReport.loading && !modelReport.error && !modelReport.data && (
-          <p className="text-sm text-slate-400">Sin entrenar todavía. Carga los datos desde Administración.</p>
+          <p className="text-sm text-slate-400">Sin entrenar todavía.</p>
         )}
         {results.length > 0 && (
           <ul className="grid divide-y divide-white/5 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-4 lg:divide-y-0">

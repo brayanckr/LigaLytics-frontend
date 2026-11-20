@@ -8,7 +8,6 @@ import NotFoundPage from './pages/NotFoundPage'
 import PredictorPage from './pages/PredictorPage'
 import RankingPage from './pages/RankingPage'
 import TeamsPage from './pages/TeamsPage'
-import AdminPage from './pages/AdminPage'
 import CalendarPage from './pages/CalendarPage'
 import BettingPage from './pages/BettingPage'
 import LoginPage from './pages/LoginPage'
@@ -34,7 +33,6 @@ export default function App() {
             <Route path="/teams" element={<TeamsPage />} />
             <Route path="/ranking" element={<RankingPage />} />
             <Route path="/calendar" element={<CalendarPage />} />
-            <Route path="/admin" element={<AdminPage />} />
             <Route path="/" element={<DashboardPage />} />
             <Route path="/predict" element={<PredictorPage />} />
             <Route path="/betting" element={<BettingPage />}>

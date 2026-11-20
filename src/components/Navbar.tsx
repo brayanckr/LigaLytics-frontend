@@ -5,9 +5,9 @@ import { useAuth } from '../auth/AuthContext'
 import { cop } from '../betting/shared'
 import Avatar from './Avatar'
 import { LogoMark, Wordmark } from './Logo'
-import { CogIcon, LogOutIcon, SearchIcon, UserIcon, WalletIcon } from './icons'
+import { LogOutIcon, SearchIcon, UserIcon, WalletIcon } from './icons'
 
-/** Cabecera superior: logo, buscador rápido de equipos al centro y accesos de cuenta/saldo/ajustes a la derecha. */
+/** Cabecera superior: logo, buscador rápido de equipos al centro y accesos de cuenta y saldo a la derecha. */
 export default function Navbar() {
   const { account, logout } = useAuth()
   const navigate = useNavigate()
@@ -84,13 +84,6 @@ export default function Navbar() {
               <span className="hidden sm:inline">Entrar</span>
             </NavLink>
           )}
-          <NavLink
-            to="/admin"
-            className="hidden h-11 w-11 items-center justify-center rounded text-slate-300 transition hover:bg-slate-800 hover:text-white md:flex"
-            aria-label="Administración"
-          >
-            <CogIcon />
-          </NavLink>
         </div>
       </div>
     </header>

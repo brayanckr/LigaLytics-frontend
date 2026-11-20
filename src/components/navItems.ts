@@ -1,7 +1,6 @@
 import type { ComponentType, SVGProps } from 'react'
 import {
   CalendarIcon,
-  CogIcon,
   HomeIcon,
   LiveIcon,
   MyBetsIcon,
@@ -29,7 +28,6 @@ export const NAV_ITEMS: NavItem[] = [
   { to: '/calendar', label: 'Calendario', icon: CalendarIcon },
   { to: '/teams', label: 'Equipos', icon: ShieldIcon },
   { to: '/profile', label: 'Perfil', icon: ProfileIcon },
-  { to: '/admin', label: 'Administración', icon: CogIcon },
 ]
 
 /** Navegación inferior en móvil: máximo 5 destinos de primer nivel. */
