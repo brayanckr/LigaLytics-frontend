@@ -1,22 +1,15 @@
 import type { TeamDto } from '../types'
 import { formatMarketValue } from '../lib/format'
+import Crest from '../betting/Crest'
 
 interface TeamCardProps {
   team: TeamDto
   onSelect: (team: TeamDto) => void
+  /** Escudo oficial del equipo; si falta se muestran las iniciales. */
+  crest?: string | null
 }
 
-export function teamInitials(name: string): string {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((word) => word[0])
-    .join('')
-    .toUpperCase()
-}
-
-export default function TeamCard({ team, onSelect }: TeamCardProps) {
+export default function TeamCard({ team, onSelect, crest = null }: TeamCardProps) {
   return (
     <button
       type="button"
@@ -24,9 +17,7 @@ export default function TeamCard({ team, onSelect }: TeamCardProps) {
       className="group flex h-full flex-col items-start gap-4 rounded-xl border border-slate-800 bg-slate-800/40 p-4 text-left transition hover:-translate-y-0.5 hover:border-sky-500/50 hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
     >
       <div className="flex w-full items-center gap-3">
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sky-500/15 text-sm font-bold text-sky-300">
-          {teamInitials(team.name)}
-        </span>
+        <Crest name={team.name} size="xl" src={crest} />
         <div className="min-w-0">
           <p className="truncate font-semibold text-white group-hover:text-sky-200">{team.name}</p>
           <p className="truncate text-xs text-slate-400">{team.stadium ?? 'Estadio desconocido'}</p>

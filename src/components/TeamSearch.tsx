@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { TeamDto } from '../types'
-import { teamInitials } from './TeamCard'
+import Crest from '../betting/Crest'
 
 interface TeamSearchProps {
   teams: TeamDto[]
+  /** Escudos oficiales por id de equipo; los que falten muestran las iniciales. */
+  crests?: Map<number, string>
   onSelect: (team: TeamDto) => void
   onQueryChange?: (query: string) => void
   placeholder?: string
@@ -25,6 +27,7 @@ function normalize(text: string): string {
  */
 export default function TeamSearch({
   teams,
+  crests,
   onSelect,
   onQueryChange,
   placeholder = 'Buscar equipo…',
@@ -123,9 +126,7 @@ export default function TeamSearch({
                   index === active ? 'bg-sky-500/15 text-sky-200' : 'text-slate-200 hover:bg-slate-800'
                 }`}
               >
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sky-500/15 text-xs font-bold text-sky-300">
-                  {teamInitials(team.name)}
-                </span>
+                <Crest name={team.name} size="sm" src={crests?.get(team.id) ?? null} />
                 <span className="truncate">{team.name}</span>
               </button>
             </li>

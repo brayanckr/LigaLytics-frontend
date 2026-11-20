@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { teamInitials } from '../components/TeamCard'
+import { teamInitials } from '../lib/format'
 
 const SIZES = {
   sm: 'h-6 w-6 text-[9px]',
   md: 'h-8 w-8 text-[11px]',
+  xl: 'h-12 w-12 text-sm',
   lg: 'h-16 w-16 text-lg',
 } as const
 

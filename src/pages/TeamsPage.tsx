@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import type { TeamDto } from '../types'
 import { ligalyticsApi } from '../api/ligalyticsApi'
 import { useApi } from '../hooks/useApi'
+import { useTeamCrests } from '../hooks/useTeamCrests'
 import ErrorAlert from '../components/ErrorAlert'
 import { SkeletonGrid } from '../components/Skeleton'
 import TeamCard from '../components/TeamCard'
@@ -11,6 +12,7 @@ import TeamSearch from '../components/TeamSearch'
 
 export default function TeamsPage() {
   const { data, loading, error, reload } = useApi(() => ligalyticsApi.getTeams(), [])
+  const crests = useTeamCrests()
   const [params] = useSearchParams()
   const [query, setQuery] = useState(params.get('q') ?? '')
   const [selected, setSelected] = useState<TeamDto | null>(null)
@@ -40,6 +42,7 @@ export default function TeamsPage() {
         <div className="w-full sm:max-w-xs">
           <TeamSearch
             teams={teams}
+            crests={crests}
             onSelect={setSelected}
             initialQuery={query}
             onQueryChange={setQuery}
@@ -61,12 +64,12 @@ export default function TeamsPage() {
       {!loading && !error && filtered.length > 0 && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((team) => (
-            <TeamCard key={team.id} team={team} onSelect={setSelected} />
+            <TeamCard key={team.id} team={team} crest={crests.get(team.id) ?? null} onSelect={setSelected} />
           ))}
         </div>
       )}
 
-      {selected && <TeamDetailModal team={selected} onClose={() => setSelected(null)} />}
+      {selected && <TeamDetailModal team={selected} crest={crests.get(selected.id) ?? null} onClose={() => setSelected(null)} />}
     </section>
   )
 }

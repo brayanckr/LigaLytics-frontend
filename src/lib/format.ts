@@ -2,6 +2,17 @@
  * Utilidades de formato y traducción de etiquetas de la API.
  */
 
+/** Iniciales de un equipo (hasta dos letras) para el avatar cuando no hay escudo. */
+export function teamInitials(name: string): string {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join('')
+    .toUpperCase()
+}
+
 export function formatMarketValue(value: number | null | undefined): string {
   if (value === null || value === undefined) {
     return '—'

@@ -6,11 +6,13 @@ import { useApi } from '../hooks/useApi'
 import { formatDate, formatDecimal, formatMarketValue } from '../lib/format'
 import ErrorAlert from './ErrorAlert'
 import Spinner from './Spinner'
-import { teamInitials } from './TeamCard'
+import Crest from '../betting/Crest'
 
 interface TeamDetailModalProps {
   team: TeamDto
   onClose: () => void
+  /** Escudo oficial del equipo; si falta se muestran las iniciales. */
+  crest?: string | null
 }
 
 interface StatItemProps {
@@ -34,7 +36,7 @@ function formClass(letter: string): string {
   return letter === 'D' ? 'bg-slate-600/50 text-slate-200' : 'bg-rose-500/20 text-rose-300'
 }
 
-export default function TeamDetailModal({ team, onClose }: TeamDetailModalProps) {
+export default function TeamDetailModal({ team, onClose, crest = null }: TeamDetailModalProps) {
   const { data, loading, error, reload } = useApi(() => ligalyticsApi.getTeamStats(team.id), [team.id])
 
   useEffect(() => {
@@ -59,9 +61,7 @@ export default function TeamDetailModal({ team, onClose }: TeamDetailModalProps)
       >
         <div className="flex items-start justify-between gap-4 border-b border-slate-800 p-6">
           <div className="flex items-center gap-4">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-sky-500/15 text-base font-bold text-sky-300">
-              {teamInitials(team.name)}
-            </span>
+            <Crest name={team.name} size="xl" src={crest} />
             <div>
               <h2 className="text-xl font-bold text-white">{team.name}</h2>
               <p className="text-sm text-slate-400">{team.stadium ?? 'Estadio desconocido'}</p>
