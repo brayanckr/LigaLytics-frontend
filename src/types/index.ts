@@ -9,6 +9,8 @@ export interface TeamDto {
   name: string
   stadium: string | null
   marketValue: number | null
+  /** URL del escudo oficial que entrega el backend (puede faltar). */
+  crest?: string | null
 }
 
 /** Una estadística comparada local vs visitante; `away` es null cuando solo se conoce el total del partido. */

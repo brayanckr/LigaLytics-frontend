@@ -64,12 +64,12 @@ export default function TeamsPage() {
       {!loading && !error && filtered.length > 0 && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((team) => (
-            <TeamCard key={team.id} team={team} crest={crests.get(team.id) ?? null} onSelect={setSelected} />
+            <TeamCard key={team.id} team={team} crest={team.crest ?? crests.get(team.id) ?? null} onSelect={setSelected} />
           ))}
         </div>
       )}
 
-      {selected && <TeamDetailModal team={selected} crest={crests.get(selected.id) ?? null} onClose={() => setSelected(null)} />}
+      {selected && <TeamDetailModal team={selected} crest={selected.crest ?? crests.get(selected.id) ?? null} onClose={() => setSelected(null)} />}
     </section>
   )
 }

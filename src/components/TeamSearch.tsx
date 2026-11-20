@@ -126,7 +126,7 @@ export default function TeamSearch({
                   index === active ? 'bg-sky-500/15 text-sky-200' : 'text-slate-200 hover:bg-slate-800'
                 }`}
               >
-                <Crest name={team.name} size="sm" src={crests?.get(team.id) ?? null} />
+                <Crest name={team.name} size="sm" src={team.crest ?? crests?.get(team.id) ?? null} />
                 <span className="truncate">{team.name}</span>
               </button>
             </li>
