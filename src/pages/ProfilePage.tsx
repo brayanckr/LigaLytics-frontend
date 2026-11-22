@@ -1,21 +1,17 @@
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { cop } from '../betting/shared'
 import Avatar from '../components/Avatar'
+import { useConfirmLogout } from '../components/ConfirmLogout'
 import { LogOutIcon, MyBetsIcon, SparkIcon } from '../components/icons'
 
 /** Perfil de la cuenta de la demostración: datos básicos, saldo ficticio y cierre de sesión. */
 export default function ProfilePage() {
-  const { account, loading, logout } = useAuth()
-  const navigate = useNavigate()
+  const { account, loading } = useAuth()
+  const { requestLogout, dialog } = useConfirmLogout('/login')
 
   if (loading) return null
   if (!account) return <Navigate to="/login" replace />
-
-  const handleLogout = async () => {
-    await logout()
-    navigate('/login', { replace: true })
-  }
 
   return (
     <section className="mx-auto max-w-2xl space-y-5 motion-safe:animate-rise">
@@ -54,11 +50,12 @@ export default function ProfilePage() {
 
       <button
         type="button"
-        onClick={handleLogout}
+        onClick={requestLogout}
         className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl border border-rose-500/40 bg-rose-500/10 font-bold text-rose-200 transition-all duration-200 hover:bg-rose-500/20 active:scale-[.99]"
       >
         <LogOutIcon /> Cerrar sesión
       </button>
+      {dialog}
     </section>
   )
 }
