@@ -4,19 +4,16 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { cop } from '../betting/shared'
 import Avatar from './Avatar'
+import { useConfirmLogout } from './ConfirmLogout'
 import { LogoMark, Wordmark } from './Logo'
 import { LogOutIcon, SearchIcon, UserIcon, WalletIcon } from './icons'
 
 /** Cabecera superior: logo, buscador rápido de equipos al centro y accesos de cuenta y saldo a la derecha. */
 export default function Navbar() {
-  const { account, logout } = useAuth()
+  const { account } = useAuth()
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
-
-  const handleLogout = async () => {
-    await logout()
-    navigate('/login', { replace: true })
-  }
+  const { requestLogout, dialog } = useConfirmLogout('/login')
 
   const submit = (event: FormEvent) => {
     event.preventDefault()
@@ -70,7 +67,7 @@ export default function Navbar() {
               </Link>
               <button
                 type="button"
-                onClick={handleLogout}
+                onClick={requestLogout}
                 aria-label="Cerrar sesión"
                 className="flex h-11 w-11 items-center justify-center gap-2 rounded border border-slate-700 text-sm sm:w-auto sm:px-3 font-semibold text-slate-300 transition hover:border-rose-500/60 hover:bg-rose-500/10 hover:text-rose-200"
               >
@@ -86,6 +83,7 @@ export default function Navbar() {
           )}
         </div>
       </div>
+      {dialog}
     </header>
   )
 }

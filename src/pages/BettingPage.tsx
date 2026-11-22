@@ -5,6 +5,7 @@ import { extractApiError } from '../api/axiosClient'
 import { useAuth } from '../auth/AuthContext'
 import { useApi } from '../hooks/useApi'
 import Spinner from '../components/Spinner'
+import { useConfirmLogout } from '../components/ConfirmLogout'
 import BetSlip from '../betting/BetSlip'
 import { BettingContext } from '../betting/BettingContext'
 import type { BettingState, SlipItem } from '../betting/BettingContext'
@@ -20,7 +21,8 @@ const TABS: [string, string, boolean][] = [
 
 /** Casa de apuestas de demostración: partidos con cuotas, detalle de mercados, cupón (simple o combinada) e historial. */
 export default function BettingPage() {
-  const { account, loading: authLoading, logout, refresh } = useAuth()
+  const { account, loading: authLoading, refresh } = useAuth()
+  const { requestLogout, dialog: logoutDialog } = useConfirmLogout()
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const [items, setItems] = useState<SlipItem[]>([])
@@ -141,13 +143,14 @@ export default function BettingPage() {
             </button>
             <button
               type="button"
-              onClick={() => void logout()}
+              onClick={requestLogout}
               className="rounded-lg bg-slate-800 px-3 py-1.5 text-slate-200 transition hover:bg-slate-700"
             >
               Cerrar sesión
             </button>
           </div>
         </header>
+        {logoutDialog}
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <Stat label="Saldo" value={cop(balance)} tone="text-amber-300" />
